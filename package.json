@@ -10,6 +10,7 @@
     "lint": "eslint . --ignore-path .gitignore --fix"
   },
   "dependencies": {
+    "@radix-ui/react-checkbox": "^1.1.2",
     "@reduxjs/toolkit": "^2.4.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

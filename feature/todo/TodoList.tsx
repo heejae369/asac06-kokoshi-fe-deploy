@@ -1,6 +1,7 @@
 "use client";
 
 import { useTodosQuery } from "./api/api";
+import Todo from "./Todo";
 
 export default function TodoList() {
   const { data } = useTodosQuery({});
@@ -13,7 +14,7 @@ export default function TodoList() {
       </div>
       {/* todo list */}
       <div className="mt-4 grow">
-        <ul>{JSON.stringify(data)}</ul>
+        <ul>{data?.map((todo) => <Todo key={todo.id} todo={todo}></Todo>)}</ul>
       </div>
     </section>
   );

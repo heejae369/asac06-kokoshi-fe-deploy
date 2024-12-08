@@ -21,7 +21,7 @@ export const api = createApi({
    * Tag types must be defined in the original API definition
    * for any tags that would be provided by injected endpoints
    */
-  tagTypes: [],
+  tagTypes: ["todos"],
   /**
    * If you want all endpoints defined in the same file, they could be included here instead
    */
