@@ -17,3 +17,9 @@ export interface UseUpdateTodoMutationArg {
   id: number;
   updateTodo: Todo;
 }
+
+export type UseDeleteTodoMutationRes = any;
+
+export interface UseDeleteTodoMutationArg {
+  id: number;
+}

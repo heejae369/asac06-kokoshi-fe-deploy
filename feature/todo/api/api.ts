@@ -2,6 +2,8 @@ import { api } from "@/lib/api";
 import {
   UseCreateTodoMutationArg,
   UseCreateTodoMutationRes,
+  UseDeleteTodoMutationArg,
+  UseDeleteTodoMutationRes,
   UseTodosQueryArg,
   UseTodosQueryRes,
   UseUpdateTodoMutationArg,
@@ -44,8 +46,24 @@ export const todoApi = api.injectEndpoints({
       },
       invalidatesTags: ["todos"],
     }),
+    deleteTodo: builder.mutation<
+      UseDeleteTodoMutationRes,
+      UseDeleteTodoMutationArg
+    >({
+      query: ({ id }) => {
+        return {
+          url: `/todos/${id}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: ["todos"],
+    }),
   }),
 });
 
-export const { useTodosQuery, useCreateTodoMutation, useUpdateTodoMutation } =
-  todoApi;
+export const {
+  useTodosQuery,
+  useCreateTodoMutation,
+  useUpdateTodoMutation,
+  useDeleteTodoMutation,
+} = todoApi;
