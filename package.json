@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev-json-server": "next dev & json-server db.json -p 5001",
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --ignore-path .gitignore --fix"
@@ -12,6 +13,7 @@
     "@reduxjs/toolkit": "^2.4.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "json-server": "^1.0.0-beta.3",
     "lucide-react": "^0.464.0",
     "next": "14.2.16",
     "react": "^18",

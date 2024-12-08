@@ -1,0 +1,84 @@
+{
+  "todos": [
+    {
+      "id": 1,
+      "title": "Complete quarterly report",
+      "status": "in-progress",
+      "dueDate": "2024-12-15",
+      "created": "2024-12-01",
+      "lastModified": "2024-12-08"
+    },
+    {
+      "id": 2,
+      "title": "Schedule team building event",
+      "status": "pending",
+      "dueDate": "2024-12-20",
+      "created": "2024-12-02",
+      "lastModified": "2024-12-08"
+    },
+    {
+      "id": 3,
+      "title": "Update website content",
+      "status": "not-started",
+      "dueDate": "2024-12-12",
+      "created": "2024-12-03",
+      "lastModified": "2024-12-08"
+    },
+    {
+      "id": 4,
+      "title": "Fix login bug",
+      "status": "in-progress",
+      "dueDate": "2024-12-10",
+      "created": "2024-12-04",
+      "lastModified": "2024-12-08"
+    },
+    {
+      "id": 5,
+      "title": "Prepare client presentation",
+      "status": "not-started",
+      "dueDate": "2024-12-14",
+      "created": "2024-12-05",
+      "lastModified": "2024-12-08"
+    },
+    {
+      "id": 6,
+      "title": "Review budget proposals",
+      "status": "pending",
+      "dueDate": "2024-12-18",
+      "created": "2024-12-06",
+      "lastModified": "2024-12-08"
+    },
+    {
+      "id": 7,
+      "title": "Order office supplies",
+      "status": "not-started",
+      "dueDate": "2024-12-11",
+      "created": "2024-12-07",
+      "lastModified": "2024-12-08"
+    },
+    {
+      "id": 8,
+      "title": "Update security protocols",
+      "status": "in-progress",
+      "dueDate": "2024-12-19",
+      "created": "2024-12-01",
+      "lastModified": "2024-12-08"
+    },
+    {
+      "id": 9,
+      "title": "Plan holiday party",
+      "status": "pending",
+      "dueDate": "2024-12-16",
+      "created": "2024-12-02",
+      "lastModified": "2024-12-08"
+    },
+    {
+      "id": 10,
+      "title": "Conduct performance reviews",
+      "status": "not-started",
+      "dueDate": "2024-12-21",
+      "created": "2024-12-03",
+      "lastModified": "2024-12-08"
+    }
+  ]
+}
