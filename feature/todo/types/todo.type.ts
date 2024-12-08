@@ -4,7 +4,13 @@ export interface Todo {
   id: number;
   title: string;
   status: TodoStatus;
-  dueDate: string; // ISO date string
+  created: string; // ISO date string
+  lastModified: string; // ISO date string
+}
+
+export interface NewTodo {
+  title: string;
+  status: TodoStatus;
   created: string; // ISO date string
   lastModified: string; // ISO date string
 }

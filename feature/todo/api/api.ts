@@ -1,5 +1,7 @@
 import { api } from "@/lib/api";
 import {
+  UseCreateTodoMutationArg,
+  UseCreateTodoMutationRes,
   UseTodosQueryArg,
   UseTodosQueryRes,
   UseUpdateTodoMutationArg,
@@ -15,6 +17,19 @@ export const todoApi = api.injectEndpoints({
         };
       },
       providesTags: ["todos"],
+    }),
+    createTodo: builder.mutation<
+      UseCreateTodoMutationRes,
+      UseCreateTodoMutationArg
+    >({
+      query: ({ newTodo }) => {
+        return {
+          url: `/todos`,
+          body: newTodo,
+          method: "POST",
+        };
+      },
+      invalidatesTags: ["todos"],
     }),
     updateTodo: builder.mutation<
       UseUpdateTodoMutationRes,
@@ -32,4 +47,5 @@ export const todoApi = api.injectEndpoints({
   }),
 });
 
-export const { useTodosQuery, useUpdateTodoMutation } = todoApi;
+export const { useTodosQuery, useCreateTodoMutation, useUpdateTodoMutation } =
+  todoApi;
