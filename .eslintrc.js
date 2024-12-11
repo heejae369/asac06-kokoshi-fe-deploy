@@ -19,7 +19,7 @@ module.exports = {
     "plugin:@next/next/recommended",
   ],
   rules: {
-    "linebreak-style": ["error", "unix"],
+    "linebreak-style": 0,
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
     "jsx-a11y/anchor-is-valid": "off",
@@ -29,6 +29,10 @@ module.exports = {
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-empty-function": "warn",
     "@typescript-eslint/no-explicit-any": "warn",
-    "prettier/prettier": ["error", {}, { usePrettierrc: true }],
+    "prettier/prettier": [
+      "error",
+      { endOfLine: "auto" },
+      { usePrettierrc: true },
+    ],
   },
 };
