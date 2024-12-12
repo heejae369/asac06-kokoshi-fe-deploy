@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "dev-json-server": "next dev & json-server db.json -p 5001",
+    "dev-json-server": "json-server db.json -p 5001",
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --ignore-path .gitignore --fix"
