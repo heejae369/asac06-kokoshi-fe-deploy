@@ -1,0 +1,60 @@
+.login {
+  position: relative;
+  width: 114px;
+  height: 58px;
+  left: 20px;
+  top: 98px;
+
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 58px;
+  /* identical to box height */
+  letter-spacing: -0.05em;
+
+  /* Main purple */
+  color: #8728ff;
+}
+
+.frame4 {
+  /* Auto layout */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 20px;
+  gap: 10px;
+
+  position: relative;
+  width: 320px;
+  height: 55px;
+  left: 20px;
+  top: 144px;
+
+  /* Gray 50 */
+  background: #f6f6f6;
+  border-radius: 5px;
+}
+
+.frame5 {
+  position: relative;
+  width: 320px;
+  height: 55px;
+  left: 20px;
+  top: 154px;
+
+  /* Gray 50 */
+  background: #f6f6f6;
+  border-radius: 5px;
+}
+
+.ic_pw_hide {
+  position: relative;
+  width: 19.69px;
+  height: 18px;
+  left: 285px;
+  top: 108.5px;
+
+  /* Gray 400 */
+  border: 2px solid #999999;
+}
