@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "dev-json-server": "next dev & json-server db.json -p 5001",
+    "dev-json-server": "json-server db.json -p 5001",
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --ignore-path .gitignore --fix"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.1.2",
+    "@radix-ui/react-slot": "^1.1.1",
     "@reduxjs/toolkit": "^2.4.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
