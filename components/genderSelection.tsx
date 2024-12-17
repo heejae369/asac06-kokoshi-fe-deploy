@@ -5,12 +5,12 @@ import styles from "@/styles/genderSelection.module.css";
 const GenderSelection = () => {
   const [selectedGender, setSelectedGender] = useState("");
 
-  const handleGenderChange = (e) => {
+  const handleGenderChange = (e: React.ChangeEvent<any>) => {
     setSelectedGender(e.target.value);
   };
 
   const handleNextClick = () => {
-    console.log("선택된 성별: ", selectedGender);
+    alert("선택된 성별: " + selectedGender);
     // 이후 이동 로직을 추가하거나 API 요청 등 작업을 수행
   };
 

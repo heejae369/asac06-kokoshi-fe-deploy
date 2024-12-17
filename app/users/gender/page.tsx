@@ -1,9 +1,9 @@
-import Genderselection from "@/components/genderSelection";
+import GenderSelection from "@/components/genderSelection";
 
 export default function GenderPage() {
   return (
     <div>
-      <Genderselection />
+      <GenderSelection />
     </div>
   );
 }
