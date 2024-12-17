@@ -115,6 +115,26 @@
   top: 524px;
 }
 
+.unregistered {
+  /* 등록되지 않은 회원입니다. */
+
+  position: absolute;
+  width: 184px;
+  height: 20px;
+  left: 20px;
+  top: 317px;
+
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.05em;
+
+  /* Sub red */
+  color: #ff0045;
+}
+
 .vector9 {
   /* Vector 9 */
 
