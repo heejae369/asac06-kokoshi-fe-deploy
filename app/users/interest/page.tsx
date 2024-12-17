@@ -1,4 +1,4 @@
-import InterestSelection from "@/components/interestSelection";
+import InterestSelection from "@/components/InterestSelection";
 
 export default function GenderPage() {
   return (
