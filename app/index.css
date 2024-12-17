@@ -19,200 +19,144 @@
   color: #8728ff;
 }
 
-.loginHeaderBefore {
-  /* ic_back */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  position: absolute;
-  width: 24px;
-  height: 24px;
-  /* left: 20px; */
-  /* top: 57px; */
-}
-
-.findIdSumbit {
-  /* Frame 6 */
-
-  /* Auto layout */
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 26px;
-  gap: 10px;
+.password {
+  /* 비밀번호 */
 
   position: absolute;
   width: 320px;
-  height: 50px;
-  left: 20px;
-  top: 350px;
+  height: 55px;
+  padding: 20px;
 
-  /* Gray 300 */
-  background: #b2b2b2;
+  /* Gray 50 */
+  background: #f6f6f6;
   border-radius: 5px;
 }
 
-.loginHeaderText {
-  /* 아이디 찾기 */
-  white-space: pre-line;
+.ic_pw_hide {
+  /* PW 숨기기 아이콘 */
+
   position: absolute;
-  top: 41px;
+  width: 19.69px;
+  height: 18px;
+  left: 285px;
+  top: 18.5px;
+
+  /* Gray 400 */
+  /* border: 2px solid #999999; */
+}
+
+.login_innerText {
+  /* 로그인 */
+
+  width: 46px;
+  height: 23px;
 
   font-family: "Noto Sans KR";
   font-style: normal;
-  font-weight: 550;
-  font-size: 25px;
-  line-height: 36px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 23px;
+  text-align: center;
   letter-spacing: -0.05em;
 
   /* Main purple */
-  color: #8728ff;
+  /* color: #8728ff; */
+
+  /* Inside auto layout */
+  flex: none;
+  order: 0;
+  flex-grow: 0;
 }
 
-.loginHeader {
-  /* background-color: #191919; */
-  position: absolute;
-  width: 320px;
-  height: 80px;
-  left: 20px;
-  top: 57px;
-}
-.loginHeaderBefore {
-  /* ic_back */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.find_id_pw_regi {
+  /* 아이디 PW 찾기, 회원가입 */
 
   position: absolute;
-  width: 24px;
-  height: 24px;
-  /* left: 20px; */
-  /* top: 57px; */
-}
-
-.findIdSumbit {
-  /* Frame 6 */
-
-  /* Auto layout */
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 26px;
-  gap: 10px;
-
-  position: absolute;
-  width: 320px;
-  height: 50px;
-  left: 20px;
-  top: 350px;
-
-  /* Gray 300 */
-  background: #b2b2b2;
-  border-radius: 5px;
-}
-
-.loginHeaderText {
-  /* 아이디 찾기 */
-  white-space: pre-line;
-  position: absolute;
-  top: 41px;
-
-  font-family: "Noto Sans KR";
-  font-style: normal;
-  font-weight: 550;
-  font-size: 25px;
-  line-height: 36px;
-  letter-spacing: -0.05em;
-
-  /* Main purple */
-  color: #8728ff;
-}
-
-.findIdInfo {
-  /* 아이디를 찾기 위해서 이름과 휴대폰 번호를 입력해주세요. */
-
-  position: absolute;
-  width: 222px;
-  height: 46px;
-  left: 20px;
-  top: 143px;
+  height: 20px;
+  top: 413px;
 
   font-family: "Noto Sans KR";
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  line-height: 23px;
+  line-height: 20px;
   letter-spacing: -0.05em;
 
-  /* Gray 900 */
-  color: #191919;
+  color: #7c2eff;
 }
 
-.findIdFrame1 {
-  /* Frame 4 */
-
-  /* Auto layout */
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 20px;
-  gap: 10px;
+.or {
+  /* 혹은 */
 
   position: absolute;
-  width: 320px;
-  height: 55px;
-  left: 20px;
-  top: 210px;
+  width: 27px;
+  height: 20px;
+  left: 167px;
+  top: 480px;
 
-  /* Gray 50 */
-  background: #f6f6f6;
-  border-radius: 5px;
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.05em;
+
+  color: #7c2eff;
+
+  opacity: 0.6;
 }
 
-.findIdFrame2 {
-  /* Frame 5 */
-
-  /* Auto layout */
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 20px;
-  gap: 226px;
+.social_login {
+  /* ic_login_naver */
 
   position: absolute;
-  width: 320px;
-  height: 55px;
-  left: 20px;
-  top: 270px;
-
-  /* Gray 50 */
-  background: #f6f6f6;
-  border-radius: 5px;
+  width: 50px;
+  height: 50px;
+  top: 524px;
 }
 
-.frame3 {
-  /* Frame 4 */
-
-  /* Auto layout */
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 20px;
-  gap: 10px;
+.vector9 {
+  /* Vector 9 */
 
   position: absolute;
-  width: 320px;
-  height: 55px;
+  width: 135px;
+  height: 0px;
   left: 20px;
-  top: 155px;
+  top: 490px;
 
-  /* Gray 50 */
-  background: #f6f6f6;
-  border-radius: 5px;
+  opacity: 0.2;
+  /* Main purple */
+  border: 1px solid #8728ff;
 }
+
+.vector10 {
+  /* Vector 10 */
+
+  position: absolute;
+  width: 135px;
+  height: 0px;
+  left: 205px;
+  top: 490px;
+
+  opacity: 0.2;
+  /* Main purple */
+  border: 1px solid #8728ff;
+}
+
+.vector11 {
+  /* Vector 11 */
+
+  position: absolute;
+  width: 10px;
+  height: 0px;
+  top: 424px;
+
+  opacity: 0.2;
+  /* Main purple */
+  border: 1px solid #8728ff;
+  transform: rotate(90deg);
+}
+
 .frame4 {
   /* Frame 4 */
 
@@ -248,18 +192,6 @@
   border-radius: 5px;
 }
 
-.ic_pw_hide {
-  /* ic_pw_hide */
-
-  position: absolute;
-  width: 19.69px;
-  height: 18px;
-  left: 285px;
-  top: 18.5px;
-
-  /* Gray 400 */
-  border: 2px solid #999999;
-}
 .frame6 {
   /* Frame 6 */
 
@@ -278,6 +210,6 @@
   top: 349px;
 
   /* Sub purple */
-  background: #e9d8ff;
+  /* background: #e9d8ff; */
   border-radius: 5px;
 }
