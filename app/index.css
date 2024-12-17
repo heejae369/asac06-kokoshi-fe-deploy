@@ -5,7 +5,18 @@
   width: 114px;
   height: 58px;
   left: 20px;
-  top: 57px;
+  top: 98px;
+
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 58px;
+  /* identical to box height */
+  letter-spacing: -0.05em;
+
+  /* Main purple */
+  color: #8728ff;
 }
 
 .loginHeaderBefore {
