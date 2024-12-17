@@ -1,5 +1,7 @@
 .login {
-  position: relative;
+  /* 로그인 */
+
+  position: absolute;
   width: 114px;
   height: 58px;
   left: 20px;
@@ -17,7 +19,89 @@
   color: #8728ff;
 }
 
-.frame4 {
+.loginHeader {
+  /* background-color: #191919; */
+  position: absolute;
+  width: 320px;
+  height: 80px;
+  left: 20px;
+  top: 57px;
+}
+.loginHeaderBefore {
+  /* ic_back */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  /* left: 20px; */
+  /* top: 57px; */
+}
+
+.findIdSumbit {
+  /* Frame 6 */
+
+  /* Auto layout */
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 26px;
+  gap: 10px;
+
+  position: absolute;
+  width: 320px;
+  height: 50px;
+  left: 20px;
+  top: 350px;
+
+  /* Gray 300 */
+  background: #b2b2b2;
+  border-radius: 5px;
+}
+
+.loginHeaderText {
+  /* 아이디 찾기 */
+  white-space: pre-line;
+  position: absolute;
+  top: 41px;
+
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 550;
+  font-size: 25px;
+  line-height: 36px;
+  letter-spacing: -0.05em;
+
+  /* Main purple */
+  color: #8728ff;
+}
+
+.findIdInfo {
+  /* 아이디를 찾기 위해서 이름과 휴대폰 번호를 입력해주세요. */
+
+  position: absolute;
+  width: 222px;
+  height: 46px;
+  left: 20px;
+  top: 143px;
+
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 23px;
+  letter-spacing: -0.05em;
+
+  /* Gray 900 */
+  color: #191919;
+}
+
+.findIdFrame1 {
+  /* Frame 4 */
+
   /* Auto layout */
   display: flex;
   flex-direction: row;
@@ -25,11 +109,73 @@
   padding: 20px;
   gap: 10px;
 
-  position: relative;
+  position: absolute;
   width: 320px;
   height: 55px;
   left: 20px;
-  top: 144px;
+  top: 210px;
+
+  /* Gray 50 */
+  background: #f6f6f6;
+  border-radius: 5px;
+}
+
+.findIdFrame2 {
+  /* Frame 5 */
+
+  /* Auto layout */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 20px;
+  gap: 226px;
+
+  position: absolute;
+  width: 320px;
+  height: 55px;
+  left: 20px;
+  top: 270px;
+
+  /* Gray 50 */
+  background: #f6f6f6;
+  border-radius: 5px;
+}
+
+.frame3 {
+  /* Frame 4 */
+
+  /* Auto layout */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 20px;
+  gap: 10px;
+
+  position: absolute;
+  width: 320px;
+  height: 55px;
+  left: 20px;
+  top: 155px;
+
+  /* Gray 50 */
+  background: #f6f6f6;
+  border-radius: 5px;
+}
+.frame4 {
+  /* Frame 4 */
+
+  /* Auto layout */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 20px;
+  gap: 10px;
+
+  position: absolute;
+  width: 320px;
+  height: 55px;
+  left: 20px;
+  top: 194px;
 
   /* Gray 50 */
   background: #f6f6f6;
@@ -37,11 +183,13 @@
 }
 
 .frame5 {
-  position: relative;
+  /* Frame 5 */
+
+  position: absolute;
   width: 320px;
   height: 55px;
   left: 20px;
-  top: 154px;
+  top: 254px;
 
   /* Gray 50 */
   background: #f6f6f6;
@@ -49,12 +197,35 @@
 }
 
 .ic_pw_hide {
-  position: relative;
+  /* ic_pw_hide */
+
+  position: absolute;
   width: 19.69px;
   height: 18px;
   left: 285px;
-  top: 108.5px;
+  top: 18.5px;
 
   /* Gray 400 */
   border: 2px solid #999999;
+}
+.frame6 {
+  /* Frame 6 */
+
+  /* Auto layout */
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 26px;
+  gap: 10px;
+
+  position: absolute;
+  width: 320px;
+  height: 50px;
+  left: 20px;
+  top: 349px;
+
+  /* Sub purple */
+  background: #e9d8ff;
+  border-radius: 5px;
 }
