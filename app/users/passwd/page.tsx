@@ -24,11 +24,11 @@ export default function PasswordPage() {
   // 이름과 이메일이 모두 입력 되고, 이름이 한글로 입력 & 이메일이 pattern 에 일치하는 경우에만 버튼 활성화 처리.
   return (
     <div>
-      <div className="flex flex-col w-full px-5 gap-2 pt-[57px]">
+      <div className="flex w-full flex-col gap-2 px-5 pt-[57px]">
         <button onClick={onClickBack}>
           <img src="/ic_back.png" alt="뒤로가기" />
         </button>
-        <div className="text-[#8728ff] text-[40px]">비밀번호 찾기</div>
+        <div className="text-[40px] text-[#8728ff]">비밀번호 찾기</div>
         <div className="text-[16px]">
           비밀번호 재설정 링크를 보내기 위한 <b>이메일 주소</b>를 입력해 주세요.
         </div>
@@ -64,7 +64,7 @@ export default function PasswordPage() {
           />
           {errors.email && <small>{errors.email.message}</small>}
           <Button
-            className="w-full my-4"
+            className="my-4 w-full"
             type="submit"
             disabled={isSubmitting || !name || !email}
           >
