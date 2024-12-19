@@ -37,6 +37,17 @@
   outline: 2px solid #8b00ff;
 }
 
+.inputError {
+  border-color: #e53935;
+}
+
+.error {
+  font-size: 0.8rem;
+  color: #e53935;
+  margin-top: 4px;
+  margin-left: 4px;
+}
+
 .nextButton {
   width: 100%;
   padding: 12px;

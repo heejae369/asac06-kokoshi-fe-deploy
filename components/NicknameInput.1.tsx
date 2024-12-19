@@ -1,9 +1,8 @@
 "use client";
-
 import styles from "@/styles/nicknameInput.module.css";
 import { useNickname } from "@/hooks/useNickname";
 
-const NicknameInput = () => {
+export const NicknameInput = () => {
   const { nickname, handleNicknameChange, handleNext, error } = useNickname();
 
   return (
@@ -20,14 +19,12 @@ const NicknameInput = () => {
         value={nickname}
         onChange={handleNicknameChange}
       />
-      {/* <p>닉네임은 국문, 영문,숫자만 입력이 가능합니다.</p>
-      <p>중복된 닉네임입니다.</p> */}
-      {error && <p className={styles.error}>{error}</p>}
+      <p>닉네임은 국문, 영문,숫자만 입력이 가능합니다.</p>
+      <p>중복된 닉네임입니다.</p>
+
       <button className={styles.nextButton} onClick={handleNext}>
         다음
       </button>
     </div>
   );
 };
-
-export default NicknameInput;
