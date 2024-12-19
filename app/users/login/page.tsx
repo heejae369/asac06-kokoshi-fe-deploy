@@ -11,15 +11,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [hidePw, setHidePw] = useState("text");
+  const [showValidation, setShowValidation] = useState(false);
 
   const samePassword = false;
   const notSignUp = true;
-  const showValidation = false;
+
+  const router = useRouter();
 
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100">
@@ -69,7 +72,6 @@ export default function LoginPage() {
             )}
           </div>
         </div>
-
         <div className="py-2 text-sm text-[#FF0045]">
           {showValidation && (
             <>
@@ -78,12 +80,15 @@ export default function LoginPage() {
             </>
           )}
         </div>
-
         <div>
           <Button
             className="h-[50px] w-full rounded-sm text-[1rem]"
             variant={"point"}
             disabled={email.length < 1 || pw.length < 9}
+            onClick={() => {
+              setShowValidation(true);
+              if (!notSignUp && samePassword) router.push("#54");
+            }}
           >
             로그인
           </Button>
@@ -101,12 +106,22 @@ export default function LoginPage() {
         <div className="flex justify-center gap-[10px]">
           <Button
             className="rounded-full bg-transparent p-0"
-            // onClick={CustomRouter("/users")}
+            onClick={() => router.push("#10")}
           >
             <img src={naverLogo.src} alt="naver social login" />
           </Button>
-          <img src={kakaoLogo.src} alt="kakao social login" />
-          <img src={appleLogo.src} alt="apple social login" />
+          <Button
+            className="rounded-full bg-transparent p-0"
+            onClick={() => router.push("#08")}
+          >
+            <img src={kakaoLogo.src} alt="kakao social login" />
+          </Button>
+          <Button
+            className="rounded-full bg-transparent p-0"
+            onClick={() => router.push("#09")}
+          >
+            <img src={appleLogo.src} alt="apple social login" />
+          </Button>
         </div>
       </div>
     </div>
