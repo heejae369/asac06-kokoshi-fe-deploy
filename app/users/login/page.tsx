@@ -19,6 +19,7 @@ export default function LoginPage() {
 
   const samePassword = false;
   const notSignUp = true;
+  const showValidation = false;
 
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100">
@@ -28,14 +29,24 @@ export default function LoginPage() {
         </div>
         <div className="mt-9 flex flex-col gap-[5px]">
           <Input
-            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+            onChange={(e) => {
+              let emailValue = e.target.value;
+              emailValue = emailValue.replace(/\n/g, "");
+              setEmail(emailValue.slice(0, 20));
+            }}
             className="rounded-sm bg-[#F4F4F4]"
             type="email"
             placeholder="이메일"
           />
           <div className="relative">
             <Input
-              onChange={(e) => setPw(e.target.value)}
+              value={pw}
+              onChange={(e) => {
+                let pwValue = e.target.value;
+                pwValue = pwValue.replace(/\n/g, "");
+                setPw(pwValue.slice(0, 20));
+              }}
               className="rounded-sm bg-[#F4F4F4]"
               type={hidePw}
               placeholder="비밀번호"
@@ -58,15 +69,21 @@ export default function LoginPage() {
             )}
           </div>
         </div>
+
         <div className="py-2 text-sm text-[#FF0045]">
-          {!samePassword && "패스워드가 일치하지 않습니다."}
-          {notSignUp && "등록되지 않은 회원입니다."}
+          {showValidation && (
+            <>
+              {!samePassword && "패스워드가 일치하지 않습니다."}
+              {notSignUp && "등록되지 않은 회원입니다."}
+            </>
+          )}
         </div>
+
         <div>
           <Button
             className="h-[50px] w-full rounded-sm text-[1rem]"
             variant={"point"}
-            disabled={!samePassword || notSignUp}
+            disabled={email.length < 1 || pw.length < 9}
           >
             로그인
           </Button>
@@ -82,7 +99,10 @@ export default function LoginPage() {
           <img src={or.src} alt="seprator" />
         </div>
         <div className="flex justify-center gap-[10px]">
-          <Button className="rounded-full bg-transparent p-0">
+          <Button
+            className="rounded-full bg-transparent p-0"
+            // onClick={CustomRouter("/users")}
+          >
             <img src={naverLogo.src} alt="naver social login" />
           </Button>
           <img src={kakaoLogo.src} alt="kakao social login" />
