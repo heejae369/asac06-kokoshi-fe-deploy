@@ -19,8 +19,8 @@ export default function LoginPage() {
   const [hidePw, setHidePw] = useState("text");
   const [showValidation, setShowValidation] = useState(false);
 
-  const samePassword = false;
-  const notSignUp = true;
+  const [samePassword, setSamePassword] = useState(false);
+  const [notSignUp, setNotSignUp] = useState(true);
 
   const router = useRouter();
 
@@ -75,8 +75,8 @@ export default function LoginPage() {
         <div className="py-2 text-sm text-[#FF0045]">
           {showValidation && (
             <>
-              {!samePassword && "패스워드가 일치하지 않습니다."}
               {notSignUp && "등록되지 않은 회원입니다."}
+              {!notSignUp && !samePassword && "패스워드가 일치하지 않습니다."}
             </>
           )}
         </div>
@@ -87,7 +87,15 @@ export default function LoginPage() {
             disabled={email.length < 1 || pw.length < 9}
             onClick={() => {
               setShowValidation(true);
-              if (!notSignUp && samePassword) router.push("#54");
+              // # Fetch API
+              // if (LoginResponse.status == 0) router.push("#54");
+              // else if (LoginResponse.status == 1) {
+              //   setNotSignUp(true);
+              //   setSamePassword(false);
+              // } else if (LoginResponse.status == 2) {
+              //   setNotSignUp(false);
+              //   setSamePassword(false);
+              // }
             }}
           >
             로그인
