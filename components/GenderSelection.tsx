@@ -1,22 +1,10 @@
 "use client";
-import { useState } from "react";
 import styles from "@/styles/genderSelection.module.css";
-import { useRouter } from "next/navigation";
+import { useGenderSelection } from "@/feature/useGenderSelection";
 
 const GenderSelection = () => {
-  const router = useRouter();
-  const [selectedGender, setSelectedGender] = useState("");
-
-  const handleGenderChange = (e: React.ChangeEvent<any>) => {
-    setSelectedGender(e.target.value);
-  };
-
-  const handleNextClick = () => {
-    alert("선택된 성별: " + selectedGender);
-    // 이후 이동 로직을 추가하거나 API 요청 등 작업을 수행
-    router.push("/users/interest");
-    localStorage.setItem("nickname", selectedGender);
-  };
+  const { selectedGender, handleGenderChange, handleNextClick } =
+    useGenderSelection();
 
   return (
     <div className={styles.container}>
@@ -65,13 +53,7 @@ const GenderSelection = () => {
         </label>
       </div>
 
-      <button
-        className={styles.nextButton}
-        onClick={
-          // () => router.push("/users/interest")
-          handleNextClick
-        }
-      >
+      <button className={styles.nextButton} onClick={handleNextClick}>
         다음
       </button>
     </div>

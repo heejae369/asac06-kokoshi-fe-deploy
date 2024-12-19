@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { generateRandomNickname } from "@/feature/generateRandomNickname";
 
 export const useNickname = () => {
   const [nickname, setNickname] = useState("");
@@ -53,8 +54,11 @@ export const useNickname = () => {
     const { isValid, message } = validateNickname(nickname);
 
     if (!nickname) {
-      alert("닉네임이 입력되지 않아 랜덤 닉네임이 설정됩니다.");
-      setNickname("랜덤닉네임");
+      const randomNickname = generateRandomNickname(); // 랜덤 닉네임 생성
+      alert(
+        `닉네임이 입력되지 않아 랜덤 닉네임이 설정됩니다: ${randomNickname}`
+      );
+      setNickname(randomNickname);
     } else {
       // 닉네임 유효성이 통과되면 로컬 스토리지에 저장
       saveNicknameToLocalStorage(nickname);

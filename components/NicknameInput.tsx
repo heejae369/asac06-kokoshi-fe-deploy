@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "@/styles/nicknameInput.module.css";
-import { useNickname } from "@/hooks/useNickname";
+import { useNickname } from "@/feature/useNickname";
 
 const NicknameInput = () => {
   const { nickname, handleNicknameChange, handleNext, error } = useNickname();

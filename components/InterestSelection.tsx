@@ -2,29 +2,11 @@
 import { useState } from "react";
 import styles from "@/styles/interestSelection.module.css";
 import { useRouter } from "next/navigation";
-
-const interests = [
-  { id: 1, name: "호캉스", icon: "🏨" },
-  { id: 2, name: "풀빌라", icon: "🏠" },
-  { id: 3, name: "게스트하우스", icon: "🏘️" },
-  { id: 4, name: "전원주택", icon: "🌳" },
-  { id: 5, name: "비즈니스 호텔", icon: "🏢" },
-  { id: 6, name: "레저", icon: "🏄" },
-  { id: 7, name: "해외숙소", icon: "🕌" },
-];
+import { useInterest } from "@/feature/useInterest";
 
 const InterestSelection = () => {
-  const router = useRouter();
-  const [selectedInterest, setSelectedInterest] = useState("");
-
-  const handleSelect = (interest) => {
-    setSelectedInterest(interest);
-  };
-
-  const handleNext = () => {
-    console.log("선택된 관심사:", selectedInterest);
-    router.push("/users/nickname");
-  };
+  const { interests, selectedInterest, handleSelect, handleNext } =
+    useInterest();
 
   return (
     <div className={styles.container}>
