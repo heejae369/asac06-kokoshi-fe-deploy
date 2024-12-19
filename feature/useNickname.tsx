@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { generateRandomNickname } from "@/feature/generateRandomNickname";
+import { localStorageApi } from "@/lib/localStorageApi";
 
 export const useNickname = () => {
   const [nickname, setNickname] = useState("");
@@ -65,6 +66,7 @@ export const useNickname = () => {
 
       alert(`닉네임이 저장되었습니다: ${nickname}`);
       console.log("닉네임:", nickname);
+      localStorageApi();
     }
   };
 

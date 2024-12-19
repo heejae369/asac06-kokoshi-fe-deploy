@@ -8,6 +8,9 @@ export const generateRandomNickname = () => {
     "재밌는",
     "따뜻한",
     "차가운",
+    "쾌활한",
+    "기분좋은",
+    "용맹한",
   ];
   const nouns = [
     "바나나",
@@ -18,6 +21,8 @@ export const generateRandomNickname = () => {
     "토끼",
     "강아지",
     "곰돌이",
+    "용가리",
+    "티라노사우로스",
   ];
   const randomAdjective =
     adjectives[Math.floor(Math.random() * adjectives.length)];
