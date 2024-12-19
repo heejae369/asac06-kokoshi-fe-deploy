@@ -16,8 +16,8 @@ export default function FindId() {
 
   const router = useRouter();
 
-  const pageRouter = () => {
-    router.push("/users/findId/email");
+  const pageRouter = (url) => {
+    router.push(url);
   };
 
   const isOkButtonValid = verificationCode.length === 6 && timer > 0;
@@ -73,7 +73,7 @@ export default function FindId() {
       setErrorMessage("인증번호가 일치하지 않습니다.");
       return;
     } else {
-      pageRouter();
+      pageRouter("/users/findId/email");
       setErrorMessage("");
     }
   };
@@ -120,7 +120,7 @@ export default function FindId() {
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100 font-sans tracking-negative">
       <div className="w-[360px] bg-white relative">
-        <LoginHeader titleText={"아이디 찾기"} />
+        <LoginHeader titleText={"아이디 찾기"} prevUrl={"/users/login"} />
         <div className="absolute top-36 left-5 text-[15px]">
           아이디를 찾기 위해서
           <br />
@@ -195,7 +195,7 @@ export default function FindId() {
         </div>
       </div>
       {!certification && (
-        <div className="w-80 h-[42px] flex items-center justify-center fixed bottom-8 bg-gray-800 text-white text-xs p-4 rounded-md opacity-70">
+        <div className="w-80 h-[42px] flex items-center justify-center fixed bottom-10 bg-gray-800 text-white text-xs p-4 rounded-md opacity-70">
           {message}
         </div>
       )}
