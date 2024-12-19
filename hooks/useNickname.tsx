@@ -32,7 +32,7 @@ export const useNickname = () => {
 
   // 닉네임 변경 핸들러
   const handleNicknameChange = (e) => {
-    const value = e.target.value;
+    const value = e.target.value || "";
     setNickname(value);
 
     const { isValid, message } = validateNickname(value);
@@ -43,6 +43,11 @@ export const useNickname = () => {
     }
   };
 
+  // 닉네임 저장 함수
+  const saveNicknameToLocalStorage = (value) => {
+    localStorage.setItem("nickname", value); // 로컬 스토리지에 닉네임 저장
+  };
+
   // 다음 버튼 클릭 핸들러
   const handleNext = () => {
     const { isValid, message } = validateNickname(nickname);
@@ -51,9 +56,19 @@ export const useNickname = () => {
       alert("닉네임이 입력되지 않아 랜덤 닉네임이 설정됩니다.");
       setNickname("랜덤닉네임");
     } else {
-      console.log("입력된 닉네임:", nickname);
+      // 닉네임 유효성이 통과되면 로컬 스토리지에 저장
+      saveNicknameToLocalStorage(nickname);
+
+      alert(`닉네임이 저장되었습니다: ${nickname}`);
+      console.log("닉네임:", nickname);
     }
   };
 
-  return { nickname, error, handleNicknameChange, handleNext };
+  return {
+    nickname,
+    error,
+    handleNicknameChange,
+    handleNext,
+    saveNicknameToLocalStorage,
+  };
 };
