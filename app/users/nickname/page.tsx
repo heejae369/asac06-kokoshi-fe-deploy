@@ -7,8 +7,10 @@ import NicknameInput from "@/components/NicknameInput";
 
 export default function NicknamePage() {
   return (
-    <div>
-      <NicknameInput />
+    <div className="flex h-screen w-full justify-center bg-gray-100">
+      <div className="w-[360px] bg-white px-5">
+        <NicknameInput />
+      </div>
     </div>
   );
 }

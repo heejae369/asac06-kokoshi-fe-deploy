@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import styles from "@/styles/interestSelection.module.css";
+import { useRouter } from "next/navigation";
 
 const interests = [
   { id: 1, name: "호캉스", icon: "🏨" },
@@ -13,6 +14,7 @@ const interests = [
 ];
 
 const InterestSelection = () => {
+  const router = useRouter();
   const [selectedInterest, setSelectedInterest] = useState("");
 
   const handleSelect = (interest) => {
@@ -21,6 +23,7 @@ const InterestSelection = () => {
 
   const handleNext = () => {
     console.log("선택된 관심사:", selectedInterest);
+    router.push("/users/nickname");
   };
 
   return (
