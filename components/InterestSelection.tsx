@@ -21,7 +21,7 @@ const InterestSelection = () => {
           <div
             key={interest.id}
             className={`${styles.card} ${
-              selectedInterest === interest.name ? styles.active : ""
+              selectedInterest.includes(interest.name) ? styles.active : ""
             }`}
             onClick={() => handleSelect(interest.name)}
           >
