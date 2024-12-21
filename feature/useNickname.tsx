@@ -55,6 +55,7 @@ export const useNickname = () => {
   // 다음 버튼 클릭 핸들러
   const handleNext = () => {
     const { isValid, message } = validateNickname(nickname);
+    if (!isValid) return;
 
     if (!nickname) {
       const randomNickname = generateRandomNickname(); // 랜덤 닉네임 생성
