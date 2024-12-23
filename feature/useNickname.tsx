@@ -4,10 +4,12 @@ import { generateRandomNickname } from "@/feature/generateRandomNickname";
 // import { localStorageApi } from "@/lib/localStorageApi";
 import CustomFetch from "@/feature/CustomFetch";
 import { postApiSendingTest } from "@/feature/postApiSending";
+import { useRouter } from "next/navigation";
 
 export const useNickname = () => {
   const [nickname, setNickname] = useState("");
   const [error, setError] = useState("");
+  const router = useRouter();
 
   // 닉네임 유효성 검사 함수
   const validateNickname = (value) => {
@@ -71,6 +73,7 @@ export const useNickname = () => {
     saveNicknameToLocalStorage(nickname);
     //일단 닉네임 폼에서 다음 버튼 누르면 post 요청
     postApiSendingTest();
+    router.push("/users/signup/terms");
   };
 
   return {
