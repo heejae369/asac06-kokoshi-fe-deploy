@@ -2,7 +2,7 @@
 import { useState } from "react";
 import styles from "@/styles/interestSelection.module.css";
 import { useRouter } from "next/navigation";
-import { useInterest } from "@/feature/UseInterest";
+import { useInterest } from "@/feature/useInterest";
 
 const InterestSelection = () => {
   const { interests, selectedInterest, handleSelect, handleNext, handleBack } =
