@@ -26,13 +26,18 @@ export const useInterest = () => {
     }
   };
 
+  // 뒤로가기 함수
+  const handleBack = () => {
+    router.back();
+  };
+
   const handleNext = () => {
     if (selectedInterest.length === 0) {
       alert("관심사를 하나 이상 선택해주세요!");
       return;
     }
     console.log("선택된 관심사:", selectedInterest);
-    router.push("/users/nickname");
+    router.push("/users/signup/nickname");
     localStorage.setItem("interest", selectedInterest);
   };
   return {
@@ -40,5 +45,6 @@ export const useInterest = () => {
     selectedInterest,
     handleSelect,
     handleNext,
+    handleBack,
   };
 };

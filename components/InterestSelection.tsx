@@ -2,14 +2,17 @@
 import { useState } from "react";
 import styles from "@/styles/interestSelection.module.css";
 import { useRouter } from "next/navigation";
-import { useInterest } from "@/feature/useInterest";
+import { useInterest } from "@/feature/UseInterest";
 
 const InterestSelection = () => {
-  const { interests, selectedInterest, handleSelect, handleNext } =
+  const { interests, selectedInterest, handleSelect, handleNext, handleBack } =
     useInterest();
 
   return (
     <div className={styles.container}>
+      <button onClick={handleBack} className="mt-10">
+        <img src="/ic_back.png" alt="뒤로가기" />
+      </button>
       <h2 className={styles.title}>관심사 선택</h2>
       <p className={styles.subtitle}>
         나의 관심사에 맞는 선택지를 선택해주세요.

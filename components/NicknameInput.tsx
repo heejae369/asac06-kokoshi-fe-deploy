@@ -1,13 +1,17 @@
 "use client";
 
 import styles from "@/styles/nicknameInput.module.css";
-import { useNickname } from "@/feature/useNickname";
+import { useNickname } from "@/feature/UseNickname";
 
 const NicknameInput = () => {
-  const { nickname, handleNicknameChange, handleNext, error } = useNickname();
+  const { nickname, handleNicknameChange, handleNext, error, handleBack } =
+    useNickname();
 
   return (
     <div className={styles.container}>
+      <button onClick={handleBack} className="mt-10">
+        <img src="/ic_back.png" alt="뒤로가기" />
+      </button>
       <h2 className={styles.title}>닉네임 입력</h2>
       <p className={styles.subtitle}>
         앱 내에서 사용할 닉네임을 입력해주세요. <br />
