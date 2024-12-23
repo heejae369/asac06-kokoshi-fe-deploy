@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import * as Accordion from "@radix-ui/react-accordion";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
-import { postApiSendingTest } from "@/feature/postApiSending";
+import { postApiSendingTest } from "@/feature/PostApiSending";
 
 export default function TermPage() {
   const [termsState, setTermsState] = useState({
@@ -49,7 +49,6 @@ export default function TermPage() {
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100">
       <div className="w-[360px] bg-white px-5 py-6">
-        
         {/* 뒤로가기 버튼 */}
         <button onClick={handleBack} className="w-6 h-6 mb-4">
           <img src="/ic_back.png" alt="뒤로가기" />
