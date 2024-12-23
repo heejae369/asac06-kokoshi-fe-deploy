@@ -28,10 +28,12 @@ export default function LoginPage() {
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100">
       <div className="w-[360px] bg-white px-5">
+        {/* 화면 최상단의 "로그인" 문구 */}
         <div className="mt-[100px]">
           <h2 className="text-[40px] font-bold text-[#8728FF]">로그인</h2>
         </div>
         <div className="mt-9 flex flex-col gap-[5px]">
+          {/* 이메일 입력창 */}
           <Input
             value={email}
             onChange={(e) => {
@@ -43,6 +45,7 @@ export default function LoginPage() {
             type="email"
             placeholder="이메일"
           />
+          {/* 비밀번호 입력창 */}
           <div className="relative">
             <Input
               value={pw}
@@ -55,6 +58,7 @@ export default function LoginPage() {
               type={hidePw}
               placeholder="비밀번호"
             />
+            {/* 비밀번호 숨기기 버튼 */}
             {!(hidePw == "password") && (
               <button
                 className="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent p-0"
@@ -63,6 +67,7 @@ export default function LoginPage() {
                 <img src={passwordHide.src} alt="Ex Img" />
               </button>
             )}
+            {/* 비밀번호 표시하기 버튼 */}
             {hidePw == "password" && (
               <button
                 className="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent p-0"
@@ -73,6 +78,7 @@ export default function LoginPage() {
             )}
           </div>
         </div>
+        {/* 이메일, 패스워드 유효성 텍스트 */}
         <div className="py-2 text-sm text-[#FF0045]">
           {showValidation && (
             <>
@@ -81,6 +87,7 @@ export default function LoginPage() {
             </>
           )}
         </div>
+        {/* 로그인 버튼 */}
         <div>
           <Button
             className="h-[50px] w-full rounded-sm text-[1rem]"
@@ -106,6 +113,7 @@ export default function LoginPage() {
             로그인
           </Button>
         </div>
+        {/* 아이디 찾기 | 비밀번호 찾기 | 회원가입 */}
         <div className="flex justify-center gap-[10px] py-3 text-sm font-normal text-[#8728FF]">
           <Link href={"/users/findId"}>아이디 찾기</Link>
           <span>|</span>
@@ -113,22 +121,26 @@ export default function LoginPage() {
           <span>|</span>
           <Link href={"/users/signup/address"}>회원가입</Link>
         </div>
+        {/* --- 혹은 --- */}
         <div className="py-6">
           <img src={or.src} alt="separator" />
         </div>
         <div className="flex justify-center gap-[10px]">
+          {/* 소셜 로그인 버튼 - 네이버 */}
           <Button
             className="rounded-full bg-transparent p-0"
             onClick={() => router.push("#10")}
           >
             <img src={naverLogo.src} alt="naver social login" />
           </Button>
+          {/* 소셜 로그인 버튼 - 카카오 */}
           <Button
             className="rounded-full bg-transparent p-0"
             onClick={() => router.push("#08")}
           >
             <img src={kakaoLogo.src} alt="kakao social login" />
           </Button>
+          {/* 소셜 로그인 버튼 - 애플 */}
           <Button
             className="rounded-full bg-transparent p-0"
             onClick={() => router.push("#09")}
