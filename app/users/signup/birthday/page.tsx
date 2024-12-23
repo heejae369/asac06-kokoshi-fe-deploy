@@ -30,27 +30,19 @@ export default function SignupPage() {
   };
 
   return (
-<<<<<<< HEAD
-    <div className="flex h-screen w-full justify-center bg-gray-100">
-      <div className="w-[360px] bg-white px-5">
-=======
+
     <div className="flex h-screen w-full justify-center bg-gray-100 ">
-      <div className="w-[360px] bg-white px-5 gap-6 pt-6">
->>>>>>> develop
+      <div className="w-[360px] bg-white px-5 ">
         {/* 뒤로가기 버튼 */}
         <button
           onClick={handleBack}
-          className="w-6 h-6 mt-4 mb-8"
+          className="w-6 h-6 mb-8 pt-6"
         >
           <img src="/ic_back.png" alt="뒤로가기" />
         </button>
 
         {/* 제목 */}
-<<<<<<< HEAD
-        <h1 className="text-[#8728FF] text-[25px] font-semibold">
-=======
         <h1 className="text-[#8728ff] text-[25px] font-semibold pt-3">
->>>>>>> develop
           고객님의 생일을 알려주세요.
         </h1>
 
