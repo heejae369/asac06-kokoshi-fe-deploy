@@ -1,13 +1,17 @@
 "use client";
 import styles from "@/styles/genderSelection.module.css";
-import { useGenderSelection } from "@/feature/useGenderSelection";
+import { useGenderSelection } from "@/feature/UseGenderSelection";
 
 const GenderSelection = () => {
-  const { selectedGender, handleGenderChange, handleNextClick } =
+  const { selectedGender, handleGenderChange, handleNextClick, handleBack } =
     useGenderSelection();
 
   return (
     <div className={styles.container}>
+      {/* 뒤로가기 버튼 */}
+      <button onClick={handleBack} className="mt-10">
+        <img src="/ic_back.png" alt="뒤로가기" />
+      </button>
       <h2 className={styles.title}>성별 선택</h2>
       <p className={styles.subtitle}>회원님의 성별을 선택해주세요.</p>
 

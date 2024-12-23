@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 
 export default function SignupPage() {
   const {
@@ -14,9 +14,9 @@ export default function SignupPage() {
   } = useForm();
   const router = useRouter();
 
-  const [year, setYear] = useState('');
-  const [month, setMonth] = useState('');
-  const [day, setDay] = useState('');
+  const [year, setYear] = useState("");
+  const [month, setMonth] = useState("");
+  const [day, setDay] = useState("");
 
   // 뒤로가기 함수
   const handleBack = () => {
@@ -25,19 +25,17 @@ export default function SignupPage() {
 
   // 제출 처리
   const onSubmit = () => {
-    const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    const formattedDate = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
     alert(`입력된 생년월일: ${formattedDate}`);
+    router.push("/users/signup/address");
+    localStorage.setItem("birth", formattedDate);
   };
 
   return (
-
     <div className="flex h-screen w-full justify-center bg-gray-100 ">
-      <div className="w-[360px] bg-white px-5 ">
+      <div className="w-[360px] bg-white px-5 gap-6 pt-6">
         {/* 뒤로가기 버튼 */}
-        <button
-          onClick={handleBack}
-          className="w-6 h-6 mb-8 pt-6"
-        >
+        <button onClick={handleBack} className="w-6 h-6 mt-4 mb-8">
           <img src="/ic_back.png" alt="뒤로가기" />
         </button>
 
@@ -54,16 +52,17 @@ export default function SignupPage() {
               placeholder="1990"
               maxLength={4}
               value={year}
-              {...register('year', {
-                required: '연도를 입력해주세요.',
+              {...register("year", {
+                required: "연도를 입력해주세요.",
                 validate: (value) =>
-                  (Number(value) >= 1990 && Number(value) <= 2024) || '연도는 1990년 ~ 2024년 이여야 합니다.',
+                  (Number(value) >= 1990 && Number(value) <= 2024) ||
+                  "연도는 1990년 ~ 2024년 이여야 합니다.",
               })}
               onChange={(e) => {
-                const numericValue = e.target.value.replace(/[^0-9]/g, '');
+                const numericValue = e.target.value.replace(/[^0-9]/g, "");
                 setYear(numericValue);
-                setValue('year', numericValue);
-                clearErrors('year');
+                setValue("year", numericValue);
+                clearErrors("year");
               }}
               className="w-[80px] text-center focus:outline-none focus:text-[#8728FF] text-[#8728FF]"
             />
@@ -73,16 +72,17 @@ export default function SignupPage() {
               placeholder="01"
               maxLength={2}
               value={month}
-              {...register('month', {
-                required: '월을 입력해주세요.',
+              {...register("month", {
+                required: "월을 입력해주세요.",
                 validate: (value) =>
-                  (Number(value) >= 1 && Number(value) <= 12) || '월은 1월 ~ 12월 이여야 합니다.',
+                  (Number(value) >= 1 && Number(value) <= 12) ||
+                  "월은 1월 ~ 12월 이여야 합니다.",
               })}
               onChange={(e) => {
-                const numericValue = e.target.value.replace(/[^0-9]/g, '');
+                const numericValue = e.target.value.replace(/[^0-9]/g, "");
                 setMonth(numericValue);
-                setValue('month', numericValue);
-                clearErrors('month');
+                setValue("month", numericValue);
+                clearErrors("month");
               }}
               className="w-[50px] text-center focus:outline-none focus:text-[#8728FF] text-[#8728FF]"
             />
@@ -92,16 +92,17 @@ export default function SignupPage() {
               placeholder="01"
               maxLength={2}
               value={day}
-              {...register('day', {
-                required: '날짜를 입력해주세요.',
+              {...register("day", {
+                required: "날짜를 입력해주세요.",
                 validate: (value) =>
-                  (Number(value) >= 1 && Number(value) <= 31) || '날짜는 1일 ~ 31일 이여야 합니다.',
+                  (Number(value) >= 1 && Number(value) <= 31) ||
+                  "날짜는 1일 ~ 31일 이여야 합니다.",
               })}
               onChange={(e) => {
-                const numericValue = e.target.value.replace(/[^0-9]/g, '');
+                const numericValue = e.target.value.replace(/[^0-9]/g, "");
                 setDay(numericValue);
-                setValue('day', numericValue);
-                clearErrors('day');
+                setValue("day", numericValue);
+                clearErrors("day");
               }}
               className="w-[50px] text-center focus:outline-none focus:text-[#8728FF] text-[#8728FF]"
             />
@@ -119,8 +120,8 @@ export default function SignupPage() {
             type="submit"
             className={`w-full py-3 text-white text-lg font-semibold rounded-lg transition-all ${
               year && month && day
-                ? 'bg-[#8728FF] hover:bg-[#6A1DC8]'
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                ? "bg-[#8728FF] hover:bg-[#6A1DC8]"
+                : "bg-gray-300 text-gray-500 cursor-not-allowed"
             }`}
             disabled={!year || !month || !day}
           >

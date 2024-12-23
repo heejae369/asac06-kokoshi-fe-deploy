@@ -17,13 +17,19 @@ export const useGenderSelection = () => {
     }
     alert("선택된 성별: " + selectedGender);
     // 이후 이동 로직을 추가하거나 API 요청 등 작업을 수행
-    router.push("/users/interest");
+    router.push("/users/signup/interest");
     localStorage.setItem("gender", selectedGender);
+  };
+
+  // 뒤로가기 함수
+  const handleBack = () => {
+    router.back();
   };
 
   return {
     selectedGender,
     handleGenderChange,
     handleNextClick,
+    handleBack,
   };
 };

@@ -3,7 +3,14 @@ import CustomFetch from "@/feature/CustomFetch";
 export const postApiSendingTest = () => {
   //로컬스토리지 데이터 수집
   if (typeof window !== "undefined") {
-    const keys = ["gender", "interest", "nickname"];
+    const keys = [
+      "gender",
+      "interest",
+      "nickname",
+      "birth",
+      "address",
+      "terms",
+    ];
     const requestData: Record<string, string> = {};
     keys.forEach((key) => {
       const value = localStorage.getItem(key);
