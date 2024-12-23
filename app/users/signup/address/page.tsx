@@ -38,6 +38,19 @@ export default function AddressPage() {
   };
 
   return (
+<<<<<<< HEAD
+    <>
+      {/* 카카오 주소 API 스크립트 */}
+      <Script
+        src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
+        strategy="beforeInteractive"
+      />
+
+      <div className="flex h-screen w-full justify-center bg-gray-100">
+        <div className="w-[360px] bg-white px-5">
+          {/* 뒤로가기 버튼 */}
+          <button onClick={handleGoBack} className="w-6 h-6 mt-4 mb-8">
+=======
     <div className="flex h-screen w-full justify-center bg-gray-100">
       <div className="w-[360px] bg-white px-5">
         {/* 카카오 주소 API 스크립트 */}
@@ -46,19 +59,29 @@ export default function AddressPage() {
           strategy="beforeInteractive"
         />
 
-        <div className="flex flex-col w-full px-5 gap-4 pt-6">
+        <div className="flex flex-col w-full gap-4 pt-6">
           {/* 뒤로가기 버튼 */}
           <button onClick={handleGoBack} className="w-6 h-6">
+>>>>>>> develop
             <img src="/ic_back.png" alt="뒤로가기" />
           </button>
 
           {/* 제목 */}
+<<<<<<< HEAD
+          <h1 className="text-[#8728FF] text-[25px] font-semibold mb-9">
+            주소를 입력해주세요
+          </h1>
+
+          {/* 주소 입력 */}
+          <div className="flex flex-row gap-2 mb-6">
+=======
           <div className="text-[#8728FF] text-[25px] font-semibold">
             주소를 입력해주세요
           </div>
 
           {/* 주소 입력 */}
           <div className="flex flex-row gap-2">
+>>>>>>> develop
             {/* 주소 입력 필드 */}
             <input
               type="text"
@@ -85,15 +108,27 @@ export default function AddressPage() {
             placeholder="상세 주소 입력"
             value={detailAddress}
             onChange={handleDetailAddress}
+<<<<<<< HEAD
+            className="w-full h-10 px-3 py-2 rounded-md border border-gray-200 bg-[#F6F6F6] text-[#666666] placeholder-gray-500 mb-6"
+=======
             className="h-10 px-3 py-2 rounded-md border border-gray-200 bg-[#F6F6F6] text-[#666666] placeholder-gray-500"
+>>>>>>> develop
           />
 
           {/* 다음 버튼 */}
           <button
             type="button"
+<<<<<<< HEAD
+            className={`w-full py-3 text-white text-lg font-semibold rounded-lg transition-all ${
+              isActive
+                ? "bg-[#8728FF] hover:bg-[#6A1DC8]"
+                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+            }`}
+=======
             className={`w-full py-2 rounded-md text-white ${
               isActive ? "bg-[#8728FF] hover:bg-[#751FD1]" : "bg-gray-400"
             } transition-colors`}
+>>>>>>> develop
             onClick={handleSubmit}
             disabled={!isActive}
           >
@@ -101,6 +136,10 @@ export default function AddressPage() {
           </button>
         </div>
       </div>
+<<<<<<< HEAD
+    </>
+=======
     </div>
+>>>>>>> develop
   );
 }
