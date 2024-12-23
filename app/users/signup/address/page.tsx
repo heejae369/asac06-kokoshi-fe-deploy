@@ -46,7 +46,7 @@ export default function AddressPage() {
           strategy="beforeInteractive"
         />
 
-        <div className="flex flex-col w-full px-5 gap-4 pt-6">
+        <div className="flex flex-col w-full gap-4 pt-6">
           {/* 뒤로가기 버튼 */}
           <button onClick={handleGoBack} className="w-6 h-6">
             <img src="/ic_back.png" alt="뒤로가기" />

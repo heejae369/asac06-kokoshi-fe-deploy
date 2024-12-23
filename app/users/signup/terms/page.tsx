@@ -40,7 +40,8 @@ export default function TermPage() {
 
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100">
-      <div className="w-[360px] bg-white px-5 py-6 rounded-md">
+      <div className="w-[360px] bg-white px-5 py-6">
+        
         {/* 뒤로가기 버튼 */}
         <button onClick={handleBack} className="w-6 h-6 mb-4">
           <img src="/ic_back.png" alt="뒤로가기" />
