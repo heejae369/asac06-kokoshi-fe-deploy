@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import CustomFetch from "@/feature/CustomFetch";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -87,15 +88,19 @@ export default function LoginPage() {
             disabled={email.length < 1 || pw.length < 9}
             onClick={() => {
               setShowValidation(true);
-              // # Fetch API
-              // if (LoginResponse.status == 0) router.push("#54");
-              // else if (LoginResponse.status == 1) {
-              //   setNotSignUp(true);
-              //   setSamePassword(false);
-              // } else if (LoginResponse.status == 2) {
-              //   setNotSignUp(false);
-              //   setSamePassword(false);
-              // }
+              CustomFetch("", "POST", {
+                user_email: email,
+                user_password: pw,
+              }).then((res) => {
+                if (res.status == 0) router.push("#54");
+                else if (res.status == 1) {
+                  setNotSignUp(true);
+                  setSamePassword(false);
+                } else if (res.status == 2) {
+                  setNotSignUp(false);
+                  setSamePassword(false);
+                }
+              });
             }}
           >
             로그인
@@ -109,7 +114,7 @@ export default function LoginPage() {
           <Link href={"/users/signUp"}>회원가입</Link>
         </div>
         <div className="py-6">
-          <img src={or.src} alt="seprator" />
+          <img src={or.src} alt="separator" />
         </div>
         <div className="flex justify-center gap-[10px]">
           <Button
