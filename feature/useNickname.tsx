@@ -1,10 +1,15 @@
 "use client";
 import { useState, useEffect } from "react";
 import { generateRandomNickname } from "@/feature/generateRandomNickname";
+// import { localStorageApi } from "@/lib/localStorageApi";
+import CustomFetch from "@/feature/CustomFetch";
+import { postApiSendingTest } from "@/feature/postApiSending";
+import { useRouter } from "next/navigation";
 
 export const useNickname = () => {
   const [nickname, setNickname] = useState("");
   const [error, setError] = useState("");
+  const router = useRouter();
 
   // 닉네임 유효성 검사 함수
   const validateNickname = (value) => {
@@ -52,6 +57,7 @@ export const useNickname = () => {
   // 다음 버튼 클릭 핸들러
   const handleNext = () => {
     const { isValid, message } = validateNickname(nickname);
+    if (!isValid) return;
 
     if (!nickname) {
       const randomNickname = generateRandomNickname(); // 랜덤 닉네임 생성
@@ -60,12 +66,14 @@ export const useNickname = () => {
       );
       setNickname(randomNickname);
     } else {
-      // 닉네임 유효성이 통과되면 로컬 스토리지에 저장
-      saveNicknameToLocalStorage(nickname);
-
       alert(`닉네임이 저장되었습니다: ${nickname}`);
       console.log("닉네임:", nickname);
     }
+    // 닉네임 유효성이 통과되면 로컬 스토리지에 저장
+    saveNicknameToLocalStorage(nickname);
+    //일단 닉네임 폼에서 다음 버튼 누르면 post 요청
+    postApiSendingTest();
+    router.push("/users/signup/terms");
   };
 
   return {

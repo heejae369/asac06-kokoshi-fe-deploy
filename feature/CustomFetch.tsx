@@ -1,7 +1,7 @@
 export default async function CustomFetch(path, method, request) {
   if (request) {
     // POST, PUT,
-    return fetch("http://localhost:8080" + path, {
+    return await fetch("http://localhost:8080" + path, {
       method: method,
       headers: {
         "Content-Type": "application/json",
