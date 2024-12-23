@@ -71,8 +71,7 @@ export const useNickname = () => {
     }
     // 닉네임 유효성이 통과되면 로컬 스토리지에 저장
     saveNicknameToLocalStorage(nickname);
-    //일단 닉네임 폼에서 다음 버튼 누르면 post 요청
-    postApiSendingTest();
+
     router.push("/users/signup/terms");
   };
 
