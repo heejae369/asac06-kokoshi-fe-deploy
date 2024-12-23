@@ -14,21 +14,27 @@ const interests = [
 
 export const useInterest = () => {
   const router = useRouter();
-  const [selectedInterest, setSelectedInterest] = useState("");
+  const [selectedInterest, setSelectedInterest] = useState([]);
 
   const handleSelect = (interest) => {
-    if (!interest) {
-      alert("관심사를 선택하세요");
-      return;
+    if (selectedInterest.includes(interest)) {
+      // 이미 선택된 항목이면 제거
+      setSelectedInterest(selectedInterest.filter((item) => item !== interest));
+    } else {
+      // 선택되지 않은 항목이면 추가
+      setSelectedInterest([...selectedInterest, interest]);
     }
-    setSelectedInterest(interest);
-    console.log("interest", interest);
   };
 
   const handleNext = () => {
+    if (selectedInterest.length === 0) {
+      alert("관심사를 하나 이상 선택해주세요!");
+      return;
+    }
     console.log("선택된 관심사:", selectedInterest);
     router.push("/users/nickname");
     localStorage.setItem("interest", selectedInterest);
+    router.push("/users/signup/terms");
   };
   return {
     interests,

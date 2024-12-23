@@ -11,15 +11,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import CustomFetch from "@/feature/CustomFetch";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [hidePw, setHidePw] = useState("text");
+  const [showValidation, setShowValidation] = useState(false);
 
-  const samePassword = false;
-  const notSignUp = true;
-  const showValidation = false;
+  const [samePassword, setSamePassword] = useState(false);
+  const [notSignUp, setNotSignUp] = useState(true);
+
+  const router = useRouter();
 
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100">
@@ -69,21 +73,35 @@ export default function LoginPage() {
             )}
           </div>
         </div>
-
         <div className="py-2 text-sm text-[#FF0045]">
           {showValidation && (
             <>
-              {!samePassword && "패스워드가 일치하지 않습니다."}
               {notSignUp && "등록되지 않은 회원입니다."}
+              {!notSignUp && !samePassword && "패스워드가 일치하지 않습니다."}
             </>
           )}
         </div>
-
         <div>
           <Button
             className="h-[50px] w-full rounded-sm text-[1rem]"
             variant={"point"}
             disabled={email.length < 1 || pw.length < 9}
+            onClick={() => {
+              setShowValidation(true);
+              CustomFetch("", "POST", {
+                user_email: email,
+                user_password: pw,
+              }).then((res) => {
+                if (res.status == 0) router.push("#54");
+                else if (res.status == 1) {
+                  setNotSignUp(true);
+                  setSamePassword(false);
+                } else if (res.status == 2) {
+                  setNotSignUp(false);
+                  setSamePassword(false);
+                }
+              });
+            }}
           >
             로그인
           </Button>
@@ -93,20 +111,30 @@ export default function LoginPage() {
           <span>|</span>
           <Link href={"/users/findPw"}>비밀번호 찾기</Link>
           <span>|</span>
-          <Link href={"/users/signUp"}>회원가입</Link>
+          <Link href={"/users/signup/address"}>회원가입</Link>
         </div>
         <div className="py-6">
-          <img src={or.src} alt="seprator" />
+          <img src={or.src} alt="separator" />
         </div>
         <div className="flex justify-center gap-[10px]">
           <Button
             className="rounded-full bg-transparent p-0"
-            // onClick={CustomRouter("/users")}
+            onClick={() => router.push("#10")}
           >
             <img src={naverLogo.src} alt="naver social login" />
           </Button>
-          <img src={kakaoLogo.src} alt="kakao social login" />
-          <img src={appleLogo.src} alt="apple social login" />
+          <Button
+            className="rounded-full bg-transparent p-0"
+            onClick={() => router.push("#08")}
+          >
+            <img src={kakaoLogo.src} alt="kakao social login" />
+          </Button>
+          <Button
+            className="rounded-full bg-transparent p-0"
+            onClick={() => router.push("#09")}
+          >
+            <img src={appleLogo.src} alt="apple social login" />
+          </Button>
         </div>
       </div>
     </div>
