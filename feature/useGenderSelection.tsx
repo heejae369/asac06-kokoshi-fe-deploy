@@ -6,7 +6,7 @@ export const useGenderSelection = () => {
   const router = useRouter();
   const [selectedGender, setSelectedGender] = useState("");
 
-  const handleGenderChange = (e: React.ChangeEvent<any>) => {
+  const handleGenderChange = (e) => {
     setSelectedGender(e.target.value);
   };
 

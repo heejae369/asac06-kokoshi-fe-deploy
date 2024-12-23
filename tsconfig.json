@@ -27,7 +27,9 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "feature/useNickname.jsx"
+    "feature/useNickname.jsx",
+    "feature/useNickname.js",
+    "feature/useInterest.js"
   ],
   "exclude": ["node_modules"]
 }
