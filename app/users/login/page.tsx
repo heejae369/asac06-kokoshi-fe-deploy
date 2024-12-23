@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import CustomFetch from "@/feature/CustomFetch";
+import LoginPostApi from "@/feature/LoginPostApi";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -96,30 +96,16 @@ export default function LoginPage() {
           className="h-[50px] w-full rounded-sm text-[1rem]"
           variant={"point"}
           disabled={email.length < 1 || pw.length < 9}
-          onClick={async () => {
-            setShowValidation(false);
-            try {
-              CustomFetch("", "POST", {
-                user_email: email,
-                user_password: pw,
-              }).then((res) => {
-                if (res.status == 0) router.push("#54");
-                else if (res.status == 1) {
-                  setSignUp(false);
-                  setSamePassword(false);
-                } else if (res.status == 2) {
-                  setSignUp(true);
-                  setSamePassword(false);
-                }
-                setShowValidation(true);
-              });
-            } catch (error) {
-              console.error("Error:", error);
-              setShowValidation(true);
-              setSignUp(false);
-              setSamePassword(false);
-            }
-          }}
+          onClick={async () =>
+            LoginPostApi({
+              setShowValidation,
+              setSignUp,
+              setSamePassword,
+              email,
+              pw,
+              router,
+            })
+          }
         >
           로그인
         </Button>
