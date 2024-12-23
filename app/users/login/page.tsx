@@ -111,7 +111,7 @@ export default function LoginPage() {
           <span>|</span>
           <Link href={"/users/findPw"}>비밀번호 찾기</Link>
           <span>|</span>
-          <Link href={"/users/signUp"}>회원가입</Link>
+          <Link href={"/users/signup/address"}>회원가입</Link>
         </div>
         <div className="py-6">
           <img src={or.src} alt="separator" />
