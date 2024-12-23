@@ -1,4 +1,5 @@
 export default async function CustomFetch(path, method, request) {
+  // ex. CustomFetch("/users", "POST", {user_id: userId})
   if (request) {
     // POST, PUT,
     return await fetch("http://localhost:8080" + path, {
@@ -8,7 +9,9 @@ export default async function CustomFetch(path, method, request) {
       },
       body: JSON.stringify(request),
     }).catch((error) => console.error("Error:", error));
-  } else {
+  }
+  // ex. CustomFetch("/users", "GET")
+  else {
     // GET, DELETE
     return await fetch("http://localhost:8080" + path, {
       method: method,
