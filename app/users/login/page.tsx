@@ -17,11 +17,15 @@ import CustomFetch from "@/feature/CustomFetch";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
+  // 비밀번호 숨기기 여부
   const [hidePw, setHidePw] = useState("text");
+  // 유효성 확인 문구 표시 여부
   const [showValidation, setShowValidation] = useState(false);
 
+  // 등록된 회원인지 확인(true = 등록된 회원)
+  const [signUp, setSignUp] = useState(false);
+  // 비밀번호 일치 여부 확인(true = 비밀번호 일치)
   const [samePassword, setSamePassword] = useState(false);
-  const [notSignUp, setNotSignUp] = useState(true);
 
   const router = useRouter();
 
@@ -82,37 +86,43 @@ export default function LoginPage() {
         <div className="py-2 text-sm text-[#FF0045]">
           {showValidation && (
             <>
-              {notSignUp && "등록되지 않은 회원입니다."}
-              {!notSignUp && !samePassword && "패스워드가 일치하지 않습니다."}
+              {!signUp && "등록되지 않은 회원입니다."}
+              {signUp && !samePassword && "패스워드가 일치하지 않습니다."}
             </>
           )}
         </div>
         {/* 로그인 버튼 */}
-        <div>
-          <Button
-            className="h-[50px] w-full rounded-sm text-[1rem]"
-            variant={"point"}
-            disabled={email.length < 1 || pw.length < 9}
-            onClick={() => {
-              setShowValidation(true);
+        <Button
+          className="h-[50px] w-full rounded-sm text-[1rem]"
+          variant={"point"}
+          disabled={email.length < 1 || pw.length < 9}
+          onClick={async () => {
+            setShowValidation(false);
+            try {
               CustomFetch("", "POST", {
                 user_email: email,
                 user_password: pw,
               }).then((res) => {
                 if (res.status == 0) router.push("#54");
                 else if (res.status == 1) {
-                  setNotSignUp(true);
+                  setSignUp(false);
                   setSamePassword(false);
                 } else if (res.status == 2) {
-                  setNotSignUp(false);
+                  setSignUp(true);
                   setSamePassword(false);
                 }
+                setShowValidation(true);
               });
-            }}
-          >
-            로그인
-          </Button>
-        </div>
+            } catch (error) {
+              console.error("Error:", error);
+              setShowValidation(true);
+              setSignUp(false);
+              setSamePassword(false);
+            }
+          }}
+        >
+          로그인
+        </Button>
         {/* 아이디 찾기 | 비밀번호 찾기 | 회원가입 */}
         <div className="flex justify-center gap-[10px] py-3 text-sm font-normal text-[#8728FF]">
           <Link href={"/users/findId"}>아이디 찾기</Link>
