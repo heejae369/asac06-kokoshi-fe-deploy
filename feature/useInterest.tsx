@@ -34,7 +34,6 @@ export const useInterest = () => {
     console.log("선택된 관심사:", selectedInterest);
     router.push("/users/nickname");
     localStorage.setItem("interest", selectedInterest);
-    router.push("/users/signup/terms");
   };
   return {
     interests,

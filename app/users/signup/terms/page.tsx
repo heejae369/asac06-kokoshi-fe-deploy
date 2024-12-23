@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import * as Accordion from "@radix-ui/react-accordion";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
+import { postApiSendingTest } from "@/feature/postApiSending";
 
 export default function TermPage() {
   const [termsState, setTermsState] = useState({
@@ -36,6 +37,13 @@ export default function TermPage() {
 
   const handleBack = () => {
     router.back();
+  };
+
+  const handleNext = (termsState) => {
+    // console.log("선택된 관심사:", selectedInterest);
+    // router.push("/users/nickname");
+    localStorage.setItem("terms", termsState);
+    postApiSendingTest(termsState);
   };
 
   return (
@@ -141,9 +149,7 @@ export default function TermPage() {
                     </CheckboxPrimitive.Root>
                     <span className="text-black text-[14px]">{term.title}</span>
                   </div>
-                  <Accordion.Trigger
-                    className="group flex items-center bg-transparent border-none cursor-pointer"
-                  >
+                  <Accordion.Trigger className="group flex items-center bg-transparent border-none cursor-pointer">
                     <ChevronDownIcon
                       className="h-4 w-4 text-black transition-transform duration-300 ease-[cubic-bezier(0.87,_0,_0.13,_1)] group-data-[state=open]:rotate-180 group-data-[state=closed]:rotate-0"
                       aria-hidden="true"
@@ -167,9 +173,7 @@ export default function TermPage() {
               : "bg-gray-300 cursor-not-allowed"
           } transition-colors`}
           disabled={!requiredTerms.every((key) => termsState[key])}
-          onClick={() =>
-            alert("약관에 동의하셨습니다! " + JSON.stringify(termsState))
-          }
+          onClick={handleNext}
         >
           확인
         </button>
