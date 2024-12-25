@@ -19,6 +19,12 @@ const config: Config = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      fontFamily: {
+        sans: ["Noto Sans KR"],
+      },
+      letterSpacing: {
+        negative: "-0.05em",
+      },
     },
   },
   // eslint-disable-next-line @typescript-eslint/no-require-imports

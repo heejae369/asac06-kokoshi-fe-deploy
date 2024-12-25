@@ -12,13 +12,368 @@
   font-weight: 700;
   font-size: 40px;
   line-height: 58px;
-  /* identical to box height */
   letter-spacing: -0.05em;
 
   /* Main purple */
   color: #8728ff;
 }
 
+.loginHeaderBefore {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  width: 24px;
+  height: 24px;
+}
+
+.findIdSumbitButton {
+  padding: 10px 26px;
+
+  margin-top: 20px;
+  width: 320px;
+  height: 50px;
+  left: 20px;
+  top: 230px;
+
+  border-radius: 5px;
+
+  /* 인증번호 전송 */
+  font-family: "Noto Sans KR";
+  font-size: 16px;
+  text-align: center;
+  letter-spacing: -0.05em;
+
+  color: #ffffff;
+}
+.findIdSumbitButton.enabled {
+  background: #8728ff;
+}
+
+.findIdSumbitButton.disabled {
+  background: #b2b2b2;
+}
+
+.findIdTimer {
+  /* 3:00 */
+  position: absolute;
+  top: 50%;
+  left: 267px;
+  transform: translateY(-50%);
+
+  font-family: "Noto Sans KR";
+  font-weight: 550;
+  font-size: 14px;
+  letter-spacing: -0.05em;
+
+  color: #8728ff;
+}
+
+.loginHeaderText {
+  /* 아이디 찾기 */
+  white-space: pre-line;
+  position: absolute;
+  top: 41px;
+
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 550;
+  font-size: 25px;
+  line-height: 36px;
+  letter-spacing: -0.05em;
+
+  color: #8728ff;
+}
+
+.loginHeader {
+  position: absolute;
+  width: 320px;
+  height: 80px;
+  left: 20px;
+  top: 57px;
+}
+.loginHeaderBefore {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  width: 24px;
+  height: 24px;
+}
+
+.findIdSumbit {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 26px;
+  gap: 10px;
+
+  position: absolute;
+  width: 320px;
+  height: 50px;
+  left: 20px;
+  top: 350px;
+
+  background: #b2b2b2;
+  border-radius: 5px;
+}
+
+.loginHeaderText {
+  /* 아이디 찾기 */
+  white-space: pre-line;
+  position: absolute;
+  top: 41px;
+
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 550;
+  font-size: 25px;
+  line-height: 36px;
+  letter-spacing: -0.05em;
+
+  color: #8728ff;
+}
+
+.findIdInfo {
+  /* 아이디를 찾기 위해서 이름과 휴대폰 번호를 입력해주세요. */
+
+  position: absolute;
+  width: 222px;
+  height: 46px;
+  left: 20px;
+  top: 143px;
+
+  font-family: "Noto Sans KR";
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 23px;
+  letter-spacing: -0.05em;
+
+  color: #191919;
+}
+
+.findIdFrameDiv {
+  position: relative;
+  top: 210px;
+  left: 20px;
+  width: 320px;
+}
+
+.findIdFrameDiv2 {
+  position: relative;
+}
+
+.findIdFrame2 {
+  background: #f6f6f6;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  padding: 20px;
+  width: 320px;
+  height: 55px;
+}
+.findIdFrame {
+  position: relative;
+  padding: 20px;
+  margin-bottom: 5px;
+  width: 320px;
+  height: 55px;
+
+  background: #f6f6f6;
+  border-radius: 5px;
+}
+
+.findIdPhoneNumberFrame {
+  width: 235px;
+}
+
+.findIdPhoneResend {
+  /* 재전송 버튼*/
+  margin-left: 5px;
+
+  width: 80px;
+  height: 55px;
+
+  background: #8728ff;
+  border-radius: 5px;
+
+  /* 재전송 텍스트*/
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  letter-spacing: -0.05em;
+
+  color: #ffffff;
+}
+
+.findIdPhonePhrase {
+  /* 인증번호가 전송되었습니다. 안내 문구*/
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  width: 320px;
+  height: 42px;
+  bottom: 35px;
+
+  /* Gray 800 */
+  background: #333333;
+  opacity: 0.7;
+  border-radius: 7px;
+
+  /*text*/
+  font-family: "Noto Sans KR";
+  font-size: 12px;
+
+  letter-spacing: -0.05em;
+  color: #ffffff;
+}
+
+.findIdOkButton {
+  /* 확인 button */
+  padding: 10px 26px;
+  gap: 10px;
+
+  margin-top: 20px;
+  width: 320px;
+  height: 50px;
+  left: 20px;
+  top: 410px;
+
+  border-radius: 5px;
+
+  /* 확인 text */
+  font-family: "Noto Sans KR";
+  font-size: 16px;
+  letter-spacing: -0.05em;
+
+  color: #ffffff;
+}
+
+.findIdOkButton.enabled {
+  background: #8728ff;
+}
+
+.findIdOkButton.disabled {
+  background: #b2b2b2;
+}
+
+.findIdValid {
+  /* 인증시간이 초과되었습니다. */
+  height: 20px;
+  left: 20px;
+  top: 212px;
+
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 550;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.05em;
+
+  color: #ff0045;
+}
+
+.findIdRecodeFrameDiv {
+  position: relative;
+  width: 320px;
+  left: 20px;
+  top: 200px;
+}
+
+.findIdRecodeFrame {
+  padding: 15px 20px;
+
+  width: 320px;
+  height: 78px;
+
+  background: #f6f6f6;
+  border-radius: 11px;
+}
+
+.findIdRecodeFrameText1 {
+  /* 이메일 email Text*/
+  margin-bottom: 5px;
+
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 550;
+  font-size: 16px;
+  line-height: 23px;
+  letter-spacing: -0.05em;
+
+  color: #191919;
+}
+
+.findIdRecodeFrameText2 {
+  /* 가입 Text */
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 17px;
+  letter-spacing: -0.05em;
+
+  color: #7f7f7f;
+}
+
+.findIdRecodeButton {
+  position: absolute;
+  width: 156px;
+  height: 50px;
+  top: 642px;
+
+  border-radius: 5px;
+
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  font-weight: 550;
+  font-size: 16px;
+  line-height: 23px;
+  text-align: center;
+  letter-spacing: -0.05em;
+
+  color: #ffffff;
+}
+
+.findIdRecodeButton.gray {
+  /* 비밀번호 찾기 */
+  left: 20px;
+  background: #b2b2b2;
+}
+
+.findIdRecodeButton.purple {
+  /* 로그인하기 */
+  left: 184px;
+  background: #8728ff;
+}
+
+.frame3 {
+  /* Frame 4 */
+
+  /* Auto layout */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 20px;
+  gap: 10px;
+
+  position: absolute;
+  width: 320px;
+  height: 55px;
+  left: 20px;
+  top: 155px;
+
+  /* Gray 50 */
+  background: #f6f6f6;
+  border-radius: 5px;
+}
 .frame4 {
   /* Frame 4 */
 
