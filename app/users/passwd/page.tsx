@@ -57,7 +57,9 @@ export default function PasswordPage() {
               },
             })}
           />
-          {errors.name && <small>{errors.name.message}</small>}
+          {errors.name && (
+            <span className="text-sm">{errors.name.message}</span>
+          )}
           <Input
             id="email"
             type="text"
@@ -72,7 +74,9 @@ export default function PasswordPage() {
               },
             })}
           />
-          {errors.email && <small>{errors.email.message}</small>}
+          {errors.email && (
+            <span className="text-sm">{errors.email.message}</span>
+          )}
           <Button
             className="w-full my-4"
             variant={"point"}

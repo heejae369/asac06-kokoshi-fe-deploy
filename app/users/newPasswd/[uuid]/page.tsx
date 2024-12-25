@@ -2,9 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { pwResetApi } from "@/feature/users/api/api";
+import { requestPwReset } from "@/feature/users/types/users.type";
 
-export default function PasswordPage() {
+export default function PasswordPage({ params }: { params: { uuid: string } }) {
   const {
     register,
     handleSubmit,
@@ -20,18 +22,32 @@ export default function PasswordPage() {
     console.log("history back");
   };
 
+  const [requestPwReset, { isLoading, isSuccess, data }] =
+    pwResetApi.usePasswordResetMutation();
+  const onSubmit: SubmitHandler<requestPwReset> = (data) => {
+    requestPwReset({
+      requestPwReset: { uuid: params.uuid, password: data.password },
+    });
+  };
+
+  if (isSuccess && data) {
+    alert(data.message);
+
+    // 홈으로 이동?
+  }
+
   // 비밀번호와 비밀번호 확인이 일치 할 경우에만 비밀번호 변경 활성화
   return (
     <div>
-      <div className="flex flex-col w-full px-5 gap-2 pt-[57px]">
+      <div className="flex w-full flex-col gap-2 px-5 pt-[57px]">
         <button onClick={onClickBack}>
           <img src="/ic_back.png" alt="뒤로가기" />
         </button>
-        <div className="text-[#8728ff] text-[40px]">새 비밀번호</div>
+        <div className="text-[40px] text-[#8728ff]">새 비밀번호</div>
         <div className="text-[16px]">
           <b>새 비밀번호</b>를 설정해 주세요!
         </div>
-        <form onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Input
             id="password"
             type="password"
@@ -47,7 +63,9 @@ export default function PasswordPage() {
               minLength: { value: 8, message: "8자리 이상 입력해 주세요." },
             })}
           />
-          {errors.password && <small>{errors.password.message}</small>}
+          {errors.password && (
+            <span className="text-sm">{errors.password.message}</span>
+          )}
           <Input
             id="passwordConfirm"
             type="password"
@@ -70,10 +88,11 @@ export default function PasswordPage() {
             })}
           />
           {errors.passwordConfirm && (
-            <small>{errors.passwordConfirm.message}</small>
+            <span className="text-sm">{errors.passwordConfirm.message}</span>
           )}
           <Button
-            className="w-full my-4"
+            className="my-4 w-full"
+            variant={"point"}
             type="submit"
             disabled={isSubmitting || !password || !passwordConfirm}
           >

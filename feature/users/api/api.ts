@@ -26,31 +26,13 @@ export const pwResetApi = api.injectEndpoints({
       UsePasswordResetMutationRes,
       UsePasswordResetMutationArg
     >({
-      query: ({ requestPwResetEmail }) => {
+      query: ({ requestPwReset }) => {
         return {
-          url: "/api/member/requestPwResetEmail",
-          body: requestPwResetEmail,
-          method: "POST",
+          url: "/api/member/resetPassword",
+          body: requestPwReset,
+          method: "PUT",
         };
       },
     }),
   }),
 });
-
-// export const pwResetApi = createApi({
-//   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8080" }),
-//   endpoints: (builder) => ({
-//     passwordResetEmail: builder.mutation<
-//       UsePasswordResetEmailMutationRes,
-//       UsePasswordResetEmailMutationArg
-//     >({
-//       query: ({ requestPwResetEmail }) => {
-//         return {
-//           url: "/api/member/requestPwResetEmail",
-//           body: requestPwResetEmail,
-//           method: "POST",
-//         };
-//       },
-//     }),
-//   }),
-// });
