@@ -20,8 +20,8 @@ export default function LoginPage() {
   const [pw, setPw] = useState("");
   const [checkPw, setCheckPw] = useState("");
   // 비밀번호, 비밀번호 확인 숨기기 여부
-  const [hidePw, setHidePw] = useState("text");
-  const [hideCheckPw, setHideCheckPw] = useState("text");
+  const [hidePw, setHidePw] = useState("password");
+  const [hideCheckPw, setHideCheckPw] = useState("password");
   // 유효성 확인 문구 표시 여부
   const [showValidation, setShowValidation] = useState(false);
   const [emailValidation, setEmailValidation] = useState(false);
@@ -99,20 +99,20 @@ export default function LoginPage() {
                 autoComplete="new-password"
               />
             </form>
-            {/* 비밀번호 숨기기 버튼 */}
-            {!(hidePw === "password") && (
-              <button
-                className="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent p-0"
-                onClick={() => setHidePw("password")}
-              >
-                <img src={passwordHide.src} alt="Ex Img" />
-              </button>
-            )}
             {/* 비밀번호 표시하기 버튼 */}
             {hidePw === "password" && (
               <button
                 className="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent p-0"
                 onClick={() => setHidePw("text")}
+              >
+                <img src={passwordHide.src} alt="Ex Img" />
+              </button>
+            )}
+            {/* 비밀번호 숨기기 버튼 */}
+            {!(hidePw === "password") && (
+              <button
+                className="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent p-0"
+                onClick={() => setHidePw("password")}
               >
                 <img src={passwordShow.src} alt="Ex Img" />
               </button>
@@ -140,20 +140,20 @@ export default function LoginPage() {
                 autoComplete="new-password"
               />
             </form>
-            {/* 비밀번호 숨기기 버튼 */}
-            {!(hideCheckPw === "password") && (
-              <button
-                className="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent p-0"
-                onClick={() => setHideCheckPw("password")}
-              >
-                <img src={passwordHide.src} alt="Ex Img" />
-              </button>
-            )}
             {/* 비밀번호 표시하기 버튼 */}
             {hideCheckPw === "password" && (
               <button
                 className="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent p-0"
                 onClick={() => setHideCheckPw("text")}
+              >
+                <img src={passwordHide.src} alt="Ex Img" />
+              </button>
+            )}
+            {/* 비밀번호 숨기기 버튼 */}
+            {!(hideCheckPw === "password") && (
+              <button
+                className="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent p-0"
+                onClick={() => setHideCheckPw("password")}
               >
                 <img src={passwordShow.src} alt="Ex Img" />
               </button>

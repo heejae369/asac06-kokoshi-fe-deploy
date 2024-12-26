@@ -143,34 +143,34 @@ export default function FindId() {
   };
 
   return (
-    <div className="flex h-screen w-full justify-center bg-gray-100 font-sans tracking-negative">
-      <div className="w-[360px] bg-white relative">
+    <div className="tracking-negative flex h-screen w-full justify-center bg-gray-100 font-sans">
+      <div className="relative w-[360px] bg-white">
         <LoginHeader
           titleText={"휴대폰 번호를\n입력해주세요."}
           prevUrl={"/users/login"}
         />
-        <div className="relative w-[320px] top-[109px] left-5 font-semibold">
+        <div className="relative left-5 top-[109px] w-[320px] font-semibold">
           <input
-            className="w-80 h-[55px] mb-1.5 p-4 bg-gray-100 rounded "
+            className="mb-1.5 h-[55px] w-80 rounded bg-gray-100 p-4 "
             placeholder="이름"
             value={name}
             onChange={(e) => handleInputChange(e, "name")}
           />
           <button
-            className={`flex w-80 h-14 mb-1.5 p-4 rounded ${carrierText === "통신사" ? "text-gray-400" : "text-black"} bg-gray-100`}
+            className={`mb-1.5 flex h-14 w-80 rounded p-4 ${carrierText === "통신사" ? "text-gray-400" : "text-black"} bg-gray-100`}
             onClick={handleCertificationButton}
           >
             {carrierText}
           </button>
           <div className="flex">
             <input
-              className="w-[235px] h-14 mb-1.5 p-4 bg-gray-100 rounded text-sm"
+              className="mb-1.5 h-14 w-[235px] rounded bg-gray-100 p-4 text-sm"
               placeholder="휴대폰 번호"
               onChange={(e) => handleInputChange(e, "phone")}
               value={phone}
             />
             <button
-              className={`w-[80px] h-14 ml-2 ${isSendButtonValid ? "bg-[#8728ff]" : "bg-[#B2B2B2]"} text-white text-[13px] rounded`}
+              className={`ml-2 h-14 w-[80px] ${isSendButtonValid ? "bg-[#8728ff]" : "bg-[#B2B2B2]"} rounded text-[13px] text-white`}
               onClick={codeRequest}
               disabled={!isSendButtonValid}
             >
@@ -179,13 +179,13 @@ export default function FindId() {
           </div>
           <div className="relative">
             <input
-              className="w-80 h-14 p-4 mb-1.5 bg-gray-100 rounded text-sm"
+              className="mb-1.5 h-14 w-80 rounded bg-gray-100 p-4 text-sm"
               placeholder="인증번호 입력"
               value={verificationCode}
               onChange={(e) => handleInputChange(e, "verificationCode")}
             />
             {isTimerActive && (
-              <span className="absolute top-[14px] right-[24px] text-[#8728ff]">
+              <span className="absolute right-[24px] top-[14px] text-[#8728ff]">
                 {formatTimer(timer)}
               </span>
             )}
@@ -194,7 +194,7 @@ export default function FindId() {
             <div className="text-sm text-red-500">{errorMessage}</div>
           )}
           <button
-            className={`w-80 h-12 mt-6 rounded text-white ${
+            className={`mt-6 h-12 w-80 rounded text-white ${
               isOkButtonValid ? "bg-[#8728ff]" : "bg-[#B2B2B2]"
             }`}
             onClick={checkCode}
@@ -214,17 +214,17 @@ export default function FindId() {
             }}
           >
             <div className={modal["modal-content"]}>
-              <div className="w-[294px] flex flex-col gap-[21px] tracking-tighter text-[14px] font-semibold">
+              <div className="flex w-[294px] flex-col gap-[21px] text-[14px] font-semibold tracking-tighter">
                 <div className="mt-[18px] flex justify-center">
                   <Image src={barImage} width={77} height={3} alt="" />
                 </div>
-                <div className="text-[16px] mt-[10px] mb-[5px] font-bold">
+                <div className="mb-[5px] mt-[10px] text-[16px] font-bold">
                   통신사 선택
                 </div>
                 {["SKT", "KT", "LG U+", "알뜰폰"].map((carrier) => (
                   <button
                     key={carrier}
-                    className="flex justify-between items-center"
+                    className="flex items-center justify-between"
                     onClick={() => handleSelectCarrier(carrier)}
                   >
                     <span
@@ -247,7 +247,7 @@ export default function FindId() {
           </div>
         )}
         {!certification && (
-          <div className="w-[320px] h-[42px] ml-5 flex items-center justify-center fixed bottom-10 bg-gray-800 text-white text-xs p-4 rounded-md opacity-70">
+          <div className="fixed bottom-10 ml-5 flex h-[42px] w-[320px] items-center justify-center rounded-md bg-gray-800 p-4 text-xs text-white opacity-70">
             {message}
           </div>
         )}
