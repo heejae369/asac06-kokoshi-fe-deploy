@@ -43,8 +43,8 @@ export default function TermPage() {
     // console.log("선택된 관심사:", selectedInterest);
     // router.push("/users/nickname");
     localStorage.setItem("terms", termsState);
-    postApiSendingTest(termsState);
-    router.push("/yanolza/main");
+    postApiSendingTest();
+    // router.push("/yanolza/main");
   };
 
   return (
