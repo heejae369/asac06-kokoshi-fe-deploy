@@ -1,5 +1,4 @@
 "use client";
-import "@/app/temp.css";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { requestPwResetEmail } from "@/feature/users/types/users.type";
@@ -78,7 +77,7 @@ export default function PasswordPage() {
             <span className="text-sm">{errors.email.message}</span>
           )}
           <Button
-            className="w-full my-4"
+            className="my-4 w-full"
             variant={"point"}
             type="submit"
             disabled={isSubmitting || !name || !email}
