@@ -1,8 +1,12 @@
 "use client";
 
-import { useEffect, useCallback, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import LoginHeader from "@/components/LoginHeader";
+import CustomFetch from "@/feature/CustomFetch";
+import { formatTimer } from "@/feature/FormatText";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/lib/slice/userSlice";
 
 export default function FindId() {
   const [certification, setCertification] = useState(true);
@@ -14,6 +18,7 @@ export default function FindId() {
   const [verificationCode, setVerificationCode] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const dispatch = useDispatch();
   const router = useRouter();
 
   const pageRouter = (url) => {
@@ -25,25 +30,13 @@ export default function FindId() {
     name.length > 0 && phone.replace(/-/g, "").length >= 11;
 
   const handleNameChange = (e) => {
-    let inputText = e.currentTarget.value.replace(/\s/g, "");
+    let inputText = e.currentTarget.value.replace(/[^가-힣ㄱ-ㅎㅏ-ㅣ]/g, "");
 
     if (inputText.length > 20) {
       inputText = inputText.slice(0, 20);
     }
 
     setName(inputText);
-  };
-
-  const handleSend = () => {
-    if (name !== "유성환" || phone.replace(/-/g, "") !== "01022952483") {
-      setErrorMessage("존재하지 않는 회원입니다.");
-      return;
-    } else {
-      setCertification(false);
-      setIsTimerActive(true);
-      setTimer(180);
-      setErrorMessage("");
-    }
   };
 
   const handlePhoneChange = (e) => {
@@ -61,21 +54,48 @@ export default function FindId() {
     setPhone(formattedText);
   };
 
+  const handleCodeRequest = async () => {
+    const response = await CustomFetch("/users/findId/checkUser", "POST", {
+      user_name: name,
+      user_phone: phone.replace(/-/g, ""),
+    });
+
+    const data = await response.json();
+
+    if (data.bool) {
+      setCertification(false);
+      setIsTimerActive(true);
+      setTimer(180);
+      setErrorMessage("");
+    } else {
+      setErrorMessage(data.message);
+    }
+  };
+
+  const checkCode = async () => {
+    const response = await CustomFetch("/users/findId/checkCode", "POST", {
+      user_name: name,
+      user_phone: phone.replace(/-/g, ""),
+      code: verificationCode,
+    });
+
+    const data = await response.json();
+    console.log(data);
+
+    if (data.bool) {
+      console.log(data.user_email, data.created_at);
+      dispatch(setUser({ email: data.user_email, createdAt: data.created_at }));
+      pageRouter("/users/findId/email");
+    } else {
+      setErrorMessage(data.message);
+    }
+  };
+
   const handleMessage = () => {
     setMessage("인증번호가 재전송되었습니다.");
     setErrorMessage("");
     setIsTimerActive(true);
     setTimer(180);
-  };
-
-  const handleOk = () => {
-    if (verificationCode !== "111111") {
-      setErrorMessage("인증번호가 일치하지 않습니다.");
-      return;
-    } else {
-      pageRouter("/users/findId/email");
-      setErrorMessage("");
-    }
   };
 
   const handleVerificationCode = (e) => {
@@ -96,6 +116,7 @@ export default function FindId() {
         if (prevTime <= 1) {
           clearInterval(interval);
           setIsTimerActive(false);
+          setErrorMessage("인증시간이 초과되었습니다.");
           return 0;
         }
         return prevTime - 1;
@@ -104,18 +125,6 @@ export default function FindId() {
 
     return () => clearInterval(interval);
   }, [isTimerActive]);
-
-  useEffect(() => {
-    if (timer === 0) {
-      setErrorMessage("인증시간이 초과되었습니다.");
-    }
-  }, [timer]);
-
-  const formatTimer = useCallback((time) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = time % 60;
-    return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
-  }, []);
 
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100 font-sans tracking-negative">
@@ -148,7 +157,7 @@ export default function FindId() {
                 className={`w-80 h-12 mt-5 rounded text-white text-sm ${
                   isSendButtonValid ? "bg-[#8728ff]" : "bg-gray-400"
                 }`}
-                onClick={handleSend}
+                onClick={handleCodeRequest}
                 disabled={!isSendButtonValid}
               >
                 인증번호 전송
@@ -185,7 +194,7 @@ export default function FindId() {
                 className={`w-80 h-12 mt-6 rounded text-white ${
                   isOkButtonValid ? "bg-[#8728ff]" : "bg-gray-400"
                 }`}
-                onClick={handleOk}
+                onClick={checkCode}
                 disabled={!isOkButtonValid}
               >
                 확인
