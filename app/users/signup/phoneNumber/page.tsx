@@ -135,7 +135,7 @@ export default function FindId() {
     const data = await response.json();
 
     if (data.bool) {
-      localStorage.setItem("phone", phone);
+      localStorage.setItem("userPhoneNumber", phone);
       pageRouter("/users/signup/birthday");
     } else {
       setErrorMessage(data.message);

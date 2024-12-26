@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { generateRandomNickname } from "@/feature/GenerateRandomNickname";
+import { generateRandomNickname } from "@/feature/generateRandomNickname";
 // import { localStorageApi } from "@/lib/localStorageApi";
 import CustomFetch from "@/feature/CustomFetch";
 import { postApiSendingTest } from "@/feature/PostApiSending";
@@ -51,7 +51,7 @@ export const useNickname = () => {
 
   // 닉네임 저장 함수
   const saveNicknameToLocalStorage = (value) => {
-    localStorage.setItem("nickname", value); // 로컬 스토리지에 닉네임 저장
+    localStorage.setItem("userNickname", value); // 로컬 스토리지에 닉네임 저장
   };
 
   // 뒤로가기 함수

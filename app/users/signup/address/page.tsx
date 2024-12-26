@@ -51,7 +51,7 @@ export default function AddressPage() {
   const handleSubmit = () => {
     alert(`주소: ${address}, 상세 주소: ${detailAddress}`);
     router.push("/users/signup/gender");
-    localStorage.setItem("address", address + detailAddress);
+    localStorage.setItem("userAddress", address + detailAddress);
   };
 
   return (
