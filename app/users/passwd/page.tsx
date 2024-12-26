@@ -1,8 +1,9 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
+import { requestPwResetEmail } from "@/feature/users/types/users.type";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { pwResetApi } from "@/feature/users/api/api";
 
 export default function PasswordPage() {
   const {
@@ -10,7 +11,7 @@ export default function PasswordPage() {
     handleSubmit,
     watch,
     formState: { isSubmitting, errors },
-  } = useForm();
+  } = useForm<requestPwResetEmail>();
 
   const name = watch("name");
   const email = watch("email");
@@ -19,7 +20,15 @@ export default function PasswordPage() {
     console.log("history back");
   };
 
-  // 버튼 클릭 -> 가입 정보 조회 실패 시, 에러 메시지 처리 필요.
+  const [requestPwResetEmail, { isLoading, isSuccess, data }] =
+    pwResetApi.usePasswordResetEmailMutation();
+  const onSubmit: SubmitHandler<requestPwResetEmail> = (data) => {
+    requestPwResetEmail({ requestPwResetEmail: data });
+  };
+
+  if (isSuccess && data) {
+    alert(data.message);
+  }
 
   // 이름과 이메일이 모두 입력 되고, 이름이 한글로 입력 & 이메일이 pattern 에 일치하는 경우에만 버튼 활성화 처리.
   return (
@@ -32,7 +41,7 @@ export default function PasswordPage() {
         <div className="text-[16px]">
           비밀번호 재설정 링크를 보내기 위한 <b>이메일 주소</b>를 입력해 주세요.
         </div>
-        <form onSubmit={handleSubmit((data) => alert(JSON.stringify(data)))}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Input
             id="name"
             type="text"
@@ -47,7 +56,9 @@ export default function PasswordPage() {
               },
             })}
           />
-          {errors.name && <small>{errors.name.message}</small>}
+          {errors.name && (
+            <span className="text-sm">{errors.name.message}</span>
+          )}
           <Input
             id="email"
             type="text"
@@ -62,9 +73,12 @@ export default function PasswordPage() {
               },
             })}
           />
-          {errors.email && <small>{errors.email.message}</small>}
+          {errors.email && (
+            <span className="text-sm">{errors.email.message}</span>
+          )}
           <Button
             className="my-4 w-full"
+            variant={"point"}
             type="submit"
             disabled={isSubmitting || !name || !email}
           >
