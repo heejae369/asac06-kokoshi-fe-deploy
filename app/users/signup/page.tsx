@@ -9,6 +9,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { BackAndTitle } from "@/components/BackAndTitle";
 import { Checkbox } from "@/components/ui/checkbox";
+import EmailValidation from "@/feature/signup/EmailValidation";
+import PwValidation from "@/feature/signup/PwValidation";
+import CheckPwValidation from "@/feature/signup/CheckPwValidation";
+import SignupPostApi from "@/feature/signup/SignupPostApi";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -24,8 +28,6 @@ export default function LoginPage() {
   const [unusedEmail, setUnusedEmail] = useState(false);
   const [pwValidation, setPwValidation] = useState(false);
   const [checkPwValidation, setCheckPwValidation] = useState(false);
-  // 비밀번호 일치 여부 확인(true = 비밀번호 일치)
-  const [samePassword, setSamePassword] = useState(false);
   // 이용 약관 체크 여부 확인
   const [checked, setChecked] = useState(false);
   const handleCheckedChange = () => {
@@ -75,19 +77,22 @@ export default function LoginPage() {
           )}
           {/* 비밀번호 입력 */}
           <div className="relative">
-            <Input
-              value={pw}
-              onChange={(e) => {
-                let pwValue = e.target.value;
-                pwValue = pwValue.replace(/\n/g, "");
-                setPw(pwValue.slice(0, 20));
-              }}
-              className="rounded-sm bg-[#F4F4F4]"
-              type={hidePw}
-              placeholder="비밀번호 (영문과 숫자로 8자 이상)"
-            />
+            <form>
+              <Input
+                value={pw}
+                onChange={(e) => {
+                  let pwValue = e.target.value;
+                  pwValue = pwValue.replace(/\n/g, "");
+                  setPw(pwValue.slice(0, 20));
+                }}
+                className="rounded-sm bg-[#F4F4F4]"
+                type={hidePw}
+                placeholder="비밀번호 (영문과 숫자로 8자 이상)"
+                autoComplete="new-password"
+              />
+            </form>
             {/* 비밀번호 숨기기 버튼 */}
-            {!(hidePw == "password") && (
+            {!(hidePw === "password") && (
               <button
                 className="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent p-0"
                 onClick={() => setHidePw("password")}
@@ -96,7 +101,7 @@ export default function LoginPage() {
               </button>
             )}
             {/* 비밀번호 표시하기 버튼 */}
-            {hidePw == "password" && (
+            {hidePw === "password" && (
               <button
                 className="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent p-0"
                 onClick={() => setHidePw("text")}
@@ -113,19 +118,22 @@ export default function LoginPage() {
           )}
           {/* 비밀번호 재입력 */}
           <div className="relative">
-            <Input
-              value={checkPw}
-              onChange={(e) => {
-                let pwValue = e.target.value;
-                pwValue = pwValue.replace(/\n/g, "");
-                setCheckPw(pwValue.slice(0, 20));
-              }}
-              className="rounded-sm bg-[#F4F4F4]"
-              type={hideCheckPw}
-              placeholder="비밀번호 확인"
-            />
+            <form>
+              <Input
+                value={checkPw}
+                onChange={(e) => {
+                  let pwValue = e.target.value;
+                  pwValue = pwValue.replace(/\n/g, "");
+                  setCheckPw(pwValue.slice(0, 20));
+                }}
+                className="rounded-sm bg-[#F4F4F4]"
+                type={hideCheckPw}
+                placeholder="비밀번호 확인"
+                autoComplete="new-password"
+              />
+            </form>
             {/* 비밀번호 숨기기 버튼 */}
-            {!(hideCheckPw == "password") && (
+            {!(hideCheckPw === "password") && (
               <button
                 className="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent p-0"
                 onClick={() => setHideCheckPw("password")}
@@ -134,7 +142,7 @@ export default function LoginPage() {
               </button>
             )}
             {/* 비밀번호 표시하기 버튼 */}
-            {hideCheckPw == "password" && (
+            {hideCheckPw === "password" && (
               <button
                 className="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent p-0"
                 onClick={() => setHideCheckPw("text")}
@@ -176,17 +184,27 @@ export default function LoginPage() {
             email.length < 1 ||
             pw.length < 9 ||
             checkPw.length < 9 ||
-            checked == false
+            checked === false
           }
           onClick={async () => {
-            setShowValidation(true);
+            EmailValidation({ email, setEmailValidation });
+            PwValidation({ pw, setPwValidation });
+            CheckPwValidation({ pw, checkPw, setCheckPwValidation });
+            SignupPostApi({
+              setShowValidation,
+              name,
+              email,
+              pw,
+              setUnusedEmail,
+            });
             if (
-              emailValidation == true &&
-              pwValidation == true &&
-              checkPwValidation == true
+              emailValidation === true &&
+              pwValidation === true &&
+              checkPwValidation === true &&
+              unusedEmail === true
             )
-              router.push("signup/birthday");
-          }} // 원래는 전화번호 페이지로 가야함
+              router.push("signup/phoneNumber");
+          }}
         >
           다음
         </Button>
