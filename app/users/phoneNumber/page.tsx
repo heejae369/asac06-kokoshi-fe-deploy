@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useCallback, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import LoginHeader from "@/components/LoginHeader";
 import modal from "@/styles/modal.module.css";
 import Image from "next/image";
 import barImage from "@/assets/barImage.png";
 import checkImage from "@/assets/checkImage.png";
+import { formatTimer } from "@/feature/FormatText";
+import CustomFetch from "@/feature/CustomFetch";
 
 export default function FindId() {
   const [certification, setCertification] = useState(true);
@@ -29,74 +31,37 @@ export default function FindId() {
     phone.replace(/-/g, "").length >= 11 &&
     carrierText != "통신사";
 
-  const handleNameChange = (e) => {
-    let inputText = e.currentTarget.value.replace(/\s/g, "");
+  const router = useRouter();
 
-    if (inputText.length > 20) {
-      inputText = inputText.slice(0, 20);
-    }
-
-    setName(inputText);
+  const pageRouter = (url) => {
+    router.push(url);
   };
 
-  const handlePhoneChange = (e) => {
-    const inputText = e.currentTarget.value.replace(/[^0-9]/g, "");
-    let formattedText = "";
-
-    if (inputText.length <= 3) {
-      formattedText = inputText;
-    } else if (inputText.length <= 7) {
-      formattedText = `${inputText.slice(0, 3)}-${inputText.slice(3)}`;
-    } else {
-      formattedText = `${inputText.slice(0, 3)}-${inputText.slice(3, 7)}-${inputText.slice(7, 11)}`;
+  const handleInputChange = (e, type) => {
+    let inputText = e.currentTarget.value;
+    if (type === "name") {
+      inputText = inputText.replace(/[^가-힣ㄱ-ㅎㅏ-ㅣ]/g, "");
+      if (inputText.length > 20) inputText = inputText.slice(0, 20);
+      setName(inputText);
+    } else if (type === "phone") {
+      inputText = inputText.replace(/[^0-9]/g, "");
+      let formattedText = "";
+      if (inputText.length <= 3) formattedText = inputText;
+      else if (inputText.length <= 7)
+        formattedText = `${inputText.slice(0, 3)}-${inputText.slice(3)}`;
+      else
+        formattedText = `${inputText.slice(0, 3)}-${inputText.slice(3, 7)}-${inputText.slice(7, 11)}`;
+      setPhone(formattedText);
+    } else if (type === "verificationCode") {
+      inputText = inputText.replace(/[^0-9]/g, "");
+      if (inputText.length > 6) inputText = inputText.slice(0, 6);
+      setVerificationCode(inputText);
     }
-
-    setPhone(formattedText);
-  };
-
-  const handleVerificationCodeChange = (e) => {
-    let inputText = e.currentTarget.value.replace(/[^0-9]/g, "");
-
-    if (inputText.length > 6) {
-      inputText = inputText.slice(0, 6);
-    }
-
-    setVerificationCode(inputText);
   };
 
   const handleCertificationButton = () => {
     setModalOpen(true);
     setCertification(true);
-  };
-
-  const handleCertificationSend = () => {
-    if (
-      name !== "유성환" ||
-      carrierText !== "LG U+" ||
-      phone.replace(/-/g, "") !== "01022952483"
-    ) {
-      setCertification(true);
-      setErrorMessage("회원정보가 일치하지 않습니다.");
-      return;
-    } else {
-      sendButtonText === "인증받기"
-        ? setMessage("인증번호가 전송 되었습니다.")
-        : setMessage("인증번호가 재전송되었습니다.");
-      setSendButtonText("재전송");
-      setCertification(false);
-      setIsTimerActive(true);
-      setTimer(180);
-      setErrorMessage("");
-    }
-  };
-
-  const handleOk = () => {
-    if (verificationCode !== "111111") {
-      setErrorMessage("인증번호가 일치하지 않습니다.");
-      return;
-    } else {
-      setErrorMessage("");
-    }
   };
 
   useEffect(() => {
@@ -107,6 +72,7 @@ export default function FindId() {
         if (prevTime <= 1) {
           clearInterval(interval);
           setIsTimerActive(false);
+          setErrorMessage("인증시간이 초과되었습니다.");
           return 0;
         }
         return prevTime - 1;
@@ -115,18 +81,6 @@ export default function FindId() {
 
     return () => clearInterval(interval);
   }, [isTimerActive]);
-
-  useEffect(() => {
-    if (timer === 0) {
-      setErrorMessage("인증시간이 초과되었습니다.");
-    }
-  }, [timer]);
-
-  const formatTimer = useCallback((time) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = time % 60;
-    return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
-  }, []);
 
   const handleSelectCarrier = (carrier) => {
     setCertification(true);
@@ -137,6 +91,57 @@ export default function FindId() {
     setCarrierText(selectedCarrier == "" ? "통신사" : selectedCarrier);
     setModalOpen(false);
   };
+
+  const codeRequest = async () => {
+    const response = await CustomFetch(
+      "/users/findId/signUpCheckUser",
+      "POST",
+      {
+        user_name: name,
+        carrier: carrierText,
+        user_phone: phone.replace(/-/g, ""),
+      }
+    );
+
+    const data = await response.json();
+
+    if (data.bool) {
+      setMessage(
+        sendButtonText === "인증받기"
+          ? "인증번호가 전송 되었습니다."
+          : "인증번호가 재전송되었습니다."
+      );
+
+      setSendButtonText("재전송");
+      setCertification(false);
+      setIsTimerActive(true);
+      setTimer(180);
+      setErrorMessage("");
+    }
+  };
+
+  const checkCode = async () => {
+    const response = await CustomFetch(
+      "/users/findId/signUpCheckCode",
+      "POST",
+      {
+        user_name: name,
+        carrier: carrierText,
+        user_phone: phone.replace(/-/g, ""),
+        code: verificationCode,
+      }
+    );
+
+    const data = await response.json();
+
+    if (data.bool) {
+      localStorage.setItem("phone", phone);
+      pageRouter("/users/signup/birthday");
+    } else {
+      setErrorMessage(data.message);
+    }
+  };
+
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100 font-sans tracking-negative">
       <div className="w-[360px] bg-white relative">
@@ -149,7 +154,7 @@ export default function FindId() {
             className="w-80 h-[55px] mb-1.5 p-4 bg-gray-100 rounded "
             placeholder="이름"
             value={name}
-            onChange={handleNameChange}
+            onChange={(e) => handleInputChange(e, "name")}
           />
           <button
             className={`flex w-80 h-14 mb-1.5 p-4 rounded ${carrierText === "통신사" ? "text-gray-400" : "text-black"} bg-gray-100`}
@@ -161,12 +166,12 @@ export default function FindId() {
             <input
               className="w-[235px] h-14 mb-1.5 p-4 bg-gray-100 rounded text-sm"
               placeholder="휴대폰 번호"
-              onChange={handlePhoneChange}
+              onChange={(e) => handleInputChange(e, "phone")}
               value={phone}
             />
             <button
               className={`w-[80px] h-14 ml-2 ${isSendButtonValid ? "bg-[#8728ff]" : "bg-[#B2B2B2]"} text-white text-[13px] rounded`}
-              onClick={handleCertificationSend}
+              onClick={codeRequest}
               disabled={!isSendButtonValid}
             >
               {sendButtonText}
@@ -177,7 +182,7 @@ export default function FindId() {
               className="w-80 h-14 p-4 mb-1.5 bg-gray-100 rounded text-sm"
               placeholder="인증번호 입력"
               value={verificationCode}
-              onChange={handleVerificationCodeChange}
+              onChange={(e) => handleInputChange(e, "verificationCode")}
             />
             {isTimerActive && (
               <span className="absolute top-[14px] right-[24px] text-[#8728ff]">
@@ -192,10 +197,10 @@ export default function FindId() {
             className={`w-80 h-12 mt-6 rounded text-white ${
               isOkButtonValid ? "bg-[#8728ff]" : "bg-[#B2B2B2]"
             }`}
-            onClick={handleOk}
+            onClick={checkCode}
             disabled={!isOkButtonValid}
           >
-            확인
+            다음
           </button>
         </div>
         {modalOpen && (
@@ -213,81 +218,30 @@ export default function FindId() {
                 <div className="mt-[18px] flex justify-center">
                   <Image src={barImage} width={77} height={3} alt="" />
                 </div>
-                <div className="text-[16px] mt-[1opx] mb-[5px] font-bold">
+                <div className="text-[16px] mt-[10px] mb-[5px] font-bold">
                   통신사 선택
                 </div>
-                <button
-                  className="flex justify-between items-center"
-                  onClick={() => handleSelectCarrier("SKT")}
-                >
-                  <span
-                    className={`${selectedCarrier === "SKT" && "text-[#8728ff]"}`}
+                {["SKT", "KT", "LG U+", "알뜰폰"].map((carrier) => (
+                  <button
+                    key={carrier}
+                    className="flex justify-between items-center"
+                    onClick={() => handleSelectCarrier(carrier)}
                   >
-                    SKT
-                  </span>
-                  {selectedCarrier === "SKT" && (
-                    <Image
-                      src={checkImage}
-                      alt="Checked"
-                      width={17}
-                      height={17}
-                    />
-                  )}
-                </button>
-                <button
-                  className="flex justify-between items-center"
-                  onClick={() => handleSelectCarrier("KT")}
-                >
-                  <span
-                    className={`${selectedCarrier === "KT" && "text-[#8728ff]"}`}
-                  >
-                    KT
-                  </span>
-                  {selectedCarrier === "KT" && (
-                    <Image
-                      src={checkImage}
-                      alt="Checked"
-                      width={17}
-                      height={17}
-                    />
-                  )}
-                </button>
-                <button
-                  className="flex justify-between items-center"
-                  onClick={() => handleSelectCarrier("LG U+")}
-                >
-                  <span
-                    className={`${selectedCarrier === "LG U+" && "text-[#8728ff]"}`}
-                  >
-                    LG U+
-                  </span>
-                  {selectedCarrier === "LG U+" && (
-                    <Image
-                      src={checkImage}
-                      alt="Checked"
-                      width={17}
-                      height={17}
-                    />
-                  )}
-                </button>
-                <button
-                  className="flex justify-between items-center"
-                  onClick={() => handleSelectCarrier("알뜰폰")}
-                >
-                  <span
-                    className={`${selectedCarrier === "알뜰폰" && "text-[#8728ff]"}`}
-                  >
-                    알뜰폰
-                  </span>
-                  {selectedCarrier === "알뜰폰" && (
-                    <Image
-                      src={checkImage}
-                      alt="Checked"
-                      width={17}
-                      height={17}
-                    />
-                  )}
-                </button>
+                    <span
+                      className={`${selectedCarrier === carrier && "text-[#8728ff]"}`}
+                    >
+                      {carrier}
+                    </span>
+                    {selectedCarrier === carrier && (
+                      <Image
+                        src={checkImage}
+                        alt="Checked"
+                        width={17}
+                        height={17}
+                      />
+                    )}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
