@@ -11,9 +11,10 @@ export default function LoginHeader({ titleText, prevUrl }) {
     router.push(prevUrl);
   };
   return (
-    <div className="absolute top-[57px] left-[20px] w-[320px] h-[80px]">
+    // <div className="absolute top-[57px] left-[20px] w-[320px] h-[80px]">
+    <div className="relative left-5 top-[57px] w-[320px]">
       <button
-        className="absolute flex justify-center items-center w-6 h-6"
+        className="flex justify-center items-center w-6 h-6"
         onClick={prevButton}
       >
         <Image
@@ -23,7 +24,7 @@ export default function LoginHeader({ titleText, prevUrl }) {
           alt="prevButtonImage"
         />
       </button>
-      <div className="absolute top-[41px] whitespace-pre-line font-noto-sans font-semibold text-[25px] leading-[36px] tracking-[-0.05em] text-[#8728ff]">
+      <div className="relative top-[16px] whitespace-pre-line font-noto-sans font-semibold text-[25px] leading-[36px] tracking-[-0.05em] text-[#8728ff]">
         {titleText}
       </div>
     </div>

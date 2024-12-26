@@ -30,10 +30,10 @@ export default function FindIdEmail() {
       <div className="w-[360px] bg-white relative">
         {/* <div className="absolute w-full"> */}
         <LoginHeader titleText={"아이디 찾기"} prevUrl={"/users/findId"} />
-        <div className="absolute left-5 top-[143px] font-normal leading-6 text-gray-900">
-          회원님이 가입하신 이력입니다.
+        <div className="relative left-5 top-[83px]">
+          회원님이 가입하신 아이디 이력입니다.
         </div>
-        <div className="relative w-[320px] left-5 top-[200px]">
+        <div className="relative w-[320px] left-5 top-[109px]">
           <div className="py-[15px] px-[20px] w-[320px] h-[78px] bg-gray-100 rounded-lg">
             <div className="mb-1 font-semibold leading-[23px] text-gray-900">
               {formattedEmail}
