@@ -2,21 +2,14 @@
 
 import splashIllust from "@/assets/img/img_splash_illust.png";
 import homeLogo from "@/assets/img/img_home_logo.png";
+import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      router.push("onboading");
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, []);
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100">
-      <div className="w-[360px] bg-white px-5">
+      <div className="w-[360px] bg-[#8728FF] px-5">
         <div className="mt-64 flex flex-col items-center justify-center">
           <img
             src={splashIllust.src}
@@ -33,6 +26,12 @@ export default function Home() {
             <br />
             코코시.
           </p>
+          <Button
+            className="h-[50px] w-full rounded-sm text-[1rem]"
+            onClick={() => router.push("users/login")}
+          >
+            시작하기
+          </Button>
         </div>
       </div>
     </div>
