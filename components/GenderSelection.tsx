@@ -1,6 +1,6 @@
 "use client";
 import styles from "@/styles/genderSelection.module.css";
-import { useGenderSelection } from "@/feature/UseGenderSelection";
+import { useGenderSelection } from "@/feature/useGenderSelection";
 
 const GenderSelection = () => {
   const { selectedGender, handleGenderChange, handleNextClick, handleBack } =
