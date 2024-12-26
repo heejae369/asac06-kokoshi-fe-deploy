@@ -44,7 +44,7 @@ export default function TermPage() {
     // router.push("/users/nickname");
     localStorage.setItem("terms", termsState);
     postApiSendingTest();
-    // router.push("/yanolza/main");
+    router.push("/yanolza/main");
   };
 
   return (

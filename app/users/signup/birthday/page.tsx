@@ -28,7 +28,7 @@ export default function SignupPage() {
     const formattedDate = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
     alert(`입력된 생년월일: ${formattedDate}`);
     router.push("/users/signup/address");
-    localStorage.setItem("birth", formattedDate);
+    localStorage.setItem("userBirth", formattedDate);
   };
 
   return (

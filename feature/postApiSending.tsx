@@ -4,15 +4,15 @@ export const postApiSendingTest = () => {
   //로컬스토리지 데이터 수집
   if (typeof window !== "undefined") {
     const keys = [
-      "name",
-      "email",
-      "pw",
-      "phone",
-      "birth",
-      "address",
-      "gender",
-      "interest",
-      "nickname",
+      "userName",
+      "userEmail",
+      "userPassword",
+      "userPhoneNumber",
+      "userBirth",
+      "userAddress",
+      "userGender",
+      "userInterest",
+      "userNickname",
       "terms",
     ];
     // gender 값을 매핑하기 위한 객체
@@ -27,7 +27,7 @@ export const postApiSendingTest = () => {
       const value = localStorage.getItem(key);
       if (value) {
         // gender 처리: Enum 값으로 변환
-        if (key === "gender") {
+        if (key === "userGender") {
           const mappedGender = genderMap[value];
           if (mappedGender) {
             requestData[key] = mappedGender; // Enum 값 저장

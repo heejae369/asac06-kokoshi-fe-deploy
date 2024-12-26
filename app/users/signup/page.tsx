@@ -35,6 +35,14 @@ export default function LoginPage() {
   };
   const router = useRouter();
 
+  // 제출 처리
+  const onSubmit = (name, email, pw) => {
+    router.push("/users/signup/phoneNumber");
+    localStorage.setItem("userName", name);
+    localStorage.setItem("userEmail", email);
+    localStorage.setItem("userPassword", pw);
+  };
+
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100">
       <div className="w-[360px] bg-white px-5">
@@ -190,13 +198,14 @@ export default function LoginPage() {
             EmailValidation({ email, setEmailValidation });
             PwValidation({ pw, setPwValidation });
             CheckPwValidation({ pw, checkPw, setCheckPwValidation });
-            SignupPostApi({
-              setShowValidation,
-              name,
-              email,
-              pw,
-              setUnusedEmail,
-            });
+            onSubmit(name, email, pw);
+            // SignupPostApi({
+            //   setShowValidation,
+            //   name,
+            //   email,
+            //   pw,
+            //   setUnusedEmail,
+            // });
             if (
               emailValidation === true &&
               pwValidation === true &&
