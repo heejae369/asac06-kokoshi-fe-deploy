@@ -11,14 +11,19 @@ export default function LoginPostApi({
   setShowValidation(false);
   try {
     CustomFetch("", "POST", {
-      user_email: email,
-      user_password: pw,
+      userEmail: email,
+      userPassword: pw,
     }).then((res) => {
-      if (res.status == 0) router.push("#54");
-      else if (res.status == 1) {
+      if (res.status === 0) {
+        console.log(res.message);
+        localStorage.setItem("userId", res.data.userId);
+        router.push("#54");
+      } else if (res.status === 1) {
+        console.log(res.message);
         setSignUp(false);
         setSamePassword(false);
-      } else if (res.status == 2) {
+      } else if (res.status === 2) {
+        console.log(res.message);
         setSignUp(true);
         setSamePassword(false);
       }

@@ -51,17 +51,20 @@ export default function LoginPage() {
           />
           {/* 비밀번호 입력창 */}
           <div className="relative">
-            <Input
-              value={pw}
-              onChange={(e) => {
-                let pwValue = e.target.value;
-                pwValue = pwValue.replace(/\n/g, "");
-                setPw(pwValue.slice(0, 20));
-              }}
-              className="rounded-sm bg-[#F4F4F4]"
-              type={hidePw}
-              placeholder="비밀번호"
-            />
+            <form>
+              <Input
+                value={pw}
+                onChange={(e) => {
+                  let pwValue = e.target.value;
+                  pwValue = pwValue.replace(/\n/g, "");
+                  setPw(pwValue.slice(0, 20));
+                }}
+                className="rounded-sm bg-[#F4F4F4]"
+                type={hidePw}
+                placeholder="비밀번호"
+                autoComplete="new-password"
+              />
+            </form>
             {/* 비밀번호 숨기기 버튼 */}
             {!(hidePw == "password") && (
               <button
@@ -72,7 +75,7 @@ export default function LoginPage() {
               </button>
             )}
             {/* 비밀번호 표시하기 버튼 */}
-            {hidePw == "password" && (
+            {hidePw === "password" && (
               <button
                 className="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent p-0"
                 onClick={() => setHidePw("text")}
@@ -113,7 +116,7 @@ export default function LoginPage() {
         <div className="flex justify-center gap-[10px] py-3 text-sm font-normal text-[#8728FF]">
           <Link href={"/users/findId"}>아이디 찾기</Link>
           <span>|</span>
-          <Link href={"/users/findPw"}>비밀번호 찾기</Link>
+          <Link href={"/users/passwd"}>비밀번호 찾기</Link>
           <span>|</span>
           <Link href={"/users/signup"}>회원가입</Link>
         </div>
