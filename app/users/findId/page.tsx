@@ -30,7 +30,8 @@ export default function FindId() {
     name.length > 0 && phone.replace(/-/g, "").length >= 11;
 
   const handleNameChange = (e) => {
-    let inputText = e.currentTarget.value.replace(/[^가-힣ㄱ-ㅎㅏ-ㅣ]/g, "");
+    // let inputText = e.currentTarget.value.replace(/[^가-힣ㄱ-ㅎㅏ-ㅣ]/g, "");
+    let inputText = e.currentTarget.value;
 
     if (inputText.length > 20) {
       inputText = inputText.slice(0, 20);
