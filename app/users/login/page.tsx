@@ -51,20 +51,18 @@ export default function LoginPage() {
           />
           {/* 비밀번호 입력창 */}
           <div className="relative">
-            <form>
-              <Input
-                value={pw}
-                onChange={(e) => {
-                  let pwValue = e.target.value;
-                  pwValue = pwValue.replace(/\n/g, "");
-                  setPw(pwValue.slice(0, 20));
-                }}
-                className="rounded-sm bg-[#F4F4F4]"
-                type={hidePw}
-                placeholder="비밀번호"
-                autoComplete="new-password"
-              />
-            </form>
+            <Input
+              value={pw}
+              onChange={(e) => {
+                let pwValue = e.target.value;
+                pwValue = pwValue.replace(/\n/g, "");
+                setPw(pwValue.slice(0, 20));
+              }}
+              className="rounded-sm bg-[#F4F4F4]"
+              type={hidePw}
+              placeholder="비밀번호"
+              autoComplete="new-password"
+            />
             {/* 비밀번호 표시하기 버튼 */}
             {hidePw == "password" && (
               <button
