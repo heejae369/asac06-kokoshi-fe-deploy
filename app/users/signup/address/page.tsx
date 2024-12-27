@@ -63,14 +63,14 @@ export default function AddressPage() {
           strategy="beforeInteractive"
         /> */}
 
-        <div className="flex flex-col w-full gap-4 pt-6">
+        <div className="flex w-full flex-col gap-4 pt-6">
           {/* 뒤로가기 버튼 */}
-          <button onClick={handleGoBack} className="w-6 h-6">
+          <button onClick={handleGoBack} className="size-6">
             <img src="/ic_back.png" alt="뒤로가기" />
           </button>
 
           {/* 제목 */}
-          <div className="text-[#8728FF] text-[25px] font-semibold">
+          <div className="text-[25px] font-semibold text-[#8728FF]">
             주소를 입력해주세요
           </div>
 
@@ -82,13 +82,13 @@ export default function AddressPage() {
               placeholder="지번, 도로명 주소"
               value={address}
               readOnly
-              className="flex-1 h-10 px-3 py-2 rounded-md border border-gray-200 bg-[#F6F6F6] text-[#666666] placeholder-gray-500"
+              className="size-10 flex-1 rounded-md border border-gray-200 bg-[#F6F6F6] px-3 py-2 text-[#666666] placeholder:text-gray-500"
             />
 
             {/* 주소찾기 버튼 */}
             <button
               type="button"
-              className="bg-[#8728FF] text-white rounded-md px-4 py-2 hover:bg-[#751FD1] transition-colors"
+              className="rounded-md bg-[#8728FF] px-4 py-2 text-white transition-colors hover:bg-[#751FD1]"
               onClick={openAddressSearch}
             >
               주소찾기
@@ -102,13 +102,13 @@ export default function AddressPage() {
             placeholder="상세 주소 입력"
             value={detailAddress}
             onChange={handleDetailAddress}
-            className="h-10 px-3 py-2 rounded-md border border-gray-200 bg-[#F6F6F6] text-[#666666] placeholder-gray-500"
+            className="h-10 rounded-md border border-gray-200 bg-[#F6F6F6] px-3 py-2 text-[#666666] placeholder:text-gray-500"
           />
 
           {/* 다음 버튼 */}
           <button
             type="button"
-            className={`w-full py-2 rounded-md text-white ${
+            className={`w-full rounded-md py-2 text-white ${
               isActive ? "bg-[#8728FF] hover:bg-[#751FD1]" : "bg-gray-400"
             } transition-colors`}
             onClick={handleSubmit}
