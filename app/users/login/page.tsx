@@ -101,7 +101,7 @@ export default function LoginPage() {
         <Button
           className="h-[50px] w-full rounded-sm text-[1rem]"
           variant={"point"}
-          disabled={email.length < 1 || pw.length < 9}
+          disabled={email.length < 1 || pw.length < 8}
           onClick={async () =>
             LoginPostApi({
               setShowValidation,

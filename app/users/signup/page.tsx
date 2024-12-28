@@ -85,20 +85,18 @@ export default function LoginPage() {
           )}
           {/* 비밀번호 입력 */}
           <div className="relative">
-            <form>
-              <Input
-                value={pw}
-                onChange={(e) => {
-                  let pwValue = e.target.value;
-                  pwValue = pwValue.replace(/\n/g, "");
-                  setPw(pwValue.slice(0, 20));
-                }}
-                className="rounded-sm bg-[#F4F4F4]"
-                type={hidePw}
-                placeholder="비밀번호 (영문과 숫자로 8자 이상)"
-                autoComplete="new-password"
-              />
-            </form>
+            <Input
+              value={pw}
+              onChange={(e) => {
+                let pwValue = e.target.value;
+                pwValue = pwValue.replace(/\n/g, "");
+                setPw(pwValue.slice(0, 20));
+              }}
+              className="rounded-sm bg-[#F4F4F4]"
+              type={hidePw}
+              placeholder="비밀번호 (영문과 숫자로 8자 이상)"
+              autoComplete="new-password"
+            />
             {/* 비밀번호 표시하기 버튼 */}
             {hidePw === "password" && (
               <button
@@ -126,20 +124,18 @@ export default function LoginPage() {
           )}
           {/* 비밀번호 재입력 */}
           <div className="relative">
-            <form>
-              <Input
-                value={checkPw}
-                onChange={(e) => {
-                  let pwValue = e.target.value;
-                  pwValue = pwValue.replace(/\n/g, "");
-                  setCheckPw(pwValue.slice(0, 20));
-                }}
-                className="rounded-sm bg-[#F4F4F4]"
-                type={hideCheckPw}
-                placeholder="비밀번호 확인"
-                autoComplete="new-password"
-              />
-            </form>
+            <Input
+              value={checkPw}
+              onChange={(e) => {
+                let pwValue = e.target.value;
+                pwValue = pwValue.replace(/\n/g, "");
+                setCheckPw(pwValue.slice(0, 20));
+              }}
+              className="rounded-sm bg-[#F4F4F4]"
+              type={hideCheckPw}
+              placeholder="비밀번호 확인"
+              autoComplete="new-password"
+            />
             {/* 비밀번호 표시하기 버튼 */}
             {hideCheckPw === "password" && (
               <button
@@ -190,8 +186,8 @@ export default function LoginPage() {
           disabled={
             name.length < 1 ||
             email.length < 1 ||
-            pw.length < 9 ||
-            checkPw.length < 9 ||
+            pw.length < 8 ||
+            checkPw.length < 8 ||
             checked === false
           }
           onClick={async () => {
