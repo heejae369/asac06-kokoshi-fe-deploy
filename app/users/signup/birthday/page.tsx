@@ -124,4 +124,3 @@ export default function SignupPage() {
     </div>
   );
 }
-// github webhook-discord 연동 테스트 주석작성
