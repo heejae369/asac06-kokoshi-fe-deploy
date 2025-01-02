@@ -1,23 +1,12 @@
 "use client";
 
-import SearchComponenet from "@/components/SearchComponent";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { useState, useEffect } from "react";
-import blackBackIcon from "@/assets/blckBackIcon.png";
-import searchIcon from "@/assets/searchIcon.png";
 import calendarIcon from "@/assets/calendarIcon.png";
 import personnelIcon from "@/assets/personnelIcon.png";
-import upIcon from "@/assets/popularUpIcon.png";
-import downIcon from "@/assets/popularDownIcon.png";
-import dashIcon from "@/assets/popularDashIcon.png";
 import CalendarPage from "@/components/CalendarPage";
 import subIcon from "@/assets/subIcon.png";
 import addIcon from "@/assets/addIcon.png";
 import xIcon from "@/assets/xIcon.png";
-import inputClearIcon from "@/assets/inputClearIcon.png";
-import NowTomorrowDate from "@/feature/NowTomorrowDate";
-import { useCalendar } from "@/feature/CalendarContext";
 
 export default function CalendarPage2({
   setOnCalendar,

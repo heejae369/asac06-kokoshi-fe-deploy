@@ -78,12 +78,12 @@ export default function SearchFilter({ setOnFilter }) {
 
   return (
     <>
-      <div className="h-[82px] relative font-semibold">
-        <div className="flex items-center h-[24px] mt-[59px]">
+      <div className="relative h-[82px] font-semibold">
+        <div className="mt-[59px] flex h-[24px] items-center">
           <button className="ml-[8px] h-[19px]" onClick={handleXIcon}>
             <Image src={xIcon} alt="xIcon" width={9} height={19} />
           </button>
-          <div className="flex-1 flex justify-center ml-[22px]">
+          <div className="ml-[22px] flex flex-1 justify-center">
             <span className="text-[16px] tracking-[-0.8px]">필터</span>
           </div>
           <div>
@@ -94,7 +94,7 @@ export default function SearchFilter({ setOnFilter }) {
         </div>
       </div>
       <FilterTitle title={"숙소 유형"} />
-      <div className="w-[290px] mt-[20px] ml-[1px] grid grid-cols-2 gap-y-[25px] tracking-[-1px] text-[14px]">
+      <div className="ml-px mt-[20px] grid w-[290px] grid-cols-2 gap-y-[25px] text-[14px] tracking-[-1px]">
         {filterList.map((filter) => (
           <button
             key={filter}
@@ -112,23 +112,23 @@ export default function SearchFilter({ setOnFilter }) {
         ))}
       </div>
       <FilterTitle title={"키워드"} />
-      <div className="mt-[19px] flex gap-[10px] flex-wrap text-[14px] tracking-[-0.4px]">
+      <div className="mt-[19px] flex flex-wrap gap-[10px] text-[14px] tracking-[-0.4px]">
         {keyword.map((keyword) => (
           <KeywordButton key={keyword} text={keyword} />
         ))}
       </div>
       <FilterTitle title={"가격대"} />
-      <div className="flex justify-center mt-[20px]">
+      <div className="mt-[20px] flex justify-center">
         <FilterPriceSlide
           slideRange={slideRange}
           setSlideRange={setSlideRange}
         />
       </div>
-      <div className="flex justify-between text-[14px] tracking-[-0.4px] mt-[12px] px-[11px]">
+      <div className="mt-[12px] flex justify-between px-[11px] text-[14px] tracking-[-0.4px]">
         <span>{slideRange[0] / 10000}만원</span>
         <span>{slideRange[1] / 10000}만원</span>
       </div>
-      <button className="fixed bottom-0 bg-[#8728FF] rounded-[7px] text-[16px] h-[48px] w-[320px] mb-[16px] text-white tracking-[-0.5px]">
+      <button className="fixed bottom-0 mb-[16px] h-[48px] w-[320px] rounded-[7px] bg-[#8728FF] text-[16px] tracking-[-0.5px] text-white">
         필터 적용하기
       </button>
     </>
@@ -138,7 +138,7 @@ export default function SearchFilter({ setOnFilter }) {
 // 키워드 버튼 컴포넌트
 const KeywordButton = ({ text }) => {
   return (
-    <button className="border border-[#CCCCCC] rounded-[21px] py-[9px] px-[10.5px]">
+    <button className="rounded-[21px] border border-[#CCCCCC] px-[10.5px] py-[9px]">
       <span>{text}</span>
     </button>
   );
