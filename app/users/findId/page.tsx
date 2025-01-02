@@ -57,7 +57,7 @@ export default function FindId() {
   const handleCodeRequest = async () => {
     const response = await CustomFetch("/users/findId/checkUser", "POST", {
       user_name: name,
-      user_phone: phone.replace(/-/g, ""),
+      user_phone: phone /*.replace(/-/g, "")*/,
     });
 
     const data = await response.json();
@@ -75,7 +75,7 @@ export default function FindId() {
   const checkCode = async () => {
     const response = await CustomFetch("/users/findId/checkCode", "POST", {
       user_name: name,
-      user_phone: phone.replace(/-/g, ""),
+      user_phone: phone /*.replace(/-/g, ""),*/,
       code: verificationCode,
     });
 

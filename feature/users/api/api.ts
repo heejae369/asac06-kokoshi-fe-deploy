@@ -15,7 +15,7 @@ export const pwResetApi = api.injectEndpoints({
     >({
       query: ({ requestPwResetEmail }) => {
         return {
-          url: "/api/member/requestPwResetEmail",
+          url: "/users/requestPwResetEmail",
           body: requestPwResetEmail,
           method: "POST",
         };
@@ -28,7 +28,7 @@ export const pwResetApi = api.injectEndpoints({
     >({
       query: ({ requestPwReset }) => {
         return {
-          url: "/api/member/resetPassword",
+          url: "/users/resetPassword",
           body: requestPwReset,
           method: "PUT",
         };

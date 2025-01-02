@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { generateRandomNickname } from "@/feature/generateRandomNickname";
 // import { localStorageApi } from "@/lib/localStorageApi";
 import CustomFetch from "@/feature/CustomFetch";
-import { postApiSendingTest } from "@/feature/PostApiSending";
+// import { postApiSendingTest } from "@/feature/PostApiSending";
 import { useRouter } from "next/navigation";
 
 export const useNickname = () => {

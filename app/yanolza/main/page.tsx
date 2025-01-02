@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import styles from "@/styles/Home.module.css";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -67,15 +68,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className={styles.footer}>
-        <nav>
-          <a href="#">지도</a>
-          <a href="#" className={styles.active}>
-            홈
-          </a>
-          <a href="#">마이페이지</a>
-        </nav>
-      </footer>
+      <Footer />
     </div>
   );
 }

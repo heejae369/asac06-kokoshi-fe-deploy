@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { pwResetApi } from "@/feature/users/api/api";
 import { requestPwReset } from "@/feature/users/types/users.type";
+import { useRouter } from "next/navigation";
 
 export default function PasswordPage({ params }: { params: { uuid: string } }) {
   const {
@@ -17,6 +18,7 @@ export default function PasswordPage({ params }: { params: { uuid: string } }) {
 
   const password = watch("password");
   const passwordConfirm = watch("passwordConfirm");
+  const router = useRouter();
 
   const onClickBack = () => {
     console.log("history back");
@@ -33,7 +35,8 @@ export default function PasswordPage({ params }: { params: { uuid: string } }) {
   if (isSuccess && data) {
     alert(data.message);
 
-    // 홈으로 이동?
+    // 홈으로 이동?  일단 로그인 창 이동 -> 재로그인
+    router.push("/users/login");
   }
 
   // 비밀번호와 비밀번호 확인이 일치 할 경우에만 비밀번호 변경 활성화
