@@ -1,0 +1,93 @@
+/* 전체 캘린더 */
+.react-calendar {
+  font-family: "Noto_Sans";
+  background-color: white;
+  font-size: 14px !important;
+}
+
+/* 헤더 영역 */
+.react-calendar__navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+/* 날짜 타일 */
+.react-calendar__tile {
+  border-radius: 50%;
+  padding: 10px 0px;
+  text-align: center;
+  transition:
+    background-color 0.3s,
+    transform 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible !important;
+  margin-top: 5px;
+}
+
+/* 선택된 날짜 */
+.react-calendar__tile--active {
+  background-color: #8728ff;
+  color: white;
+  border-radius: 50%;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 오늘 날짜 */
+.react-calendar__tile--now {
+  background-color: #ff5733;
+  color: white !important;
+}
+
+/* 주말 날짜 */
+.react-calendar__tile--weekend {
+  color: red;
+}
+
+/* 요일 이름 */
+.react-calendar__month-view__weekdays__weekday {
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/*월 화 수 목 금 토 일 밑줄 없애기*/
+.react-calendar__month-view__weekdays__weekday abbr {
+  text-decoration: none;
+}
+
+/* 이전/다음 버튼 */
+.react-calendar__navigation button {
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.react-calendar__navigation button:hover {
+  color: #8728ff;
+}
+
+/* 년도 옮기는 버튼 없애기 */
+.react-calendar__navigation__next2-button,
+.react-calendar__navigation__prev2-button {
+  display: none;
+}
+
+/* 년도 옮기는 버튼 없애기 */
+.react-calendar__navigation__next-button,
+.react-calendar__navigation__prev-button {
+  font-size: 26px !important;
+  padding-bottom: 5px;
+}
+/* 이번 달이 아닌 날짜를 회색으로 처리 */
+.react-calendar__month-view__days__day--neighboringMonth {
+  color: #d3d3d3; /* 글자 색을 연한 회색으로 */
+}
