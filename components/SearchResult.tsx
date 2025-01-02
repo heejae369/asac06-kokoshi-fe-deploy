@@ -103,29 +103,29 @@ export default function SearchResult({
   return (
     <>
       <div className="mt-[19px] flex font-bold tracking-[-0.45px]">
-        <span className="text-[16px] ml-[3px]">검색 결과</span>
+        <span className="ml-[3px] text-[16px]">검색 결과</span>
         <button
-          className="ml-auto text-[14px] text-[#999999] cursor-pointer flex items-center"
+          className="ml-auto flex cursor-pointer items-center text-[14px] text-[#999999]"
           onClick={handleFilterOpen}
         >
           <Image
             src={filterIcon}
             alt="filter"
-            className="w-[14px] h-[11px] mr-[7px]"
+            className="mr-[7px] h-[11px] w-[14px]"
           />
           필터
         </button>
       </div>
-      <div className="mt-[7px] mb-[9px]">
+      <div className="mb-[9px] mt-[7px]">
         <button
-          className="flex items-center text-[#999999] text-[14px] tracking-[-0.45px]"
+          className="flex items-center text-[14px] tracking-[-0.45px] text-[#999999]"
           onClick={modalOpen}
         >
           {array}
           <Image
             src={grayDownIcon}
             alt="searchArray"
-            className="w-[10px] ml-[6px]"
+            className="ml-[6px] w-[10px]"
           />
         </button>
       </div>
@@ -225,38 +225,38 @@ const SearchProductList = ({ dummy }) => {
 
   return (
     <>
-      <div className="h-[133px] p-[11px] flex shadow-[0px_4px_11px_4px_rgba(121,121,121,0.1)] rounded-[10px]">
-        <div className="w-[110px] h-[110px]">
+      <div className="flex h-[133px] rounded-[10px] p-[11px] shadow-[0px_4px_11px_4px_rgba(121,121,121,0.1)]">
+        <div className="size-[110px]">
           <Image
             src={dummy.image}
             alt="productList"
             width={110}
             height={110}
-            className="w-[110px] h-[110px]"
+            className="size-[110px]"
           />
         </div>
-        <div className="ml-[10px] flex flex-col flex-grow tracking-[-0.5px]">
+        <div className="ml-[10px] flex grow flex-col tracking-[-0.5px]">
           <div className="flex items-center">
-            <div className="border border-[#8728FF] rounded-[9px] text-[10px] text-[#8728FF] px-[9px] py-[2px] h-[18px]">
+            <div className="h-[18px] rounded-[9px] border border-[#8728FF] px-[9px] py-[2px] text-[10px] text-[#8728FF]">
               {dummy.tag}
             </div>
           </div>
-          <div className="flex itmes-center mt-[3px] font-bold">
+          <div className="mt-[3px] flex font-bold">
             <span className="text-[14px]">{dummy.title}</span>
           </div>
-          <div className="flex items-center mt-[1px]">
+          <div className="mt-px flex items-center">
             <span className="text-[14px] ">{dummy.star}</span>
-            <span className="text-[14px] flex ml-[5px] gap-[2px]">
+            <span className="ml-[5px] flex gap-[2px] text-[14px]">
               {renderStars(dummy.star)}
             </span>
-            <span className="text-[12px] ml-[6px] text-[#999999]">
+            <span className="ml-[6px] text-[12px] text-[#999999]">
               {`(${dummy.reviewCount.toLocaleString()})`}
             </span>
           </div>
           <div className="mt-[2px] flex items-center">
             <span className="text-[10px] text-[#7F7F7F]">{dummy.distance}</span>
           </div>
-          <div className="mt-[8px] mr-[5px] flex items-center justify-end">
+          <div className="mr-[5px] mt-[8px] flex items-center justify-end">
             <span className="text-[16px] font-bold">
               {dummy.price.toLocaleString()}
             </span>

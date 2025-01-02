@@ -36,40 +36,40 @@ export default function Map() {
   }, []);
 
   return (
-    <div className="flex h-screen w-full justify-center bg-gray-100 font-sans tracking-negative">
-      <div className="w-[360px] bg-white relative flex flex-col h-full">
-        <div className="h-[146px] shadow-[0px_4px_4px_rgba(0,_0,_0,_0.18)] z-20">
+    <div className="flex h-screen w-full justify-center bg-gray-100 font-sans">
+      <div className="relative flex h-full w-[360px] flex-col bg-white">
+        <div className="z-20 h-[146px] shadow-[0px_4px_4px_rgba(0,_0,_0,_0.18)]">
           <div className="mt-[51px]">
-            <button className="w-[320px] h-[37px] mx-[20px] bg-[#F6F6F6] rounded-[18px] flex items-center">
+            <button className="mx-[20px] flex h-[37px] w-[320px] items-center rounded-[18px] bg-[#F6F6F6]">
               <Image src={searchIcon} alt="search" className="ml-[15px]" />
-              <span className="h-[20px] ml-[7px] text-[13px] text-[#999999] tracking-[-0.8px] font-[600]">
+              <span className="ml-[7px] h-[20px] text-[13px] font-[600] tracking-[-0.8px] text-[#999999]">
                 {searchText}
               </span>
             </button>
           </div>
-          <div className="flex pt-[6px] px-[20px] gap-[7px]">
-            <button className="w-[200px] h-[37px] bg-[#F6F6F6] rounded-[18px] flex items-center">
+          <div className="flex gap-[7px] px-[20px] pt-[6px]">
+            <button className="flex h-[37px] w-[200px] items-center rounded-[18px] bg-[#F6F6F6]">
               <Image src={calendarIcon} alt="calendar" className="ml-[17px]" />
-              <span className="h-[20px] ml-[8px] text-[13px] tracking-[-0.45px] font-[600]">
+              <span className="ml-[8px] h-[20px] text-[13px] font-[600] tracking-[-0.45px]">
                 {calendar}
               </span>
             </button>
-            <button className="w-[114px] h-[37px] bg-[#F6F6F6] rounded-[18px] flex items-center">
+            <button className="flex h-[37px] w-[114px] items-center rounded-[18px] bg-[#F6F6F6]">
               <Image
                 src={personnelIcon}
                 alt="personnel"
                 className="ml-[15px]"
               />
-              <span className="h-[20px] ml-[8px] text-[13px] tracking-[-0.45px] font-[600]">
+              <span className="ml-[8px] h-[20px] text-[13px] font-[600] tracking-[-0.45px]">
                 {personnel}
               </span>
             </button>
           </div>
         </div>
-        <div id="map" className="flex-1 w-[360px] z-0"></div>
-        <div className="h-[68px] flex items-center justify-center text-[10px] tracking-[-0.5px] font-semibold">
-          <div className="w-[120px] flex flex-col items-center text-[#8728FF]">
-            <button className="w-[40px] flex flex-col items-center">
+        <div id="map" className="z-0 w-[360px] flex-1"></div>
+        <div className="flex h-[68px] items-center justify-center text-[10px] font-semibold tracking-[-0.5px]">
+          <div className="flex w-[120px] flex-col items-center text-[#8728FF]">
+            <button className="flex w-[40px] flex-col items-center">
               <Image
                 src={selectedMapIcon}
                 alt="selectedMapIcon"
@@ -79,16 +79,16 @@ export default function Map() {
               <span className="mt-[5px]">지도</span>
             </button>
           </div>
-          <div className="w-[120px] flex flex-col items-center text-[#B2B2B2]">
-            <button className="w-[40px] flex flex-col items-center">
+          <div className="flex w-[120px] flex-col items-center text-[#B2B2B2]">
+            <button className="flex w-[40px] flex-col items-center">
               <Image src={homeIcon} alt="homeIcon" width={20} height={20} />
               <span className="mt-[5px]">홈</span>
             </button>
           </div>
-          <div className="w-[120px] flex flex-col items-center text-[#B2B2B2]">
-            <button className="w-[40px] flex flex-col items-center">
+          <div className="flex w-[120px] flex-col items-center text-[#B2B2B2]">
+            <button className="flex w-[40px] flex-col items-center">
               <Image src={myPageIcon} alt="myPageIcon" width={20} height={20} />
-              <span className="w-[60px] mt-[5px]">마이페이지</span>
+              <span className="mt-[5px] w-[60px]">마이페이지</span>
             </button>
           </div>
         </div>
