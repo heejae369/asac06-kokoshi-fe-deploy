@@ -2,7 +2,7 @@
 .footer {
   position: fixed;
   bottom: 0;
-  width: 100%;
+  width: 360px; /* 고정된 너비 */
   background-color: #ffffff;
   border-top: 1px solid #eee;
   display: flex;
@@ -10,6 +10,9 @@
   align-items: center;
   z-index: 100;
   padding: 10px 0;
+  margin: 0 auto; /* 화면 가운데 정렬 */
+  left: 50%; /* 화면 가운데 배치 */
+  transform: translateX(-50%); /* 화면 가운데 정렬 보정 */
 }
 
 .nav {
