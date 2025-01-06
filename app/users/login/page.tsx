@@ -19,7 +19,6 @@ export default function LoginPage() {
   const [pw, setPw] = useState("");
   // 비밀번호 숨기기 여부
   const [hidePw, setHidePw] = useState("password");
-  const [hidePw, setHidePw] = useState("password");
   // 유효성 확인 문구 표시 여부
   const [showValidation, setShowValidation] = useState(false);
 
@@ -69,18 +68,14 @@ export default function LoginPage() {
               <button
                 className="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent p-0"
                 onClick={() => setHidePw("text")}
-                onClick={() => setHidePw("text")}
               >
                 <img src={passwordHide.src} alt="Ex Img" />
               </button>
             )}
             {/* 비밀번호 숨기기 버튼 */}
             {!(hidePw === "password") && (
-            {/* 비밀번호 숨기기 버튼 */}
-            {!(hidePw === "password") && (
               <button
                 className="absolute right-3 top-1/2 -translate-y-1/2 bg-transparent p-0"
-                onClick={() => setHidePw("password")}
                 onClick={() => setHidePw("password")}
               >
                 <img src={passwordShow.src} alt="Ex Img" />
