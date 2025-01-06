@@ -34,7 +34,7 @@
   position: fixed;
   justify-content: center;
   width: 360px;
-  height: 360px;
+  /* height: 360px; */
   bottom: 0;
 
   background: #ffffff;
