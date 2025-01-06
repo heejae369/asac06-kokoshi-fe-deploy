@@ -39,11 +39,6 @@ export default function SearchResult({
     setModal(true);
   };
 
-  useEffect(() => {
-    console.log("정렬 기준 변경됨:", array);
-    console.log("정렬된 데이터:", searchResultData);
-  }, [array, searchResultData]);
-
   const modalClose = () => {
     setArray(selectedArray == "" ? "코코시 추천순" : selectedArray);
     setModal(false);
