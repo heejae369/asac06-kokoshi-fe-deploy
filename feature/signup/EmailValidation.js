@@ -1,6 +1,6 @@
-export default function EmailValidation({ email, setEmailValidation }) {
+export default function EmailValidation({ email }) {
   const emailCondition = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   if (emailCondition.test(email)) {
-    setEmailValidation(true);
-  } else setEmailValidation(false);
+    return true;
+  } else return false;
 }
