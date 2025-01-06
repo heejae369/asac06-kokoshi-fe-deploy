@@ -6,8 +6,12 @@ import xIcon from "@/assets/xIcon.png";
 import CustomCheckbox from "@/feature/CustomCheckBox";
 import FilterPriceSlide from "@/feature/FilterPriceSlide";
 
-export default function SearchFilter({ setOnFilter }) {
-  const [slideRange, setSlideRange] = useState([10000, 300000]);
+export default function SearchFilter({
+  setOnFilter,
+  setFilterApply,
+  filterApply,
+}) {
+  const [slideRange, setSlideRange] = useState(filterApply.priceRange);
 
   const filterList = [
     "전체",
@@ -30,13 +34,13 @@ export default function SearchFilter({ setOnFilter }) {
   ];
 
   const [checkedItems, setCheckedItems] = useState({
-    전체: true,
-    호텔: false,
-    펜션: false,
-    풀빌라: false,
-    캠핑: false,
-    게스트하우스: false,
-    리조트: false,
+    전체: filterApply.accommodationCategory.includes("전체"),
+    호텔: filterApply.accommodationCategory.includes("호텔"),
+    펜션: filterApply.accommodationCategory.includes("펜션"),
+    풀빌라: filterApply.accommodationCategory.includes("풀빌라"),
+    캠핑: filterApply.accommodationCategory.includes("캠핑"),
+    게스트하우스: filterApply.accommodationCategory.includes("게스트하우스"),
+    리조트: filterApply.accommodationCategory.includes("리조트"),
   });
 
   const handleXIcon = () => {
@@ -74,6 +78,18 @@ export default function SearchFilter({ setOnFilter }) {
       return filter !== "전체";
     }
     return false;
+  };
+
+  // 필터 적용 시 체크된 항목들만 부모에게 전달
+  const handleApplyFilter = () => {
+    const selectedCategories = Object.keys(checkedItems).filter(
+      (key) => checkedItems[key] && key !== "전체"
+    );
+    setFilterApply({
+      accommodationCategory: selectedCategories,
+      priceRange: slideRange,
+    });
+    setOnFilter(false);
   };
 
   return (
@@ -128,7 +144,10 @@ export default function SearchFilter({ setOnFilter }) {
         <span>{slideRange[0] / 10000}만원</span>
         <span>{slideRange[1] / 10000}만원</span>
       </div>
-      <button className="fixed bottom-0 mb-[16px] h-[48px] w-[320px] rounded-[7px] bg-[#8728FF] text-[16px] tracking-[-0.5px] text-white">
+      <button
+        className="fixed bottom-0 mb-[16px] h-[48px] w-[320px] rounded-[7px] bg-[#8728FF] text-[16px] tracking-[-0.5px] text-white"
+        onClick={handleApplyFilter}
+      >
         필터 적용하기
       </button>
     </>

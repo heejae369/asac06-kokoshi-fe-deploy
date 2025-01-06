@@ -1,5 +1,12 @@
-import { createContext, useContext, useState } from "react";
-import NowTomorrowDate from "@/feature/NowTomorrowDate";
+import { createContext, useContext } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "@/lib/store";
+import {
+  setCheckInDate,
+  setCheckOutDate,
+  setAdultNumber,
+  setKidNumber,
+} from "@/lib/slice/calendarSlice";
 
 const CalendarContext = createContext(null);
 
@@ -8,21 +15,39 @@ export const CalendarProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [calendar, setCalendar] = useState(NowTomorrowDate());
-  const [adultNumber, setAdultNumber] = useState(1);
-  const [kidNumber, setKidNumber] = useState(0);
+  const dispatch = useDispatch();
+  const { checkInDate, checkOutDate, adultNumber, kidNumber } = useSelector(
+    (state: RootState) => state.calendar
+  );
+
+  const setCheckIn = (date: {
+    year: number;
+    month: number;
+    day: number;
+    dayOfWeek: string;
+  }) => dispatch(setCheckInDate(date));
+  const setCheckOut = (date: {
+    year: number;
+    month: number;
+    day: number;
+    dayOfWeek: string;
+  }) => dispatch(setCheckOutDate(date));
+  const setAdults = (count: number) => dispatch(setAdultNumber(count)); // 액션 디스패치
+  const setKids = (count: number) => dispatch(setKidNumber(count)); // 액션 디스패치
+
+  const contextValue = {
+    checkInDate,
+    setCheckInDate: setCheckIn,
+    checkOutDate,
+    setCheckOutDate: setCheckOut,
+    adultNumber,
+    setAdultNumber: setAdults,
+    kidNumber,
+    setKidNumber: setKids,
+  };
 
   return (
-    <CalendarContext.Provider
-      value={{
-        calendar,
-        setCalendar,
-        adultNumber,
-        setAdultNumber,
-        kidNumber,
-        setKidNumber,
-      }}
-    >
+    <CalendarContext.Provider value={contextValue}>
       {children}
     </CalendarContext.Provider>
   );
