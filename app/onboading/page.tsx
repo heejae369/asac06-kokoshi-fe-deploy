@@ -32,7 +32,7 @@ export default function Home() {
             코코시에서 다양한 숙소를 만나보세요.
           </p>
           <Button
-            className="mt-36 h-[50px] w-full rounded-sm bg-white text-[1rem] text-[#A55EFF] hover:bg-white"
+            className="absolute bottom-14 h-[50px] w-[320px] rounded-sm bg-white text-[1rem] text-[#A55EFF] hover:bg-white"
             onClick={() => router.push("users/login")}
           >
             시작하기
