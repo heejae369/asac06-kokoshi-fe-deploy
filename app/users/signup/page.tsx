@@ -24,10 +24,6 @@ export default function LoginPage() {
   const [hideCheckPw, setHideCheckPw] = useState("password");
   // 유효성 확인 문구 표시 여부
   const [showValidation, setShowValidation] = useState(false);
-  const [emailValidation, setEmailValidation] = useState(false);
-  const [unusedEmail, setUnusedEmail] = useState(false);
-  const [pwValidation, setPwValidation] = useState(false);
-  const [checkPwValidation, setCheckPwValidation] = useState(false);
   // 이용 약관 체크 여부 확인
   const [checked, setChecked] = useState(false);
   const handleCheckedChange = () => {
@@ -35,12 +31,49 @@ export default function LoginPage() {
   };
   const router = useRouter();
 
-  // 제출 처리
+  // localStorage에 유저 정보 저장
   const onSubmit = (name, email, pw) => {
-    router.push("/users/signup/phoneNumber");
     localStorage.setItem("userName", name);
     localStorage.setItem("userEmail", email);
     localStorage.setItem("userPassword", pw);
+  };
+
+  const [errors, setErrors] = useState({
+    email: "",
+    pw: "",
+    checkPw: "",
+    unusedEmail: "",
+  });
+
+  const onClickEvent = async () => {
+    const newErrors = { email: "", pw: "", checkPw: "", unusedEmail: "" };
+    setErrors(newErrors);
+
+    if (!EmailValidation({ email })) {
+      newErrors.email = "올바른 이메일 형식을 입력해주세요.";
+    }
+    if (!PwValidation({ pw })) {
+      newErrors.pw = "영문, 숫자를 조합하여 8자 이상으로 입력해주세요.";
+    }
+    if (!CheckPwValidation({ pw, checkPw })) {
+      newErrors.checkPw = "비밀번호가 일치하지 않습니다.";
+    }
+    if (newErrors.email === "") {
+      await SignupPostApi({
+        name,
+        email,
+        pw,
+        newErrors,
+        setErrors,
+      });
+    }
+    setShowValidation(true);
+    if (
+      JSON.stringify(newErrors) ===
+      JSON.stringify({ email: "", pw: "", checkPw: "", unusedEmail: "" })
+    ) {
+      router.push("signup/phoneNumber");
+    }
   };
 
   return (
@@ -73,16 +106,16 @@ export default function LoginPage() {
             placeholder="이메일 입력창"
           />
           {/* 이메일 유효성 문구 */}
-          {showValidation && !emailValidation && (
-            <div className="py-1 text-sm text-[#FF0045]">
-              {"올바른 이메일 형식을 입력해주세요."}
-            </div>
+          {showValidation && errors.email != "" && (
+            <div className="py-1 text-sm text-[#FF0045]">{errors.email}</div>
           )}
-          {showValidation && emailValidation && !unusedEmail && (
-            <div className="py-1 text-sm text-[#FF0045]">
-              {"사용중인 이메일입니다."}
-            </div>
-          )}
+          {showValidation &&
+            errors.email === "" &&
+            errors.unusedEmail != "" && (
+              <div className="py-1 text-sm text-[#FF0045]">
+                {errors.unusedEmail}
+              </div>
+            )}
           {/* 비밀번호 입력 */}
           <div className="relative">
             <Input
@@ -117,10 +150,8 @@ export default function LoginPage() {
             )}
           </div>
           {/* 비밀번호 유효성 문구 */}
-          {showValidation && !pwValidation && (
-            <div className="py-1 text-sm text-[#FF0045]">
-              {"영문, 숫자를 조합하여 8자 이상으로 입력해주세요."}
-            </div>
+          {showValidation && errors.pw != "" && (
+            <div className="py-1 text-sm text-[#FF0045]">{errors.pw}</div>
           )}
           {/* 비밀번호 재입력 */}
           <div className="relative">
@@ -157,10 +188,8 @@ export default function LoginPage() {
           </div>
         </div>
         {/* 비밀번호 재입력 유효성 문구 */}
-        {showValidation && !checkPwValidation && (
-          <div className="py-1 text-sm text-[#FF0045]">
-            {"비밀번호가 일치하지 않습니다."}
-          </div>
+        {showValidation && errors.checkPw != "" && (
+          <div className="py-1 text-sm text-[#FF0045]">{errors.checkPw}</div>
         )}
         {/* 이용 약관 동의 */}
         <div className="flex items-center space-x-2 py-7">
@@ -190,25 +219,9 @@ export default function LoginPage() {
             checkPw.length < 8 ||
             checked === false
           }
-          onClick={async () => {
-            EmailValidation({ email, setEmailValidation });
-            PwValidation({ pw, setPwValidation });
-            CheckPwValidation({ pw, checkPw, setCheckPwValidation });
+          onClick={() => {
+            onClickEvent();
             onSubmit(name, email, pw);
-            // SignupPostApi({
-            //   setShowValidation,
-            //   name,
-            //   email,
-            //   pw,
-            //   setUnusedEmail,
-            // });
-            if (
-              emailValidation === true &&
-              pwValidation === true &&
-              checkPwValidation === true &&
-              unusedEmail === true
-            )
-              router.push("signup/phoneNumber");
           }}
         >
           다음
