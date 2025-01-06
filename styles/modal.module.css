@@ -28,3 +28,15 @@
   background: #ffffff;
   border-radius: 20px 20px 0px 0px;
 }
+
+.modal-content2 {
+  display: flex;
+  position: fixed;
+  justify-content: center;
+  width: 360px;
+  /* height: 360px; */
+  bottom: 0;
+
+  background: #ffffff;
+  border-radius: 20px 20px 0px 0px;
+}

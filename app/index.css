@@ -1,3 +1,29 @@
+.recent-search-container {
+  max-height: calc(2 * 37px + 7px); /* 2줄의 높이 + 1줄 사이 간격 */
+  overflow: hidden;
+}
+
+.checkBox-custom {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #8728ff;
+  transform: scale(1.3);
+
+  border-radius: 50%;
+
+  &:checked {
+    border-color: transparent;
+    background-image: url("/assets/checkImage.png");
+    background-size: 100% 100%;
+    background-position: 50%;
+    border: 1px solid #8728ff;
+    transform: scale(1.3);
+    background-repeat: no-repeat;
+    background-color: rgba(34, 34, 34, 1);
+  }
+}
+
 .login {
   /* 로그인 */
 
