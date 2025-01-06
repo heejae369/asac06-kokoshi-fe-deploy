@@ -1,6 +1,6 @@
-export default function PwValidation({ pw, setPwValidation }) {
+export default function PwValidation({ pw }) {
   const pwCondition = /^[A-Za-z0-9]{8,}$/;
   if (pwCondition.test(pw)) {
-    setPwValidation(true);
-  } else setPwValidation(false);
+    return true;
+  } else return false;
 }

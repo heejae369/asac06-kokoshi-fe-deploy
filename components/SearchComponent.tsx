@@ -5,24 +5,23 @@ import searchIcon from "@/assets/searchIcon.png";
 import calendarIcon from "@/assets/calendarIcon.png";
 import personnelIcon from "@/assets/personnelIcon.png";
 import inputClearIcon from "@/assets/inputClearIcon.png";
+import { formattedMonthToDay } from "@/feature/DateFormat";
 import { useState } from "react";
+import { useCalendar } from "@/feature/CalendarContext";
 
 export default function SearchComponenet({
-  calendar,
-  adultNumber,
   setOnCalendar,
-  text,
-  setText,
+  searchText,
+  setSearchText,
+  fetchData,
 }) {
-  const [searchText, setSearchText] = useState(text || "");
+  const [text, setText] = useState(searchText || "");
 
-  const handleSearch = () => {
-    setText(searchText);
-  };
+  const { checkInDate, checkOutDate, adultNumber } = useCalendar();
 
   const handleClear = () => {
-    setText("");
     setSearchText("");
+    setText("");
   };
 
   const handleBackIcon = () => {
@@ -48,7 +47,7 @@ export default function SearchComponenet({
       </div>
       <div className="mt-[12px]">
         <div className="flex h-[37px] w-[320px] items-center rounded-[18px] bg-[#F6F6F6] px-[15px]">
-          <button className="h-[18px] w-[17px]" onClick={handleSearch}>
+          <button className="h-[18px] w-[17px]" onClick={() => fetchData(text)}>
             <Image
               src={searchIcon}
               alt="search"
@@ -57,12 +56,12 @@ export default function SearchComponenet({
           </button>
           <input
             type="text"
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
             className="ml-[7px] h-full w-[250px] border-none bg-transparent text-[13px] font-medium tracking-[-0.8px] outline-none"
             placeholder="어떤 숙소를 찾으시나요?"
           />
-          {searchText && (
+          {text && (
             <button onClick={handleClear}>
               <Image
                 src={inputClearIcon}
@@ -80,7 +79,8 @@ export default function SearchComponenet({
         >
           <Image src={calendarIcon} alt="calendar" className="ml-[17px]" />
           <span className="ml-[8px] h-[20px] text-[13px] font-medium tracking-[-0.45px]">
-            {calendar}
+            {formattedMonthToDay(checkInDate, checkOutDate)}
+            {/* {`${calendar.reservationStart} - ${calendar.reservationEnd}`} */}
           </span>
         </button>
         <button

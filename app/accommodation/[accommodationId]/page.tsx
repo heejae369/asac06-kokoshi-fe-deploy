@@ -14,22 +14,26 @@ import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tabs } from "@radix-ui/react-tabs";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import NowTomorrowDate from "@/feature/NowTomorrowDate";
+// import NowTomorrowDate from "@/feature/NowTomorrowDate";
 import CalendarPage2 from "@/components/CalendarPage2";
 import { Room } from "@/components/accommodation/accommodationRoomList";
 import { ReviewList } from "@/app/accommodation/[accommodationId]/review/page";
 import { RatingStars } from "@/components/RatingStar";
+
+import { formattedMonthToDay } from "@/feature/DateFormat";
+import { useCalendar } from "@/feature/CalendarContext";
 
 export default function AccommodationDetail({
   params,
 }: {
   params: { accommodationId: string };
 }) {
-  const [calendar, setCalendar] = useState(NowTomorrowDate());
+  // const [calendar, setCalendar] = useState(NowTomorrowDate());
   const [onCalendar, setOnCalendar] = useState(false);
-  const [adultNumber, setAdultNumber] = useState(1);
-  const [kidNumber, setKidNumber] = useState(0);
+  // const [adultNumber, setAdultNumber] = useState(1);
+  // const [kidNumber, setKidNumber] = useState(0);
 
+  const { checkInDate, checkOutDate, adultNumber } = useCalendar();
   // 이미지 총 갯수 필요
   const dummy = {
     title: "해변 리조트",
@@ -105,13 +109,13 @@ export default function AccommodationDetail({
       {onCalendar ? (
         <div className="relative flex h-full w-[360px] flex-col bg-white px-[20px]">
           <CalendarPage2
-            setAdultNumber={setAdultNumber}
-            setCalendar={setCalendar}
-            setKidNumber={setKidNumber}
+            // setAdultNumber={setAdultNumber}
+            // setCalendar={setCalendar}
+            // setKidNumber={setKidNumber}
             setOnCalendar={setOnCalendar}
-            calendar={calendar}
-            adultNumber={adultNumber}
-            kidNumber={kidNumber}
+            // calendar={calendar}
+            // adultNumber={adultNumber}
+            // kidNumber={kidNumber}
           />
         </div>
       ) : (
@@ -217,7 +221,7 @@ export default function AccommodationDetail({
                       className="ml-[17px]"
                     />
                     <span className="ml-[8px] h-[20px] text-[13px] font-medium tracking-[-0.45px]">
-                      {calendar}
+                      {formattedMonthToDay(checkInDate, checkOutDate)}
                     </span>
                   </button>
                   <button

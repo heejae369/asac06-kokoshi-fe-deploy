@@ -1,39 +1,32 @@
 import CustomFetch from "@/feature/CustomFetch";
-import CurrentDate from "@/feature/signup/CurrentDate";
 
-export default function SignupPostApi({
-  setShowValidation,
+export default async function SignupPostApi({
   name,
   email,
   pw,
-  setUnusedEmail,
+  newErrors,
+  setErrors,
 }) {
-  setShowValidation(false);
   try {
-    CustomFetch("", "POST", {
+    const response = await CustomFetch("/users/signup", "POST", {
       userUsername: name,
       userEmail: email,
       userPassword: pw,
-      createdAt: CurrentDate(),
-    })
-      .then((response) => response?.json())
-      .then((res) => {
-        if (res.status === 0) {
-          console.log(res.message);
-          setUnusedEmail(true);
-        } else if (res.status === 1) {
-          console.log(res.message);
-        } else if (res.status === 2) {
-          console.log(res.message);
-          setUnusedEmail(false);
-        } else if (res.status === 3) {
-          console.log(res.message);
-        }
-        setShowValidation(true);
-      });
+    });
+
+    const res = await response.json();
+
+    if (res.status) {
+      console.log(res.message);
+      newErrors.unusedEmail = "";
+    } else {
+      console.log(res.message);
+      newErrors.unusedEmail = res.message;
+    }
+    setErrors({ ...newErrors });
   } catch (error) {
     console.error("Error:", error);
-    setShowValidation(true);
-    setUnusedEmail(false);
+    newErrors.unusedEmail = "error";
+    setErrors({ ...newErrors });
   }
 }

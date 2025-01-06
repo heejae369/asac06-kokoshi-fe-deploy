@@ -6,8 +6,13 @@ import xIcon from "@/assets/xIcon.png";
 import CustomCheckbox from "@/feature/CustomCheckBox";
 import FilterPriceSlide from "@/feature/FilterPriceSlide";
 
-export default function SearchFilter({ setOnFilter }) {
-  const [slideRange, setSlideRange] = useState([10000, 300000]);
+export default function SearchFilter({
+  setOnFilter,
+  setFilterApply,
+  filterApply,
+}) {
+  const [slideRange, setSlideRange] = useState(filterApply.priceRange);
+  const [checkedKeywords, setCheckedKeywords] = useState(filterApply.keyword);
 
   const filterList = [
     "전체",
@@ -20,23 +25,23 @@ export default function SearchFilter({ setOnFilter }) {
   ];
 
   const keyword = [
-    "여름 특가",
+    "호텔",
     "수영장",
     "조식",
-    "야외 수영장",
+    "게스트하우스",
     "주차 가능",
     "바다 전망",
-    "PC룸",
+    "해변",
   ];
 
   const [checkedItems, setCheckedItems] = useState({
-    전체: true,
-    호텔: false,
-    펜션: false,
-    풀빌라: false,
-    캠핑: false,
-    게스트하우스: false,
-    리조트: false,
+    전체: filterApply.accommodationCategory.includes("전체"),
+    호텔: filterApply.accommodationCategory.includes("호텔"),
+    펜션: filterApply.accommodationCategory.includes("펜션"),
+    풀빌라: filterApply.accommodationCategory.includes("풀빌라"),
+    캠핑: filterApply.accommodationCategory.includes("캠핑"),
+    게스트하우스: filterApply.accommodationCategory.includes("게스트하우스"),
+    리조트: filterApply.accommodationCategory.includes("리조트"),
   });
 
   const handleXIcon = () => {
@@ -76,6 +81,42 @@ export default function SearchFilter({ setOnFilter }) {
     return false;
   };
 
+  // 필터 적용 시 체크된 항목들만 부모에게 전달
+  const handleApplyFilter = async () => {
+    const selectedCategories = Object.keys(checkedItems).filter(
+      (key) => checkedItems[key] && key !== "전체"
+    );
+    setFilterApply({
+      accommodationCategory: selectedCategories,
+      priceRange: slideRange,
+      keyword: checkedKeywords,
+    });
+    setOnFilter(false);
+  };
+
+  const checkKeyword = (keyword) => {
+    setCheckedKeywords(
+      (prev) =>
+        prev.includes(keyword)
+          ? prev.filter((item) => item !== keyword) // 이미 선택된 키워드면 제거
+          : [...prev, keyword] // 새로 선택된 키워드는 추가
+    );
+  };
+
+  const handleReset = () => {
+    setSlideRange([10000, 300000]);
+    setCheckedKeywords([]);
+    setCheckedItems({
+      전체: true,
+      호텔: false,
+      펜션: false,
+      풀빌라: false,
+      캠핑: false,
+      게스트하우스: false,
+      리조트: false,
+    });
+  };
+
   return (
     <>
       <div className="relative h-[82px] font-semibold">
@@ -87,7 +128,10 @@ export default function SearchFilter({ setOnFilter }) {
             <span className="text-[16px] tracking-[-0.8px]">필터</span>
           </div>
           <div>
-            <button className="text-[14px] tracking-[-1px] text-[#8728FF]">
+            <button
+              className="text-[14px] tracking-[-1px] text-[#8728FF]"
+              onClick={handleReset}
+            >
               초기화
             </button>
           </div>
@@ -114,7 +158,12 @@ export default function SearchFilter({ setOnFilter }) {
       <FilterTitle title={"키워드"} />
       <div className="mt-[19px] flex flex-wrap gap-[10px] text-[14px] tracking-[-0.4px]">
         {keyword.map((keyword) => (
-          <KeywordButton key={keyword} text={keyword} />
+          <KeywordButton
+            key={keyword}
+            text={keyword}
+            isActive={checkedKeywords.includes(keyword)}
+            checkKeyword={checkKeyword}
+          />
         ))}
       </div>
       <FilterTitle title={"가격대"} />
@@ -128,7 +177,10 @@ export default function SearchFilter({ setOnFilter }) {
         <span>{slideRange[0] / 10000}만원</span>
         <span>{slideRange[1] / 10000}만원</span>
       </div>
-      <button className="fixed bottom-0 mb-[16px] h-[48px] w-[320px] rounded-[7px] bg-[#8728FF] text-[16px] tracking-[-0.5px] text-white">
+      <button
+        className="fixed bottom-0 mb-[16px] h-[48px] w-[320px] rounded-[7px] bg-[#8728FF] text-[16px] tracking-[-0.5px] text-white"
+        onClick={handleApplyFilter}
+      >
         필터 적용하기
       </button>
     </>
@@ -136,9 +188,12 @@ export default function SearchFilter({ setOnFilter }) {
 }
 
 // 키워드 버튼 컴포넌트
-const KeywordButton = ({ text }) => {
+const KeywordButton = ({ text, isActive, checkKeyword }) => {
   return (
-    <button className="rounded-[21px] border border-[#CCCCCC] px-[10.5px] py-[9px]">
+    <button
+      className={`rounded-[21px] border ${isActive ? "border-[#8728FF]" : "border-[#CCCCCC]"} px-[10.5px] py-[9px]`}
+      onClick={() => checkKeyword(text)}
+    >
       <span>{text}</span>
     </button>
   );
