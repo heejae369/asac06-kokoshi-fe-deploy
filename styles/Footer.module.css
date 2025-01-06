@@ -1,0 +1,55 @@
+/* Footer 스타일 */
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 360px; /* 고정된 너비 */
+  background-color: #ffffff;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 100;
+  padding: 10px 0;
+  margin: 0 auto; /* 화면 가운데 정렬 */
+  left: 50%; /* 화면 가운데 배치 */
+  transform: translateX(-50%); /* 화면 가운데 정렬 보정 */
+}
+
+.nav {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.navItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: #888; /* 기본 텍스트 색상 */
+  font-size: 12px;
+}
+
+.navItem span {
+  margin-top: 4px;
+  color: #888; /* 기본 텍스트 색상 */
+}
+
+/* 아이콘 기본 스타일 */
+.icon {
+  width: 24px;
+  height: 24px;
+  filter: grayscale(100%); /* 기본 상태: 흑백 */
+  transition: all 0.3s ease; /* 부드러운 색상 전환 */
+}
+
+/* 활성화된 아이콘 */
+.activeIcon {
+  filter: grayscale(0); /* 활성화 상태: 컬러 */
+}
+
+/* 활성화된 텍스트 */
+.activeText {
+  color: #7a4ff6; /* 활성화된 텍스트 색상 */
+  font-weight: bold;
+}

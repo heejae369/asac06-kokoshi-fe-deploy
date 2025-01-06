@@ -1,0 +1,113 @@
+.container {
+  font-family: "Noto Sans KR", sans-serif;
+  padding: 16px;
+  background-color: #fff;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  background-color: #f5f5f5;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.greeting p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.username {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.editProfile {
+  font-size: 14px;
+  color: #7a4ff6;
+  text-decoration: none;
+}
+
+.infoBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+}
+
+.infoItem {
+  text-align: center;
+}
+
+.label {
+  font-size: 12px;
+  color: #888;
+}
+
+.value {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 4px;
+}
+
+.divider {
+  width: 1px;
+  background-color: #eee;
+  height: 32px;
+}
+
+.menuList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 16px;
+}
+
+.menuList li {
+  border-bottom: 1px solid #eee;
+  padding: 12px 0;
+}
+
+.menuList a {
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+  display: block;
+}
+
+.eventBanner {
+  background-color: #e6f7ff;
+  border-radius: 8px;
+  text-align: center;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.eventBanner h2 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #7a4ff6;
+  margin-bottom: 8px;
+}
+
+.eventBanner p {
+  font-size: 14px;
+  color: #555;
+}

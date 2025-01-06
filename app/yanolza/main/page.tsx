@@ -1,6 +1,9 @@
 import Head from "next/head";
 import Image from "next/image";
 import styles from "@/styles/Home.module.css";
+import Footer from "@/components/Footer";
+import IconButtons from "@/components/IconButtons";
+import search from "@/assets/icon/search.png";
 
 export default function Home() {
   return (
@@ -10,6 +13,8 @@ export default function Home() {
         <meta name="description" content="Travel Booking App" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      {/* 흐린 배경 텍스트 */}
+      <div className={styles.backgroundText}>Kokoshi</div>
 
       <header className={styles.header}>
         <h1 className={styles.logo}>Kokoshi</h1>
@@ -18,26 +23,15 @@ export default function Home() {
 
       <main className={styles.main}>
         <div className={styles.searchBar}>
-          <input type="text" placeholder="어떤 숙소를 찾으시나요?" />
+          <img src={search.src} alt="검색" className={styles.searchIcon} />
+          <input
+            type="text"
+            className={styles.input}
+            placeholder="어떤 숙소를 찾으시나요?"
+          />
         </div>
 
-        <div className={styles.categoryContainer}>
-          {[
-            "모텔",
-            "호텔",
-            "펜션/풀빌라",
-            "캠핑",
-            "게스트하우스",
-            "레저/티켓",
-            "해외숙소",
-            "항공",
-          ].map((category, index) => (
-            <div key={index} className={styles.category}>
-              <div className={styles.icon}></div>
-              <span>{category}</span>
-            </div>
-          ))}
-        </div>
+        <IconButtons />
 
         <section className={styles.eventSection}>
           <div className={styles.eventBanner}>
@@ -67,15 +61,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className={styles.footer}>
-        <nav>
-          <a href="#">지도</a>
-          <a href="#" className={styles.active}>
-            홈
-          </a>
-          <a href="#">마이페이지</a>
-        </nav>
-      </footer>
+      <Footer />
     </div>
   );
 }
