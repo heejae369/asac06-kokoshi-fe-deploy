@@ -12,6 +12,7 @@ export default function SearchFilter({
   filterApply,
 }) {
   const [slideRange, setSlideRange] = useState(filterApply.priceRange);
+  const [checkedKeywords, setCheckedKeywords] = useState(filterApply.keyword);
 
   const filterList = [
     "전체",
@@ -24,13 +25,13 @@ export default function SearchFilter({
   ];
 
   const keyword = [
-    "여름 특가",
+    "호텔",
     "수영장",
     "조식",
-    "야외 수영장",
+    "게스트하우스",
     "주차 가능",
     "바다 전망",
-    "PC룸",
+    "해변",
   ];
 
   const [checkedItems, setCheckedItems] = useState({
@@ -81,15 +82,39 @@ export default function SearchFilter({
   };
 
   // 필터 적용 시 체크된 항목들만 부모에게 전달
-  const handleApplyFilter = () => {
+  const handleApplyFilter = async () => {
     const selectedCategories = Object.keys(checkedItems).filter(
       (key) => checkedItems[key] && key !== "전체"
     );
     setFilterApply({
       accommodationCategory: selectedCategories,
       priceRange: slideRange,
+      keyword: checkedKeywords,
     });
     setOnFilter(false);
+  };
+
+  const checkKeyword = (keyword) => {
+    setCheckedKeywords(
+      (prev) =>
+        prev.includes(keyword)
+          ? prev.filter((item) => item !== keyword) // 이미 선택된 키워드면 제거
+          : [...prev, keyword] // 새로 선택된 키워드는 추가
+    );
+  };
+
+  const handleReset = () => {
+    setSlideRange([10000, 300000]);
+    setCheckedKeywords([]);
+    setCheckedItems({
+      전체: true,
+      호텔: false,
+      펜션: false,
+      풀빌라: false,
+      캠핑: false,
+      게스트하우스: false,
+      리조트: false,
+    });
   };
 
   return (
@@ -103,7 +128,10 @@ export default function SearchFilter({
             <span className="text-[16px] tracking-[-0.8px]">필터</span>
           </div>
           <div>
-            <button className="text-[14px] tracking-[-1px] text-[#8728FF]">
+            <button
+              className="text-[14px] tracking-[-1px] text-[#8728FF]"
+              onClick={handleReset}
+            >
               초기화
             </button>
           </div>
@@ -130,7 +158,12 @@ export default function SearchFilter({
       <FilterTitle title={"키워드"} />
       <div className="mt-[19px] flex flex-wrap gap-[10px] text-[14px] tracking-[-0.4px]">
         {keyword.map((keyword) => (
-          <KeywordButton key={keyword} text={keyword} />
+          <KeywordButton
+            key={keyword}
+            text={keyword}
+            isActive={checkedKeywords.includes(keyword)}
+            checkKeyword={checkKeyword}
+          />
         ))}
       </div>
       <FilterTitle title={"가격대"} />
@@ -155,9 +188,12 @@ export default function SearchFilter({
 }
 
 // 키워드 버튼 컴포넌트
-const KeywordButton = ({ text }) => {
+const KeywordButton = ({ text, isActive, checkKeyword }) => {
   return (
-    <button className="rounded-[21px] border border-[#CCCCCC] px-[10.5px] py-[9px]">
+    <button
+      className={`rounded-[21px] border ${isActive ? "border-[#8728FF]" : "border-[#CCCCCC]"} px-[10.5px] py-[9px]`}
+      onClick={() => checkKeyword(text)}
+    >
       <span>{text}</span>
     </button>
   );

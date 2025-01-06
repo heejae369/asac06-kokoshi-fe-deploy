@@ -1,22 +1,28 @@
 export default async function getSearchResult(
-  keyword,
+  searchKeyword,
   checkInDate,
   checkOutDate,
   filterApply
 ) {
   console.log(
     "keyword : ",
-    keyword,
-    "checkInDate : ",
+    searchKeyword,
+    "\ncheckInDate : ",
     checkInDate,
-    "checkOutDate : ",
+    "\ncheckOutDate : ",
     checkOutDate,
-    "filterApply : ",
-    filterApply.accommodationCategory
+    "\naccommodationCategory : ",
+    filterApply.accommodationCategory,
+    "\nminPrice : ",
+    filterApply.priceRange[0],
+    "\nmaxPrice : ",
+    filterApply.priceRange[1],
+    "\nkeyword : ",
+    filterApply.keyword
   );
   try {
     const response = await fetch(
-      `http://localhost:8080/api/accommodation/searchResult/${keyword}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&accommodationCategory=${filterApply.accommodationCategory}&minPrice=${filterApply.priceRange[0]}&maxPrice=${filterApply.priceRange[1]}`,
+      `http://localhost:8080/api/accommodation/searchResult/${searchKeyword}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&accommodationCategory=${filterApply.accommodationCategory}&minPrice=${filterApply.priceRange[0]}&maxPrice=${filterApply.priceRange[1]}&keyword=${filterApply.keyword}`,
       {
         method: "GET",
         headers: {

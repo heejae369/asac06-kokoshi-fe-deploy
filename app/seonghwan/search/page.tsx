@@ -23,6 +23,7 @@ export default function Search() {
   const [filterApply, setFilterApply] = useState({
     accommodationCategory: ["전체"],
     priceRange: [10000, 300000],
+    keyword: [],
   });
 
   const fetchData = async (text) => {
@@ -60,6 +61,10 @@ export default function Search() {
     }
   }, [array]);
 
+  useEffect(() => {
+    fetchData(searchText);
+  }, [filterApply]);
+
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100 font-sans tracking-negative">
       <div className="w-[360px] bg-white relative flex flex-col h-full px-[20px]">
@@ -75,6 +80,8 @@ export default function Search() {
                   setOnFilter={setOnFilter}
                   setFilterApply={setFilterApply}
                   filterApply={filterApply}
+                  fetchData={fetchData}
+                  searchText={searchText}
                 />
               </>
             ) : (
