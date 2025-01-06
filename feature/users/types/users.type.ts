@@ -1,7 +1,7 @@
 export interface UsePasswordResetEmailMutationArg {
   requestPwResetEmail: requestPwResetEmail;
 }
-export type UsePasswordResetEmailMutationRes = {};
+export type UsePasswordResetEmailMutationRes = any;
 
 export interface requestPwResetEmail {
   email: string;
@@ -11,7 +11,7 @@ export interface requestPwResetEmail {
 export interface UsePasswordResetMutationArg {
   requestPwReset: requestPwReset;
 }
-export type UsePasswordResetMutationRes = {};
+export type UsePasswordResetMutationRes = any;
 
 export interface requestPwReset {
   uuid: string;
