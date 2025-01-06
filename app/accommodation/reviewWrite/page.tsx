@@ -42,13 +42,11 @@ const Review = () => {
       alert("별점과 후기를 모두 작성해주세요.");
       return;
     }
-
     console.log({
       rating,
       reviewText,
       images,
     });
-
     alert("후기가 등록되었습니다!");
   };
 
@@ -74,7 +72,12 @@ const Review = () => {
         <p className={styles.ratingInfo}>숙소에 대한 별점을 눌러주세요.</p>
       </div>
 
+      <hr className={styles.hr} />
+
       {/* 후기 작성 입력 */}
+      <div className={styles.reviewInput}>
+        <p>후기 작성하기</p>
+      </div>
       <textarea
         className={styles.textarea}
         placeholder="숙소에 대한 상세한 후기를 입력해주세요."

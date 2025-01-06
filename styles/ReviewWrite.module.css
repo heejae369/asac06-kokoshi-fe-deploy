@@ -9,6 +9,7 @@
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 16px;
+  text-align: center;
 }
 
 .ratingSection {
@@ -36,12 +37,29 @@
 }
 
 .filledStar {
-  color: #ffd700;
+  color: #693ad2;
 }
 
 .ratingInfo {
   font-size: 14px;
   color: #555;
+}
+
+.hr {
+  width: 320px;
+  height: 0px;
+  left: 20px;
+  top: 223px;
+  border: 1px solid #e5e5e5;
+  margin-bottom: 30px;
+}
+.reviewInput {
+  margin-top: 50px;
+  /* 후기 작성하기 */
+  font-family: "Noto Sans KR";
+  font-style: normal;
+  /* Black */
+  color: #000000;
 }
 
 .textarea {
