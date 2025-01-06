@@ -2,11 +2,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import { api } from "./api";
 import userReducer from "./slice/userSlice";
 import modalReducer from "./slice/modalSlice";
+import calendarReducer from "./slice/calendarSlice";
 
 export const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
     user: userReducer,
+    calendar: calendarReducer,
     modal: modalReducer,
   },
   middleware: (getDefaultMiddleware) =>

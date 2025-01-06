@@ -3,93 +3,50 @@
 import grayDownIcon from "@/assets/grayDownIcon.png";
 import filterIcon from "@/assets/filterIcon.png";
 import Image from "next/image";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import hotel1 from "@/components/mock/seonghwan/hotel1.png";
 import starFull from "@/assets/starFull.png";
 import starEmpty from "@/assets/starEmpty.png";
 import modalCss from "@/styles/modal.module.css";
 import barImage from "@/assets/barImage.png";
 import checkImage from "@/assets/checkImage.png";
+import getSearchResult from "@/feature/fetch/SearchResult";
+import { formattedRequestDate } from "@/feature/DateFormat";
+import { dataArray } from "@/feature/DataArray";
+import { useRouter } from "next/navigation";
 
 export default function SearchResult({
-  calendar,
-  adultNumber,
-  kidNumber,
+  // searchText,
+  // adultNumber,
+  // kidNumber,
   setOnFilter,
+  searchResultData,
+  // setSearchResultData,
+  array,
+  setArray,
 }) {
   const [modal, setModal] = useState(false);
-  const [array, setArray] = useState("코코시 추천순");
   const [selectedArray, setSelectedArray] = useState(array);
   const modalBackground = useRef();
 
-  const [dummyData, setDummyData] = useState([
-    {
-      image: hotel1,
-      tag: "호텔",
-      title: "김포 마리나베이 호텔",
-      star: 4.5,
-      reviewCount: 1136,
-      distance: "김포공항역 3분",
-      price: 75000,
-    },
-    {
-      image: hotel1, // 다른 이미지로 변경 가능
-      tag: "호텔",
-      title: "서울 강남 파크호텔",
-      star: 3.8,
-      reviewCount: 874,
-      distance: "강남역 5분",
-      price: 95000,
-    },
-    {
-      image: hotel1, // 다른 이미지로 변경 가능
-      tag: "리조트",
-      title: "제주 해변 리조트",
-      star: 4.2,
-      reviewCount: 1352,
-      distance: "제주 공항 10분",
-      price: 120000,
-    },
-    {
-      image: hotel1, // 다른 이미지로 변경 가능
-      tag: "호텔",
-      title: "부산 해운대 호텔",
-      star: 4.0,
-      reviewCount: 562,
-      distance: "해운대역 7분",
-      price: 85000,
-    },
-    {
-      image: hotel1, // 다른 이미지로 변경 가능
-      tag: "호텔",
-      title: "대전 엑스포 호텔",
-      star: 4.7,
-      reviewCount: 998,
-      distance: "대전역 4분",
-      price: 65000,
-    },
-  ]);
+  const router = useRouter();
+
+  const handlePageRouter = () => {
+    router.push("/accommodation/1");
+  };
 
   const modalOpen = () => {
     setModal(true);
   };
 
+  useEffect(() => {
+    console.log("정렬 기준 변경됨:", array);
+    console.log("정렬된 데이터:", searchResultData);
+  }, [array, searchResultData]);
+
   const modalClose = () => {
     setArray(selectedArray == "" ? "코코시 추천순" : selectedArray);
     setModal(false);
-
-    const sortedData = [...dummyData]; // 데이터 복사
-    if (array === "리뷰 많은 순") {
-      sortedData.sort((a, b) => b.reviewCount - a.reviewCount); // 리뷰 개수 기준 내림차순 정렬
-    } else if (array === "평점 높은 순") {
-      sortedData.sort((a, b) => b.star - a.star); // 평점 기준 내림차순 정렬
-    } else if (array === "낮은 가격 순") {
-      sortedData.sort((a, b) => b.price - a.price); // 가격 기준 내림차순 정렬
-    } else if (array === "높은 가격 순") {
-      sortedData.sort((a, b) => a.price - b.price); // 가격 기준 오름차순 정렬
-    }
-
-    setDummyData(sortedData); // 정렬된 데이터로 상태 업데이트
   };
 
   const handleSelectedArray = (array) => {
@@ -130,8 +87,12 @@ export default function SearchResult({
         </button>
       </div>
       <div className="flex flex-col gap-[15px]">
-        {dummyData.map((item, index) => (
-          <SearchProductList key={index} dummy={item} />
+        {searchResultData.map((item, index) => (
+          <SearchProductList
+            key={index}
+            dummy={item}
+            handlePageRouter={handlePageRouter}
+          />
         ))}
       </div>
       {modal && (
@@ -188,7 +149,11 @@ export default function SearchResult({
   );
 }
 
-const SearchProductList = ({ dummy }) => {
+const SearchProductList = ({ dummy, handlePageRouter }) => {
+  if (!dummy) {
+    return null; // 데이터가 없으면 아무것도 렌더링하지 않음
+  }
+
   // 별점 계산 함수
   const renderStars = (rating: number) => {
     const roundedRating = Math.round(rating); // 반올림된 별의 개수
@@ -229,32 +194,37 @@ const SearchProductList = ({ dummy }) => {
         <div className="size-[110px]">
           <Image
             src={dummy.image}
+            // src={"/hotel1.png"}
             alt="productList"
             width={110}
             height={110}
             className="size-[110px]"
+            onClick={() => handlePageRouter()}
           />
         </div>
         <div className="ml-[10px] flex grow flex-col tracking-[-0.5px]">
           <div className="flex items-center">
             <div className="h-[18px] rounded-[9px] border border-[#8728FF] px-[9px] py-[2px] text-[10px] text-[#8728FF]">
-              {dummy.tag}
+              {dummy.accommodationCategory}
             </div>
           </div>
           <div className="mt-[3px] flex font-bold">
-            <span className="text-[14px]">{dummy.title}</span>
+            <span className="text-[14px]">{dummy.name}</span>
           </div>
           <div className="mt-px flex items-center">
-            <span className="text-[14px] ">{dummy.star}</span>
+            <span className="text-[14px] ">{dummy.rating}</span>
             <span className="ml-[5px] flex gap-[2px] text-[14px]">
-              {renderStars(dummy.star)}
+              {renderStars(dummy.rating)}
             </span>
             <span className="ml-[6px] text-[12px] text-[#999999]">
               {`(${dummy.reviewCount.toLocaleString()})`}
             </span>
           </div>
           <div className="mt-[2px] flex items-center">
-            <span className="text-[10px] text-[#7F7F7F]">{dummy.distance}</span>
+            <span className="text-[10px] text-[#7F7F7F]">
+              공덕역 3분
+              {/* {dummy.distance} */}
+            </span>
           </div>
           <div className="mr-[5px] mt-[8px] flex items-center justify-end">
             <span className="text-[16px] font-bold">
