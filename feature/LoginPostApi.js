@@ -24,12 +24,13 @@ export default function LoginPostApi({
           console.log(res.message);
           setSignUp(false);
           setSamePassword(false);
+          setShowValidation(true);
         } else if (res.status === 2) {
           console.log(res.message);
           setSignUp(true);
           setSamePassword(false);
+          setShowValidation(true);
         }
-        setShowValidation(true);
       });
   } catch (error) {
     console.error("Error:", error);
