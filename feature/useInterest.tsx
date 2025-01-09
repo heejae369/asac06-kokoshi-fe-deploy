@@ -14,7 +14,7 @@ const interests = [
 
 export const useInterest = () => {
   const router = useRouter();
-  const [selectedInterest, setSelectedInterest] = useState([]);
+  const [selectedInterest, setSelectedInterest] = useState(["호캉스"]);
 
   const handleSelect = (interest) => {
     if (selectedInterest.includes(interest)) {

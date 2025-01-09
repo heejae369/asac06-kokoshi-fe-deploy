@@ -71,8 +71,7 @@ export const useNickname = () => {
       );
       setNickname(randomNickname);
     } else {
-      alert(`닉네임이 저장되었습니다: ${nickname}`);
-      console.log("닉네임:", nickname);
+      console.log(`닉네임: ${nickname}`);
     }
     // 닉네임 유효성이 통과되면 로컬 스토리지에 저장
     saveNicknameToLocalStorage(nickname);

@@ -128,17 +128,17 @@ export default function FindId() {
   }, [isTimerActive]);
 
   return (
-    <div className="flex h-screen w-full justify-center bg-gray-100 font-sans tracking-negative">
-      <div className="w-[360px] bg-white relative">
+    <div className="tracking-negative flex h-screen w-full justify-center bg-gray-100 font-sans">
+      <div className="relative w-[360px] bg-white">
         <LoginHeader titleText={"아이디 찾기"} prevUrl={"/users/login"} />
-        <div className="absolute top-36 left-5 text-[15px]">
+        <div className="absolute left-5 top-36 text-[15px]">
           아이디를 찾기 위해서
           <br />
           <strong>이름과 휴대폰 번호</strong>를 입력해주세요.
         </div>
-        <div className="absolute top-52 left-5 font-semibold">
+        <div className="absolute left-5 top-52 font-semibold">
           <input
-            className="w-80 h-[55px] mb-1.5 p-4 bg-gray-100 rounded "
+            className="mb-1.5 h-12 w-80 rounded bg-gray-100 p-4 "
             placeholder="이름"
             value={name}
             onChange={handleNameChange}
@@ -146,7 +146,7 @@ export default function FindId() {
           {certification ? (
             <>
               <input
-                className="w-80 h-[55px] mb-1.5 p-4 bg-gray-100 rounded text-sm"
+                className="mb-1.5 h-12 w-80 rounded bg-gray-100 p-4 text-sm"
                 placeholder="휴대폰 번호"
                 value={phone}
                 onChange={handlePhoneChange}
@@ -155,8 +155,8 @@ export default function FindId() {
                 <div className="text-sm text-red-500">{errorMessage}</div>
               )}
               <button
-                className={`w-80 h-12 mt-5 rounded text-white text-sm ${
-                  isSendButtonValid ? "bg-[#8728ff]" : "bg-gray-400"
+                className={`mt-5 h-12 w-80 rounded text-sm text-white ${
+                  isSendButtonValid ? "bg-[#8728ff]" : "bg-gray-300"
                 }`}
                 onClick={handleCodeRequest}
                 disabled={!isSendButtonValid}
@@ -167,24 +167,24 @@ export default function FindId() {
           ) : (
             <>
               <input
-                className="w-[235px] h-14 mb-1.5 p-4 bg-gray-100 rounded text-sm"
+                className="mb-1.5 h-14 w-[235px] rounded bg-gray-100 p-4 text-sm"
                 value={phone}
                 disabled
               />
               <button
-                className="w-[80px] h-14 ml-2 bg-[#8728ff] text-white rounded"
+                className="ml-2 h-14 w-[80px] rounded bg-[#8728ff] text-white"
                 onClick={handleMessage}
               >
                 재전송
               </button>
               <div className="relative">
                 <input
-                  className="w-80 h-14 p-4 mb-1.5 bg-gray-100 rounded text-sm"
+                  className="mb-1.5 h-14 w-80 rounded bg-gray-100 p-4 text-sm"
                   placeholder="인증번호 입력"
                   value={verificationCode}
                   onChange={handleVerificationCode}
                 />
-                <span className="absolute top-4 right-10 text-[#8728ff]">
+                <span className="absolute right-10 top-4 text-[#8728ff]">
                   {formatTimer(timer)}
                 </span>
               </div>
@@ -192,7 +192,7 @@ export default function FindId() {
                 <div className="text-sm text-red-500">{errorMessage}</div>
               )}
               <button
-                className={`w-80 h-12 mt-6 rounded text-white ${
+                className={`mt-6 h-12 w-80 rounded text-white ${
                   isOkButtonValid ? "bg-[#8728ff]" : "bg-gray-400"
                 }`}
                 onClick={checkCode}
@@ -205,7 +205,7 @@ export default function FindId() {
         </div>
       </div>
       {!certification && (
-        <div className="w-80 h-[42px] flex items-center justify-center fixed bottom-10 bg-gray-800 text-white text-xs p-4 rounded-md opacity-70">
+        <div className="fixed bottom-10 flex h-[42px] w-80 items-center justify-center rounded-md bg-gray-800 p-4 text-xs text-white opacity-70">
           {message}
         </div>
       )}

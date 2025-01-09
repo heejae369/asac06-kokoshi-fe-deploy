@@ -32,9 +32,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
+  padding: 4px;
+  padding-bottom: 10px;
+  border: 1px solid #e9d8ff;
+  border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s;
 }
@@ -44,8 +45,9 @@
 }
 
 .card.active {
-  border: 2px solid #8b00ff;
+  border: 1px solid #8b00ff;
   background-color: #f9f0ff;
+  font-weight: bold;
 }
 
 .icon {
@@ -54,12 +56,14 @@
 }
 
 .label {
+  text-align: center;
   font-size: 14px;
-  color: #333;
+  width: 88px;
+  color: #8728ff;
 }
 
 .nextButton {
-  width: 100%;
+  width: 320px;
   padding: 12px;
   background-color: #8b00ff;
   color: white;
@@ -68,6 +72,8 @@
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s;
+  position: fixed; /* 화면에 고정 */
+  bottom: 80px; /* 화면의 바닥에서 10px 위 */
 }
 
 .nextButton:hover {
