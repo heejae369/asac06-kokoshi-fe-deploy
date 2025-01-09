@@ -2,7 +2,8 @@
 .footer {
   position: fixed;
   bottom: 0;
-  width: 360px; /* 고정된 너비 */
+  width: 360px;
+  height: 60px; /* 고정된 너비 */
   background-color: #ffffff;
   border-top: 1px solid #eee;
   display: flex;
@@ -37,8 +38,8 @@
 
 /* 아이콘 기본 스타일 */
 .icon {
-  width: 24px;
-  height: 24px;
+  width: 15px;
+  height: 15px;
   filter: grayscale(100%); /* 기본 상태: 흑백 */
   transition: all 0.3s ease; /* 부드러운 색상 전환 */
 }

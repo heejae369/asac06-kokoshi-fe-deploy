@@ -1,0 +1,113 @@
+.container {
+  width: 360px; /* 가로 고정 */
+  margin: 0 auto; /* 중앙 정렬 */
+  padding: 16px;
+  font-family: Arial, sans-serif;
+}
+
+/* 상단 제목 스타일 */
+.header {
+  margin-bottom: 30px;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+  text-align: center; /* 가운데 정렬 */
+}
+
+/* 배너 스타일 */
+.banner {
+  background-color: #f5f5f5;
+  padding: 16px;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.banner p:first-child {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.banner p:last-child {
+  font-size: 14px;
+  color: #888;
+}
+
+/* 지역 선택 섹션 */
+.regionSection {
+  margin-bottom: 20px;
+}
+.regionSection h2 {
+  font-weight: bold;
+}
+
+.regionList {
+  display: grid; /* Grid 레이아웃 */
+  grid-template-columns: repeat(3, 1fr); /* 가로로 3개씩 */
+  gap: 16px; /* 아이템 간 간격 */
+  justify-items: center; /* 아이템 중앙 정렬 */
+}
+
+.regionItem {
+  text-align: center;
+}
+
+.regionImage {
+  border-radius: 50%; /* 원형 이미지 */
+  width: 60px; /* 고정 크기 */
+  height: 60px;
+  object-fit: cover; /* 이미지 비율 유지 */
+  margin-bottom: 8px;
+}
+
+/* 지금 핫한 숙소 섹션 */
+.hotSection {
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.hotelList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.hotelCard {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.hotelImage {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.hotelInfo {
+  padding: 8px;
+}
+
+.hotelInfo h3 {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.hotelInfo p {
+  margin: 4px 0;
+}
+
+.rating {
+  color: #ffa726;
+}
+
+.price {
+  font-weight: bold;
+  color: #7a4ff6;
+}

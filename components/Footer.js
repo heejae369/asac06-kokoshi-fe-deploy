@@ -21,7 +21,7 @@ const Footer = () => {
           >
             <img
               src={map.src}
-              alt="지도"
+              alt="내위치"
               className={`${styles.icon} ${
                 pathname === "/seonghwan/map" ? styles.activeIcon : ""
               }`}
