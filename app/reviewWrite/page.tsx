@@ -7,7 +7,7 @@ const Review = () => {
   const [rating, setRating] = useState<number>(0); // 별점 상태
   const [reviewText, setReviewText] = useState<string>(""); // 리뷰 텍스트 상태
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
-  const [images, setImages] = useState<File[]>([]);
+  const [images, setImages] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false); // 업로드된 이미지 상태
 
   // 별점 설정
@@ -57,8 +57,8 @@ const Review = () => {
       const response = await fetch("http://localhost:8080/api/review", {
         method: "POST",
         body: formData,
-        // FormData를 사용할 때는 Content-Type 헤더를 설정하지 않습니다.
-        // 브라우저가 자동으로 multipart/form-data로 설정합니다.
+        // FormData를 사용할 때는 Content-Type 헤더를 설정안함
+        // 브라우저가 자동으로 multipart/form-data로 설정
       });
       const result = await response.json();
       console.log("Success:", result);
