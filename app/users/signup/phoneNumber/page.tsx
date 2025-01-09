@@ -2,13 +2,13 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import LoginHeader from "@/components/LoginHeader";
 import modal from "@/styles/modal.module.css";
 import Image from "next/image";
 import barImage from "@/assets/barImage.png";
 import checkImage from "@/assets/checkImage.png";
 import { formatTimer } from "@/feature/FormatText";
 import CustomFetch from "@/feature/CustomFetch";
+import BackAndTitle from "@/components/BackAndTitle";
 
 export default function FindId() {
   const [certification, setCertification] = useState(true);
@@ -143,34 +143,34 @@ export default function FindId() {
   };
 
   return (
-    <div className="tracking-negative flex h-screen w-full justify-center bg-gray-100 font-sans">
-      <div className="relative w-[360px] bg-white">
-        <LoginHeader
-          titleText={"휴대폰 번호를\n입력해주세요."}
-          prevUrl={"/users/login"}
+    <div className="flex h-screen w-full justify-center bg-gray-100">
+      <div className="w-[360px] bg-white px-5">
+        <BackAndTitle
+          url={"/users/signup"}
+          title={"휴대폰 번호를\n입력해주세요."}
         />
-        <div className="relative left-5 top-[109px] w-[320px] font-semibold">
+        <div className="relative w-[320px] font-semibold">
           <input
-            className="mb-1.5 h-[55px] w-80 rounded bg-gray-100 p-4 "
+            className="mb-2 h-12 w-80 rounded bg-gray-100 p-4 "
             placeholder="이름"
             value={name}
             onChange={(e) => handleInputChange(e, "name")}
           />
           <button
-            className={`mb-1.5 flex h-14 w-80 rounded p-4 ${carrierText === "통신사" ? "text-gray-400" : "text-black"} bg-gray-100`}
+            className={`mb-2 flex h-12 w-80 rounded p-4 ${carrierText === "통신사" ? "text-gray-400" : "text-black"} bg-gray-100`}
             onClick={handleCertificationButton}
           >
             {carrierText}
           </button>
           <div className="flex">
             <input
-              className="mb-1.5 h-14 w-[235px] rounded bg-gray-100 p-4 text-sm"
+              className="mb-2 h-12 w-full rounded bg-gray-100 p-4 text-sm"
               placeholder="휴대폰 번호"
               onChange={(e) => handleInputChange(e, "phone")}
               value={phone}
             />
             <button
-              className={`ml-2 h-14 w-[80px] ${isSendButtonValid ? "bg-[#8728ff]" : "bg-[#B2B2B2]"} rounded text-[13px] text-white`}
+              className={`ml-2 h-12 w-32 ${isSendButtonValid ? "bg-[#8728ff]" : "bg-[#B2B2B2]"} rounded text-[13px] text-white`}
               onClick={codeRequest}
               disabled={!isSendButtonValid}
             >
@@ -179,7 +179,7 @@ export default function FindId() {
           </div>
           <div className="relative">
             <input
-              className="mb-1.5 h-14 w-80 rounded bg-gray-100 p-4 text-sm"
+              className="mb-2 h-12 w-80 rounded bg-gray-100 p-4 text-sm"
               placeholder="인증번호 입력"
               value={verificationCode}
               onChange={(e) => handleInputChange(e, "verificationCode")}
@@ -247,7 +247,7 @@ export default function FindId() {
           </div>
         )}
         {!certification && (
-          <div className="fixed bottom-10 ml-5 flex h-[42px] w-[320px] items-center justify-center rounded-md bg-gray-800 p-4 text-xs text-white opacity-70">
+          <div className="fixed bottom-10 flex h-[42px] w-[320px] items-center justify-center rounded-md bg-gray-800 p-4 text-xs text-white opacity-70">
             {message}
           </div>
         )}

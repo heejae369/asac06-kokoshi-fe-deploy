@@ -6,6 +6,7 @@ import * as Accordion from "@radix-ui/react-accordion";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import { postApiSendingTest } from "@/feature/PostApiSending";
+import BackAndTitle from "@/components/BackAndTitle";
 
 export default function TermPage() {
   const [termsState, setTermsState] = useState({
@@ -35,10 +36,6 @@ export default function TermPage() {
 
   const router = useRouter();
 
-  const handleBack = () => {
-    router.back();
-  };
-
   const handleNext = (termsState) => {
     // console.log("선택된 관심사:", selectedInterest);
     // router.push("/users/nickname");
@@ -49,32 +46,24 @@ export default function TermPage() {
 
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100">
-      <div className="w-[360px] bg-white px-5 py-6">
-        {/* 뒤로가기 버튼 */}
-        <button onClick={handleBack} className="w-6 h-6 mb-4">
-          <img src="/ic_back.png" alt="뒤로가기" />
-        </button>
-
-        {/* 제목 */}
-        <h1 className="text-[#8728FF] text-[25px] font-semibold mb-6">
-          약관 동의
-        </h1>
+      <div className="w-[360px] bg-white px-5">
+        <BackAndTitle url={"nickname"} title={"약관동의"} />
 
         {/* 전체 약관 동의 */}
-        <div className="flex items-center gap-2 mb-4">
+        <div className="mb-4 flex items-center gap-2">
           <CheckboxPrimitive.Root
             checked={allTerms.every((key) => termsState[key])}
             onCheckedChange={handleAllCheckboxChange}
-            className={`peer h-4 w-4 flex items-center justify-center rounded-sm border cursor-pointer transition-colors ${
+            className={`peer flex size-4 cursor-pointer items-center justify-center rounded-sm border transition-colors ${
               allTerms.every((key) => termsState[key])
-                ? "bg-[#8728FF] border-[#8728FF] text-white"
-                : "bg-gray-200 border-gray-200 text-white"
+                ? "border-[#8728FF] bg-[#8728FF] text-white"
+                : "border-gray-200 bg-gray-200 text-white"
             }`}
           >
             <CheckboxPrimitive.Indicator className="text-white">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-3 w-3"
+                className="size-3"
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
@@ -86,13 +75,13 @@ export default function TermPage() {
               </svg>
             </CheckboxPrimitive.Indicator>
           </CheckboxPrimitive.Root>
-          <span className="text-black font-bold text-[14px]">전체 동의</span>
+          <span className="text-[14px] font-bold text-black">전체 동의</span>
         </div>
 
-        <hr className="border-t border-gray-300 mb-6" />
+        <hr className="mb-6 border-t border-gray-300" />
 
         {/* 약관 동의 */}
-        <Accordion.Root type="multiple" className="space-y-4">
+        <Accordion.Root type="multiple" className="mb-4">
           {[
             {
               id: "RequiredTerms-1",
@@ -121,21 +110,21 @@ export default function TermPage() {
           ].map((term) => (
             <Accordion.Item key={term.id} value={term.id}>
               <Accordion.Header>
-                <div className="flex items-center justify-between w-full p-3">
+                <div className="my-4 flex w-full items-center justify-between">
                   <div className="flex items-center gap-2">
                     <CheckboxPrimitive.Root
                       checked={termsState[term.id]}
                       onCheckedChange={() => handleCheckboxChange(term.id)}
-                      className={`peer h-4 w-4 flex items-center justify-center rounded-sm border cursor-pointer transition-colors ${
+                      className={`peer flex size-4 cursor-pointer items-center justify-center rounded-sm border transition-colors ${
                         termsState[term.id]
-                          ? "bg-[#8728FF] border-[#8728FF] text-white"
-                          : "bg-gray-200 border-gray-200 text-white"
+                          ? "border-[#8728FF] bg-[#8728FF] text-white"
+                          : "border-gray-200 bg-gray-200 text-white"
                       }`}
                     >
                       <CheckboxPrimitive.Indicator className="text-white">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-3 w-3"
+                          className="size-3"
                           viewBox="0 0 20 20"
                           fill="currentColor"
                         >
@@ -147,17 +136,17 @@ export default function TermPage() {
                         </svg>
                       </CheckboxPrimitive.Indicator>
                     </CheckboxPrimitive.Root>
-                    <span className="text-black text-[14px]">{term.title}</span>
+                    <span className="text-[14px] text-black">{term.title}</span>
                   </div>
-                  <Accordion.Trigger className="group flex items-center bg-transparent border-none cursor-pointer">
+                  <Accordion.Trigger className="group flex cursor-pointer items-center border-none bg-transparent">
                     <ChevronDownIcon
-                      className="h-4 w-4 text-black transition-transform duration-300 ease-[cubic-bezier(0.87,_0,_0.13,_1)] group-data-[state=open]:rotate-180 group-data-[state=closed]:rotate-0"
+                      className="size-4 text-black transition-transform duration-300 ease-[cubic-bezier(0.87,_0,_0.13,_1)] group-data-[state=closed]:rotate-0 group-data-[state=open]:rotate-180"
                       aria-hidden="true"
                     />
                   </Accordion.Trigger>
                 </div>
               </Accordion.Header>
-              <Accordion.Content className="p-3 text-sm text-gray-700">
+              <Accordion.Content className="rounded bg-[#F6F6F6] p-3 text-sm text-gray-700">
                 {term.content}
               </Accordion.Content>
             </Accordion.Item>
@@ -167,10 +156,10 @@ export default function TermPage() {
         {/* 다음 버튼 */}
         <button
           type="button"
-          className={`mt-8 w-full py-3 rounded-md text-white text-lg font-semibold ${
+          className={`mt-8 h-12 w-full rounded-md py-3 text-lg font-semibold text-white ${
             requiredTerms.every((key) => termsState[key])
               ? "bg-[#8728FF] hover:bg-[#6A1DC8]"
-              : "bg-gray-300 cursor-not-allowed"
+              : "cursor-not-allowed bg-gray-300"
           } transition-colors`}
           disabled={!requiredTerms.every((key) => termsState[key])}
           onClick={handleNext}

@@ -4,10 +4,9 @@ import passwordHide from "@/assets/icon/ic_pw_hide.png";
 import passwordShow from "@/assets/icon/ic_pw_see.png";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { BackAndTitle } from "@/components/BackAndTitle";
+import BackAndTitle from "@/components/BackAndTitle";
 import { Checkbox } from "@/components/ui/checkbox";
 import EmailValidation from "@/feature/signup/EmailValidation";
 import PwValidation from "@/feature/signup/PwValidation";
@@ -80,28 +79,28 @@ export default function LoginPage() {
     <div className="flex h-screen w-full justify-center bg-gray-100">
       <div className="w-[360px] bg-white px-5">
         <BackAndTitle url={"/users/login"} title={"회원가입"} />
-        <div className="mt-9 flex flex-col gap-[5px]">
+        <div className="flex flex-col gap-2  ">
           {/* 이름 입력창 */}
-          <Input
+          <input
             value={name}
             onChange={(e) => {
               let nameValue = e.target.value;
               nameValue = nameValue.replace(/\n/g, "");
               setName(nameValue.slice(0, 20));
             }}
-            className="rounded-sm bg-[#F4F4F4]"
+            className="h-12 rounded bg-[#F4F4F4] p-4"
             type="text"
             placeholder="이름"
           />
           {/* 이메일 입력창 */}
-          <Input
+          <input
             value={email}
             onChange={(e) => {
               let emailValue = e.target.value;
               emailValue = emailValue.replace(/\n/g, "");
               setEmail(emailValue.slice(0, 20));
             }}
-            className="rounded-sm bg-[#F4F4F4]"
+            className="h-12 rounded bg-[#F4F4F4] p-4"
             type="email"
             placeholder="이메일 입력창"
           />
@@ -118,14 +117,14 @@ export default function LoginPage() {
             )}
           {/* 비밀번호 입력 */}
           <div className="relative">
-            <Input
+            <input
               value={pw}
               onChange={(e) => {
                 let pwValue = e.target.value;
                 pwValue = pwValue.replace(/\n/g, "");
                 setPw(pwValue.slice(0, 20));
               }}
-              className="rounded-sm bg-[#F4F4F4]"
+              className="h-12 w-full rounded bg-[#F4F4F4] p-4"
               type={hidePw}
               placeholder="비밀번호 (영문과 숫자로 8자 이상)"
               autoComplete="new-password"
@@ -155,14 +154,14 @@ export default function LoginPage() {
           )}
           {/* 비밀번호 재입력 */}
           <div className="relative">
-            <Input
+            <input
               value={checkPw}
               onChange={(e) => {
                 let pwValue = e.target.value;
                 pwValue = pwValue.replace(/\n/g, "");
                 setCheckPw(pwValue.slice(0, 20));
               }}
-              className="rounded-sm bg-[#F4F4F4]"
+              className="h-12 w-full rounded bg-[#F4F4F4] p-4"
               type={hideCheckPw}
               placeholder="비밀번호 확인"
               autoComplete="new-password"
@@ -210,7 +209,7 @@ export default function LoginPage() {
         </div>
         {/* 다음 버튼 */}
         <Button
-          className="h-[50px] w-full rounded-sm text-[1rem] disabled:bg-gray-400"
+          className="h-12 w-full rounded text-[1rem] disabled:bg-gray-400"
           variant={"point"}
           disabled={
             name.length < 1 ||
