@@ -14,6 +14,7 @@ export default function Map() {
   const [searchText, setSearchText] = useState("지역, 숙소 검색");
   const [calendar, setCalendar] = useState("6.2 화 - 6.3 수");
   const [personnel, setPersonnel] = useState("성인 2명");
+  const [userLocation, setUserLocation] = useState(null);
 
   useEffect(() => {
     const mapScript = document.createElement("script");
@@ -25,15 +26,77 @@ export default function Map() {
 
     const onLoadKakaoMap = () => {
       window.kakao.maps.load(() => {
-        const mapContainer = document.getElementById("map");
-        const mapOption = {
-          center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-          level: 3, // 지도의 확대 레벨
-        };
-        new window.kakao.maps.Map(mapContainer, mapOption);
+        // 현재 위치 가져오기
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const lat = position.coords.latitude;
+              const lng = position.coords.longitude;
+              setUserLocation({ lat, lng });
+
+              const mapContainer = document.getElementById("map");
+              const mapOption = {
+                center: new window.kakao.maps.LatLng(lat, lng),
+                level: 3,
+              };
+
+              // 지도 생성
+              const map = new window.kakao.maps.Map(mapContainer, mapOption);
+
+              // 현재 위치 마커 생성
+              const markerPosition = new window.kakao.maps.LatLng(lat, lng);
+              const marker = new window.kakao.maps.Marker({
+                position: markerPosition,
+              });
+
+              // 마커 지도에 표시
+              marker.setMap(map);
+
+              // 커스텀 오버레이 생성
+              const content = `
+                <div style="padding:5px;background:#fff;border-radius:50%;border:2px solid #8728FF;">
+                  <div style="width:10px;height:10px;border-radius:50%;background:#8728FF;"></div>
+                </div>`;
+
+              const customOverlay = new window.kakao.maps.CustomOverlay({
+                position: markerPosition,
+                content: content,
+                map: map,
+              });
+
+              // 지도 컨트롤 추가
+              const zoomControl = new window.kakao.maps.ZoomControl();
+              map.addControl(
+                zoomControl,
+                window.kakao.maps.ControlPosition.RIGHT
+              );
+            },
+            (error) => {
+              console.error("현재 위치를 가져오는데 실패했습니다:", error);
+              // 기본 위치 (제주도)로 설정
+              const mapContainer = document.getElementById("map");
+              const mapOption = {
+                center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+                level: 3,
+              };
+              new window.kakao.maps.Map(mapContainer, mapOption);
+            },
+            {
+              enableHighAccuracy: true,
+              maximumAge: 0,
+              timeout: 5000,
+            }
+          );
+        } else {
+          alert("이 브라우저에서는 위치 정보를 제공하지 않습니다.");
+        }
       });
     };
     mapScript.addEventListener("load", onLoadKakaoMap);
+
+    return () => {
+      mapScript.removeEventListener("load", onLoadKakaoMap);
+    };
   }, []);
 
   return (
@@ -69,31 +132,6 @@ export default function Map() {
         </div>
         <div id="map" className="z-0 w-[360px] flex-1"></div>
         <Footer />
-        {/* <div className="flex h-[68px] items-center justify-center text-[10px] font-semibold tracking-[-0.5px]">
-          <div className="flex w-[120px] flex-col items-center text-[#8728FF]">
-            <button className="flex w-[40px] flex-col items-center">
-              <Image
-                src={selectedMapIcon}
-                alt="selectedMapIcon"
-                width={20}
-                height={20}
-              />
-              <span className="mt-[5px]">지도</span>
-            </button>
-          </div>
-          <div className="flex w-[120px] flex-col items-center text-[#B2B2B2]">
-            <button className="flex w-[40px] flex-col items-center">
-              <Image src={homeIcon} alt="homeIcon" width={20} height={20} />
-              <span className="mt-[5px]">홈</span>
-            </button>
-          </div>
-          <div className="flex w-[120px] flex-col items-center text-[#B2B2B2]">
-            <button className="flex w-[40px] flex-col items-center">
-              <Image src={myPageIcon} alt="myPageIcon" width={20} height={20} />
-              <span className="mt-[5px] w-[60px]">마이페이지</span>
-            </button>
-          </div>
-        </div> */}
       </div>
     </div>
   );

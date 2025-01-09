@@ -29,7 +29,7 @@ const Footer = () => {
             <span
               className={`${pathname === "/seonghwan/map" ? styles.activeText : ""}`}
             >
-              지도
+              내위치
             </span>
           </div>
         </Link>
