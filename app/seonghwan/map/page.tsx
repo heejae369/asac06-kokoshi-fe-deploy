@@ -8,6 +8,7 @@ import personnelIcon from "@/assets/personnelIcon.png";
 import selectedMapIcon from "@/assets/selectedMapIcon.png";
 import homeIcon from "@/assets/homeIcon.png";
 import myPageIcon from "@/assets/myPageIcon.png";
+import Footer from "@/components/Footer";
 
 export default function Map() {
   const [searchText, setSearchText] = useState("지역, 숙소 검색");
@@ -67,7 +68,8 @@ export default function Map() {
           </div>
         </div>
         <div id="map" className="z-0 w-[360px] flex-1"></div>
-        <div className="flex h-[68px] items-center justify-center text-[10px] font-semibold tracking-[-0.5px]">
+        <Footer />
+        {/* <div className="flex h-[68px] items-center justify-center text-[10px] font-semibold tracking-[-0.5px]">
           <div className="flex w-[120px] flex-col items-center text-[#8728FF]">
             <button className="flex w-[40px] flex-col items-center">
               <Image
@@ -91,7 +93,7 @@ export default function Map() {
               <span className="mt-[5px] w-[60px]">마이페이지</span>
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

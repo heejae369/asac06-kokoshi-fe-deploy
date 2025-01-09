@@ -13,20 +13,22 @@ const Footer = () => {
     <footer className={styles.footer}>
       <nav className={styles.nav}>
         {/* 지도 */}
-        <Link href="/map">
+        <Link href="/seonghwan/map">
           <div
             className={`${styles.navItem} ${
-              pathname === "/map" ? styles.active : ""
+              pathname === "/seonghwan/map" ? styles.active : ""
             }`}
           >
             <img
               src={map.src}
               alt="지도"
               className={`${styles.icon} ${
-                pathname === "/map" ? styles.activeIcon : ""
+                pathname === "/seonghwan/map" ? styles.activeIcon : ""
               }`}
             />
-            <span className={`${pathname === "/map" ? styles.activeText : ""}`}>
+            <span
+              className={`${pathname === "/seonghwan/map" ? styles.activeText : ""}`}
+            >
               지도
             </span>
           </div>

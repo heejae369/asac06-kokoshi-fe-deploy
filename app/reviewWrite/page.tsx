@@ -7,7 +7,8 @@ const Review = () => {
   const [rating, setRating] = useState<number>(0); // 별점 상태
   const [reviewText, setReviewText] = useState<string>(""); // 리뷰 텍스트 상태
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
-  const [images, setImages] = useState<File[]>([]); // 업로드된 이미지 상태
+  const [images, setImages] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false); // 업로드된 이미지 상태
 
   // 별점 설정
   const handleRating = (value: number) => {
@@ -37,17 +38,42 @@ const Review = () => {
   };
 
   // 등록 버튼 클릭
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (rating === 0 || reviewText.trim() === "") {
       alert("별점과 후기를 모두 작성해주세요.");
       return;
     }
-    console.log({
-      rating,
-      reviewText,
-      images,
-    });
-    alert("후기가 등록되었습니다!");
+    try {
+      setIsSubmitting(true);
+
+      const formData = new FormData();
+      formData.append("rating", rating.toString());
+      formData.append("review_text", reviewText);
+      // 이미지 파일들 추가
+      images.forEach((image, index) => {
+        formData.append("image", image);
+      });
+      // API 요청
+      const response = await fetch("http://localhost:8080/api/review", {
+        method: "POST",
+        body: formData,
+        // FormData를 사용할 때는 Content-Type 헤더를 설정안함
+        // 브라우저가 자동으로 multipart/form-data로 설정
+      });
+      const result = await response.json();
+      console.log("Success:", result);
+      alert("후기가 성공적으로 등록되었습니다!");
+
+      // 폼 초기화
+      setRating(0);
+      setReviewText("");
+      setImages([]);
+    } catch (error) {
+      console.error("Error:", error);
+      alert("후기 등록에 실패했습니다. 다시 시도해주세요.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
