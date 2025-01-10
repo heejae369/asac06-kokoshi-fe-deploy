@@ -26,7 +26,7 @@ export default function CalendarPage2({ setOnCalendar }) {
     setKidNumber,
   } = useCalendar();
 
-  // 날짜 선택 콜백 함수
+  // 날짜 선택 함수
   const handleDateSelect = (selectedDate) => {
     if (Array.isArray(selectedDate) && selectedDate.length === 2) {
       const [startDate, endDate] = selectedDate;
