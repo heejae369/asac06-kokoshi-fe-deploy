@@ -1,9 +1,9 @@
-export default async function getSearchResult(
+export const getSearchResult = async (
   searchKeyword,
   checkInDate,
   checkOutDate,
   filterApply
-) {
+) => {
   console.log(
     "keyword : ",
     searchKeyword,
@@ -36,4 +36,25 @@ export default async function getSearchResult(
   } catch (err) {
     console.log(err);
   }
-}
+};
+
+export const getTopKeywords = async () => {
+  try {
+    const response = await fetch("http://localhost:8080/api/search", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+
+    if (!data || data.length === 0) {
+      return [];
+    }
+
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+};

@@ -3,14 +3,14 @@
 import SearchComponenet from "@/components/SearchComponent";
 import { useEffect, useState } from "react";
 import CalendarPage2 from "@/components/CalendarPage2";
-import NowTomorrowDate from "@/feature/DateFormat";
 import SearchBasic from "@/components/SearchBasic";
 import SearchResult from "@/components/SearchResult";
 import SearchFilter from "@/components/SearchFilter";
-import getSearchResult from "@/feature/fetch/SearchResult";
+import { getSearchResult } from "@/feature/fetch/Search";
 import { formattedRequestDate } from "@/feature/DateFormat";
 import { dataArray } from "@/feature/DataArray";
 import { useCalendar } from "@/feature/CalendarContext";
+import { addRecentSearches } from "@/feature/RecentSearchLocalStorage";
 
 export default function Search() {
   const { checkInDate, checkOutDate, adultNumber, kidNumber } = useCalendar();
@@ -62,8 +62,13 @@ export default function Search() {
   }, [array]);
 
   useEffect(() => {
-    fetchData(searchText);
+    if (searchText) fetchData(searchText);
   }, [filterApply]);
+
+  const handleSearch = (text) => {
+    fetchData(text);
+    addRecentSearches(text);
+  };
 
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100 font-sans tracking-negative">
@@ -80,8 +85,6 @@ export default function Search() {
                   setOnFilter={setOnFilter}
                   setFilterApply={setFilterApply}
                   filterApply={filterApply}
-                  fetchData={fetchData}
-                  searchText={searchText}
                 />
               </>
             ) : (
@@ -90,10 +93,13 @@ export default function Search() {
                   searchText={searchText}
                   setSearchText={setSearchText}
                   setOnCalendar={setOnCalendar}
-                  fetchData={fetchData}
+                  handleSearch={handleSearch}
                 />
                 {!searchText ? (
-                  <SearchBasic />
+                  <SearchBasic
+                    setSearchText={setSearchText}
+                    handleSearch={handleSearch}
+                  />
                 ) : (
                   <SearchResult
                     // searchText={searchText}
