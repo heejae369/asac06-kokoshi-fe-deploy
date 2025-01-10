@@ -4,15 +4,11 @@ import grayDownIcon from "@/assets/grayDownIcon.png";
 import filterIcon from "@/assets/filterIcon.png";
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
-import hotel1 from "@/components/mock/seonghwan/hotel1.png";
 import starFull from "@/assets/starFull.png";
 import starEmpty from "@/assets/starEmpty.png";
 import modalCss from "@/styles/modal.module.css";
 import barImage from "@/assets/barImage.png";
 import checkImage from "@/assets/checkImage.png";
-import getSearchResult from "@/feature/fetch/SearchResult";
-import { formattedRequestDate } from "@/feature/DateFormat";
-import { dataArray } from "@/feature/DataArray";
 import { useRouter } from "next/navigation";
 
 export default function SearchResult({

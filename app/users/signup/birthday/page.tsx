@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import BackAndTitle from "@/components/BackAndTitle";
 
 export default function SignupPage() {
   const {
@@ -18,35 +19,26 @@ export default function SignupPage() {
   const [month, setMonth] = useState("");
   const [day, setDay] = useState("");
 
-  // 뒤로가기 함수
-  const handleBack = () => {
-    router.back();
-  };
-
   // 제출 처리
   const onSubmit = () => {
     const formattedDate = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
-    alert(`입력된 생년월일: ${formattedDate}`);
+    console.log(`입력된 생년월일: ${formattedDate}`);
     router.push("/users/signup/address");
     localStorage.setItem("userBirth", formattedDate);
   };
 
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100 ">
-      <div className="w-[360px] bg-white px-5 gap-6 pt-6">
-        {/* 뒤로가기 버튼 */}
-        <button onClick={handleBack} className="w-6 h-6 mt-4 mb-8">
-          <img src="/ic_back.png" alt="뒤로가기" />
-        </button>
-
-        {/* 제목 */}
-        <h1 className="text-[#8728ff] text-[25px] font-semibold pt-3">
-          고객님의 생일을 알려주세요.
-        </h1>
+      <div className="w-[360px] gap-6 bg-white px-5">
+        {/* 뒤로가기 버튼과 제목 */}
+        <BackAndTitle
+          url={"phoneNumber"}
+          title={"고객님의 생일을\n알려주세요."}
+        />
 
         {/* 생년월일 입력 폼 */}
         <form onSubmit={handleSubmit(onSubmit)} className="mt-9 space-y-6">
-          <div className="flex justify-center items-center gap-6 text-[#8728FF] text-lg font-medium">
+          <div className="flex items-center justify-center gap-6 text-lg font-medium text-[#8728FF]">
             <input
               type="text"
               placeholder="1990"
@@ -64,7 +56,7 @@ export default function SignupPage() {
                 setValue("year", numericValue);
                 clearErrors("year");
               }}
-              className="w-[80px] text-center focus:outline-none focus:text-[#8728FF] text-[#8728FF]"
+              className="w-[80px] text-center text-[#8728FF] focus:text-[#8728FF] focus:outline-none"
             />
             <span className="text-[#666666]">/</span>
             <input
@@ -84,7 +76,7 @@ export default function SignupPage() {
                 setValue("month", numericValue);
                 clearErrors("month");
               }}
-              className="w-[50px] text-center focus:outline-none focus:text-[#8728FF] text-[#8728FF]"
+              className="w-[50px] text-center text-[#8728FF] focus:text-[#8728FF] focus:outline-none"
             />
             <span className="text-[#666666]">/</span>
             <input
@@ -104,12 +96,12 @@ export default function SignupPage() {
                 setValue("day", numericValue);
                 clearErrors("day");
               }}
-              className="w-[50px] text-center focus:outline-none focus:text-[#8728FF] text-[#8728FF]"
+              className="w-[50px] text-center text-[#8728FF] focus:text-[#8728FF] focus:outline-none"
             />
           </div>
 
           {/* 에러 메시지 표시 */}
-          <div className="text-[#FF0045] text-sm text-center">
+          <div className="text-center text-sm text-[#FF0045]">
             {errors.year && <p>{errors.year.message}</p>}
             {errors.month && <p>{errors.month.message}</p>}
             {errors.day && <p>{errors.day.message}</p>}
@@ -118,10 +110,10 @@ export default function SignupPage() {
           {/* 다음 버튼 */}
           <button
             type="submit"
-            className={`w-full py-3 text-white text-lg font-semibold rounded-lg transition-all ${
+            className={`absolute bottom-20 h-12 w-[320px] rounded-lg py-3 text-lg font-semibold text-white transition-all ${
               year && month && day
                 ? "bg-[#8728FF] hover:bg-[#6A1DC8]"
-                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "cursor-not-allowed bg-gray-300 text-gray-500"
             }`}
             disabled={!year || !month || !day}
           >
