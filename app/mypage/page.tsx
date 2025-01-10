@@ -1,15 +1,16 @@
-import { GetServerSideProps } from "next";
+import React, { useState } from "react";
 import styles from "@/styles/Mypage.module.css";
 import Footer from "@/components/Footer";
+import { handleImageUpload } from "@/feature/HandleImageUploader";
 
 interface UserData {
   userPoint: number;
   coupons: number;
-  userName: string;
+  userNickname: string;
   user_profile_path: string; // S3에서 가져온 프로필 이미지 URL
 }
 
-const Mypage = async () => {
+const Mypage = async (isModalOpen, setIsModalOpen) => {
   // 데이터 서버에서 가져오기
   const response = await fetch(
     "http://localhost:8080/users/api/userdata?userEmail=jiho@naver.com",
@@ -26,8 +27,8 @@ const Mypage = async () => {
   console.log("Fetched user data:", data);
 
   // 프로필 이미지 URL 수정
-  const fixedProfileImage = decodeURIComponent(data.user_profile_path).replace(
-    "/yanolza-s3-bucket.s3.ap-southeast-2.amazonaws.com/https:/",
+  const fixedProfileImage = data.user_profile_path.replace(
+    "https%3A/%2Fyanolza-s3-bucket/",
     ""
   );
   console.log(fixedProfileImage);
@@ -37,17 +38,17 @@ const Mypage = async () => {
       {/* 상단 프로필 섹션 */}
       <header className={styles.header}>
         <div className={styles.profile}>
-          <div
+          <button
             className={styles.avatar}
             style={{
               backgroundImage: `url(${fixedProfileImage})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
-          ></div>
+          ></button>
           <div className={styles.greeting}>
             <p>안녕하세요!</p>
-            <p className={styles.email}>{data.userName}님</p>
+            <p className={styles.email}>{data.userNickname}님</p>
           </div>
         </div>
         <a href="#" className={styles.editProfile}>
