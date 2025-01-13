@@ -111,10 +111,10 @@ export default function CalendarPage2({ setOnCalendar }) {
       </div>
       <div className="">
         <button
-          className="w-[320px] h-[50px] bg-[#8728FF] fixed bottom-0 mb-[17px] rounded-[5px]"
+          className="fixed bottom-0 mb-[17px] h-[50px] w-[320px] rounded-[5px] bg-[#8728FF]"
           onClick={() => setOnCalendar(false)}
         >
-          <span className="text-[16px] text-white tracking-[-0.8px]">
+          <span className="text-[16px] tracking-[-0.8px] text-white">
             {`${formattedYearToDay(checkInDate, checkOutDate)}, 총 ${adultNumber + kidNumber}명`}
           </span>
         </button>

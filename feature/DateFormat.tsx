@@ -54,3 +54,39 @@ export const formattedRequestDate = (date) => {
 
   return `${year}-${month}-${day}`;
 };
+
+// 시간 생성 함수
+export const dayUseTimeFormat = (
+  start: string,
+  end: string,
+  interval: number
+) => {
+  const startDate = new Date(`2025-01-10T${start}:00`); // 시작 시간
+  const endDate = new Date(`2025-01-10T${end}:00`); // 종료 시간
+  const times: string[] = [];
+
+  let currentTime = startDate;
+  while (currentTime <= endDate) {
+    times.push(currentTime.toTimeString().slice(0, 5)); // "HH:mm" 추출
+    currentTime = new Date(currentTime.getTime() + interval * 60000); // 간격 추가
+  }
+
+  return times;
+};
+
+export const calculateTimeDifference = (start: string, end: string) => {
+  const startDate = new Date(`2025-01-10T${start}:00`); // 시작 시간
+  const endDate = new Date(`2025-01-10T${end}:00`); // 종료 시간
+
+  const difSeconds = endDate.getTime() - startDate.getTime(); // 시간 차이 (밀리초 단위)
+
+  // 밀리초 차이를 시간과 분으로 변환
+  const hours = Math.floor(difSeconds / (1000 * 60 * 60)); // 시간
+  const minutes = Math.floor((difSeconds % (1000 * 60 * 60)) / (1000 * 60)); // 분
+
+  // 사용 예시
+  // const { hours, minutes } = calculateTimeDifference("14:30", "19:00");
+  // console.log(`차이: ${hours}시간 ${minutes}분`);
+
+  return { hours, minutes };
+};

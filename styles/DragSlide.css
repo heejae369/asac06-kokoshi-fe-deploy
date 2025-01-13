@@ -1,0 +1,7 @@
+.DragSlide {
+  display: flex;
+  overflow-x: scroll;
+}
+.DragSlide::-webkit-scrollbar {
+  display: none;
+}
