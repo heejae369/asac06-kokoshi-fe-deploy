@@ -7,9 +7,10 @@ import modalCss from "@/styles/modal.module.css";
 
 type ModalContent = {
   children: ReactNode;
+  w?: String;
 };
 
-export const Modal: React.FC<ModalContent> = ({ children }) => {
+export const Modal: React.FC<ModalContent> = ({ children, w = "294px" }) => {
   const modalBackground = useRef(null);
   const isShow = useSelector(
     (state: { modal: ModalState }) => state.modal.isShow
@@ -34,7 +35,12 @@ export const Modal: React.FC<ModalContent> = ({ children }) => {
       }}
     >
       <div className={modalCss["modal-content2"]}>
-        <div className="flex w-[294px] flex-col gap-[21px] pb-8 text-[14px] font-semibold tracking-tighter">
+        <div
+          className={
+            "w-[360px] flex flex-col pb-8 px-5 text-[14px] font-semibold tracking-tighter"
+          }
+          // style={{ width: w }}
+        >
           <div className="mt-[18px] flex justify-center">
             <Image src={barImage} width={77} height={3} alt="" />
           </div>

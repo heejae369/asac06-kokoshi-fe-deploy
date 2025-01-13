@@ -1,7 +1,3 @@
-// import upIcon from "@/assets/popularUpIcon.png";
-// import downIcon from "@/assets/popularDownIcon.png";
-// import dashIcon from "@/assets/popularDashIcon.png";
-
 import Image from "next/image";
 import {
   clearRecentSearches,

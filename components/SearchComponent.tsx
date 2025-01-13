@@ -172,7 +172,7 @@ export const Headers = ({
         {handleOnClick2 && (
           <button onClick={handleOnClick2}>
             {/* 추가적인 렌더링 요소 */}
-            <span>버튼</span>
+            {/* <span>버튼</span> */}
           </button>
         )}
       </div>
