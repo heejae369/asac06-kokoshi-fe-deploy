@@ -62,6 +62,7 @@ export default function RoomDetail({ params }: { params: { roomId: string } }) {
     checkOut: "11:00",
     reserveAvailable: true,
     dayUseInfo: {
+      dayUseAvailable: true,
       dayUseStartTime: "13:00",
       dayUseEndTime: "21:00",
       dayUseMinPrice: "15,000원",

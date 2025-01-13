@@ -1,12 +1,65 @@
+import {
+  UseAccommodationRoomDetailArg,
+  UseAccommodationRoomDetailRes,
+  UseAccommodationRoomListRes,
+  UseAccommodationDetailQueryArg,
+  UseAccommodationDetailQueryRes,
+  UseAccommodationRoomListArg,
+  UseAccommodationImagesRes,
+  UseAccommodationImagesArg,
+} from "@/feature/accommodation/type/accommodation.type";
 import { api } from "@/lib/api";
 
-export const pwResetApi = api.injectEndpoints({
+export const accommodationApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    passwordResetEmail: builder.query<res, arg>({
-      query: ({ arg }) => {
+    accommodationDetail: builder.query<
+      UseAccommodationDetailQueryRes,
+      UseAccommodationDetailQueryArg
+    >({
+      query: ({ requestAccommodationDetail }) => {
         return {
-          url: `/api/accommodation/${arg.id}`,
-          body: requestPwResetEmail,
+          url: `/api/accommodation/${requestAccommodationDetail.accommodationId}`,
+        };
+      },
+    }),
+
+    accommodationRoomList: builder.query<
+      UseAccommodationRoomListRes,
+      UseAccommodationRoomListArg
+    >({
+      query: ({ requestAccommodationRoomList }) => {
+        return {
+          // url: `/api/accommodation/${requestAccommodationRoomList.accommodationId}/roomList`,
+          url: `/api/room/${requestAccommodationRoomList.accommodationId}/roomList`,
+          params: requestAccommodationRoomList,
+          method: "GET",
+        };
+      },
+    }),
+
+    //requestAccommodationRoomDetail
+    accommodationRoomDetail: builder.query<
+      UseAccommodationRoomDetailRes,
+      UseAccommodationRoomDetailArg
+    >({
+      query: ({ requestAccommodationRoomDetail }) => {
+        return {
+          url: `/api/accommodation/${requestAccommodationRoomDetail.roomId}/roomDetail`,
+          params: requestAccommodationRoomDetail,
+          method: "GET",
+        };
+      },
+    }),
+
+    accommodationImages: builder.query<
+      UseAccommodationImagesRes,
+      UseAccommodationImagesArg
+    >({
+      query: ({ requestAccommodationImages }) => {
+        return {
+          // url: `/api/accommodation/${requestAccommodationRoomList.accommodationId}/roomList`,
+          url: `/api/accommodation/${requestAccommodationImages.accommodationId}/images`,
+          params: requestAccommodationImages,
           method: "GET",
         };
       },
