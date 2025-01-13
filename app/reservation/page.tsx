@@ -154,7 +154,11 @@ const ProductList = ({ data }) => {
               onClick={handleWalkRadio}
             >
               <Image
-                src={walkRadio ? "/ic_radio_p.png" : "/ic_radio_g.png"}
+                src={
+                  walkRadio
+                    ? "/assets/icon/ic_radio_p.png"
+                    : "/assets/icon/ic_radio_g.png"
+                }
                 alt="ic_radio_g"
                 width={16}
                 height={16}
@@ -170,7 +174,11 @@ const ProductList = ({ data }) => {
               onClick={handleVehicleRadio}
             >
               <Image
-                src={vehicleRadio ? "/ic_radio_p.png" : "/ic_radio_g.png"}
+                src={
+                  vehicleRadio
+                    ? "/assets/icon/ic_radio_p.png"
+                    : "/assets/icon/ic_radio_g.png"
+                }
                 alt="ic_radio_p"
                 width={16}
                 height={16}
@@ -203,7 +211,7 @@ const ReservationPerson = ({ name, phoneNumber, handleReservationPerson }) => {
         </div>
         <button onClick={handleReservationPerson}>
           <Image
-            src={"/ic_r_arrow_gray_12px.png"}
+            src={"/assets/icon/ic_r_arrow_gray_12px.png"}
             alt="r_arrow"
             width={6}
             height={6}
@@ -226,7 +234,7 @@ const CouponAndPoint = ({}) => {
         <button className="flex items-center text-[14px] gap-[7px]">
           <span className="text-[#999999] font-bold">{`사용 가능 쿠폰 ${couponCount}장`}</span>
           <Image
-            src={"/ic_r_arrow_gray_12px.png"}
+            src={"/assets/icon/ic_r_arrow_gray_12px.png"}
             alt="r_arrow"
             width={6}
             height={6}
@@ -309,7 +317,7 @@ const PaymentSelcet = () => {
       <TitleText title={"결제 수단 선택"} />
       <div className="flex gap-[4px] mt-[12px]">
         <PaymentType
-          imageUrl={"/ic_pay_card_tablet.png"}
+          imageUrl={"/assets/icon/ic_pay_card_tablet.png"}
           imageWidth={45}
           imageHeight={30}
           text={"신용카드"}
@@ -317,7 +325,7 @@ const PaymentSelcet = () => {
           bool={creditCard}
         />
         <PaymentType
-          imageUrl={"/ic_pay_account_tablet.png"}
+          imageUrl={"/assets/icon/ic_pay_account_tablet.png"}
           imageWidth={39}
           imageHeight={28}
           text={"실시간 계좌이체"}
@@ -325,7 +333,7 @@ const PaymentSelcet = () => {
           bool={accountTransfer}
         />
         <PaymentType
-          imageUrl={"/ic_pay_kakaopay_tablet.png"}
+          imageUrl={"/assets/icon/ic_pay_kakaopay_tablet.png"}
           imageWidth={45}
           imageHeight={30}
           text={"카카오페이"}
@@ -368,7 +376,9 @@ const RequiredTerms = () => {
         <button onClick={handleTotallyAgree}>
           <Image
             src={
-              totallyAgree ? "/ic_squarecheck_p.png" : "/ic_squarecheck_g.png"
+              totallyAgree
+                ? "/assets/icon/ic_squarecheck_p.png"
+                : "/assets/icon/ic_squarecheck_g.png"
             }
             alt="ic_squarecheck_g"
             width={20}
@@ -382,7 +392,11 @@ const RequiredTerms = () => {
       <div className="flex items-center gap-[14px] ml-[3px]">
         <button onClick={handleUseOfInfomation}>
           <Image
-            src={useOfInfomation ? "/ic_check_p.png" : "/ic_check_g.png"}
+            src={
+              useOfInfomation
+                ? "/assets/icon/ic_check_p.png"
+                : "/assets/icon/ic_check_g.png"
+            }
             alt="ic_check_g"
             width={15}
             height={9}
@@ -395,7 +409,11 @@ const RequiredTerms = () => {
       <div className="flex items-center gap-[14px] ml-[3px]">
         <button onClick={handleThirdParty}>
           <Image
-            src={thirdParty ? "/ic_check_p.png" : "/ic_check_g.png"}
+            src={
+              thirdParty
+                ? "/assets/icon/ic_check_p.png"
+                : "/assets/icon/ic_check_g.png"
+            }
             alt="ic_check_g"
             width={15}
             height={9}
@@ -445,7 +463,11 @@ const PaymentType = ({
     <>
       <button className="relative tracking-[-0.8px]" onClick={handleOnClick}>
         <Image
-          src={bool ? "/Rectangle 25.png" : "/Rectangle_400.png"}
+          src={
+            bool
+              ? "/assets/icon/Rectangle 25.png"
+              : "/assets/icon/Rectangle_400.png"
+          }
           alt="Rectangle_400"
           width={110}
           height={110}
@@ -453,7 +475,9 @@ const PaymentType = ({
         <Image
           className="absolute left-1/2 top-1/2 translate-x-[-50%] translate-y-[-75%]"
           src={
-            bool && text == "실시간 계좌이체" ? "/ic_pay_account.png" : imageUrl
+            bool && text == "실시간 계좌이체"
+              ? "/assets/icon/ic_pay_account.png"
+              : imageUrl
           }
           alt={imageUrl}
           width={imageWidth}
@@ -513,7 +537,9 @@ const OnReservationPerson = ({
         />
         <Image
           src={
-            isFirstFocused ? "/ic_search_delete_p.png" : "/ic_search_delete.png"
+            isFirstFocused
+              ? "/assets/icon/ic_search_delete_p.png"
+              : "/assets/icon/ic_search_delete.png"
           }
           alt="ic_search_delete"
           width={15}
@@ -535,8 +561,8 @@ const OnReservationPerson = ({
         <Image
           src={
             isSecondFocused
-              ? "/ic_search_delete_p.png"
-              : "/ic_search_delete.png"
+              ? "/assets/icon/ic_search_delete_p.png"
+              : "/assets/icon/ic_search_delete.png"
           }
           alt="ic_search_delete"
           width={15}
