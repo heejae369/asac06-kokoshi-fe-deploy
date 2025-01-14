@@ -3,25 +3,37 @@
 import React, { useState } from "react";
 import styles from "@/styles/Mypage.module.css";
 import Footer from "@/components/Footer";
+import DEFAULT_PROFILE_IMAGE from "@/assets/img/default-profile.png";
 
 interface UserData {
-  userPoint: number;
-  coupons: number;
-  userNickname: string;
-  user_profile_path: string;
+  userPoint: number | null;
+  coupons: number | null;
+  userNickname: string | null;
+  user_profile_path: string | null;
 }
+// const DEFAULT_PROFILE_IMAGE = "@/asse/default-profile.png";
 
 const Mypage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
   const [selectedImage, setSelectedImage] = useState<File | null>(null); // 선택한 이미지
-  const [userData, setUserData] = useState<UserData | null>(null); // 사용자 데이터
+  const [userData, setUserData] = useState<UserData>({
+    userPoint: null,
+    coupons: null,
+    userNickname: "사용자",
+    user_profile_path: null,
+  }); // 사용자 데이터
+
+  const userEmail =
+    typeof window !== "undefined" ? localStorage.getItem("userEmail") : null;
+
+  console.log(userEmail);
 
   // 데이터 서버에서 가져오기
   React.useEffect(() => {
     const fetchUserData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/users/api/userdata?userEmail=jiho@naver.com",
+          `http://localhost:8080/users/api/userdata?userEmail=${userEmail}`,
           {
             cache: "no-store",
           }
@@ -45,7 +57,7 @@ const Mypage = () => {
 
     const formData = new FormData();
     formData.append("file", selectedImage);
-    formData.append("email", "jiho@naver.com");
+    formData.append("email", userEmail || "");
 
     try {
       const response = await fetch(
@@ -83,7 +95,8 @@ const Mypage = () => {
     }
   };
 
-  if (!userData) return <p>Loading...</p>;
+  // 기본 이미지 설정
+  const profileImage = userData?.user_profile_path || DEFAULT_PROFILE_IMAGE;
 
   return (
     <div className={styles.container}>
@@ -93,7 +106,7 @@ const Mypage = () => {
           <button
             className={styles.avatar}
             style={{
-              backgroundImage: `url(${userData.user_profile_path})`,
+              backgroundImage: `url(${profileImage})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
@@ -101,7 +114,9 @@ const Mypage = () => {
           ></button>
           <div className={styles.greeting}>
             <p>안녕하세요!</p>
-            <p className={styles.email}>{userData.userNickname}님</p>
+            <p className={styles.email}>
+              {userData.userNickname || "사용자"}님
+            </p>
           </div>
         </div>
         <a href="#" className={styles.editProfile}>
@@ -113,12 +128,16 @@ const Mypage = () => {
       <div className={styles.infoBox}>
         <div className={styles.infoItem}>
           <p className={styles.label}>포인트</p>
-          <p className={styles.value}>{userData.userPoint} P</p>
+          <p className={styles.value}>
+            {userData.userPoint !== null ? `${userData.userPoint} P` : "-"} P
+          </p>
         </div>
         <div className={styles.divider}></div>
         <div className={styles.infoItem}>
           <p className={styles.label}>보유한 쿠폰</p>
-          <p className={styles.value}>{userData.coupons}개</p>
+          <p className={styles.value}>
+            {userData.coupons !== null ? `${userData.coupons}개` : "-"}개
+          </p>
         </div>
       </div>
 
