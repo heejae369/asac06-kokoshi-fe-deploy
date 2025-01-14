@@ -71,8 +71,8 @@ export default function Search() {
   };
 
   return (
-    <div className="flex h-screen w-full justify-center bg-gray-100 font-sans tracking-negative">
-      <div className="w-[360px] bg-white relative flex flex-col h-full px-[20px]">
+    <div className="tracking-negative flex h-screen w-full justify-center bg-gray-100 font-sans">
+      <div className="relative flex h-full w-[360px] flex-col bg-white px-[20px]">
         {onCalendar ? (
           <>
             <CalendarPage2 setOnCalendar={setOnCalendar} />

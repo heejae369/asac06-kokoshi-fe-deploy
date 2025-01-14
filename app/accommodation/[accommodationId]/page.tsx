@@ -14,71 +14,41 @@ import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Tabs } from "@radix-ui/react-tabs";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-// import NowTomorrowDate from "@/feature/NowTomorrowDate";
 import CalendarPage2 from "@/components/CalendarPage2";
-import { Room } from "@/components/accommodation/accommodationRoomList";
 import { ReviewList } from "@/app/accommodation/[accommodationId]/review/page";
 import { RatingStars } from "@/components/RatingStar";
 
 import { formattedMonthToDay } from "@/feature/DateFormat";
 import { useCalendar } from "@/feature/CalendarContext";
+import { AccommodationRoomList } from "@/components/accommodation/accommodationRoomList";
+import { accommodationApi } from "@/feature/accommodation/api/api";
+import { AccommodationImage } from "@/feature/accommodation/type/accommodation.type";
+
+// interface ImgComponent {
+//   imageUrl: string;
+// }
 
 export default function AccommodationDetail({
   params,
 }: {
   params: { accommodationId: string };
 }) {
-  // const [calendar, setCalendar] = useState(NowTomorrowDate());
-  const [onCalendar, setOnCalendar] = useState(false);
-  // const [adultNumber, setAdultNumber] = useState(1);
-  // const [kidNumber, setKidNumber] = useState(0);
+  const [images, setImages] = useState<AccommodationImage[]>([]);
 
+  const [accommodationCategory, setAccommodationCategory] = useState("");
+  const [name, setName] = useState("");
+  const [rating, setRating] = useState(0);
+  const [totalReview, setTotalReview] = useState(0);
+
+  const [onCalendar, setOnCalendar] = useState(false);
   const { checkInDate, checkOutDate, adultNumber } = useCalendar();
-  // 이미지 총 갯수 필요
-  const dummy = {
-    title: "해변 리조트",
-    rating: 4.8,
-    totalReview: 234,
-    accommodationType: "리조트",
-    rooms: [
-      {
-        roomId: 1,
-        title: "스탠다드 룸",
-        thumbnail: "/images/beach_resort_standard.jpg",
-        capacity: 2,
-        maxCapacity: 3,
-        minPrice: 150000,
-        checkIn: "15:00",
-        checkOut: "11:00",
-        type: "NORMAL",
-        dayUseInfo: {
-          dayUseMinPrice: 100000,
-          dayUseTime: "4",
-        },
-      },
-      {
-        roomId: 2,
-        title: "디럭스 룸",
-        thumbnail: "/images/beach_resort_deluxe.jpg",
-        capacity: 2,
-        maxCapacity: 4,
-        minPrice: 200000,
-        checkIn: "15:00",
-        checkOut: "11:00",
-        type: "ALL",
-        dayUseInfo: {
-          dayUseMinPrice: 150000,
-          dayUseTime: "3",
-        },
-      },
-    ],
-  };
 
   const [api, setApi] = useState<CarouselApi>();
-  const [imageIndex, setImageIndex] = useState<number>(0);
-  const [slideIndex, setSlideIndex] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [canScrollNext, setCanScrollNext] = useState(true);
 
-  const test = "/images/test.jpg";
+  // const [imageIndex, setImageIndex] = useState<number>(0);
+  // const [slideIndex, setSlideIndex] = useState<number>(0);
 
   const onClickBack = () => {
     console.log("history back");
@@ -88,35 +58,71 @@ export default function AccommodationDetail({
     console.log("cart click");
   };
 
-  //   사용 보류
-  useEffect(() => {
-    let lastPosition = api?.scrollProgress(); // 이전 스크롤 위치
-    let slidesMoved = 0;
-    api?.on("scroll", () => {
-      const currentPosition = api.scrollProgress(); // 현재 스크롤 위치
+  const {
+    data: accommodationData,
+    isLoading: isAccommodationLoading,
+    isError: isAccommodationError,
+  } = accommodationApi.useAccommodationDetailQuery({
+    requestAccommodationDetail: { accommodationId: params.accommodationId },
+  });
 
-      // 스크롤 위치가 변경되면 이동량 계산
-      if (Math.abs(currentPosition - lastPosition) > 0.5) {
-        slidesMoved++;
-        console.log(`Slides moved: ${slidesMoved}`);
-        lastPosition = currentPosition; // 이전 위치 업데이트
+  const {
+    data: imagesData,
+    isLoading: isImagesLoading,
+    isError: isImagesError,
+  } = accommodationApi.useAccommodationImagesQuery({
+    requestAccommodationImages: {
+      accommodationId: params.accommodationId,
+      page: currentPage,
+      size: 3,
+    },
+  });
+
+  useEffect(() => {
+    if (accommodationData) {
+      const { status, message, data: accommodationDetail } = accommodationData;
+
+      setAccommodationCategory(accommodationDetail.accommodationCategory);
+      setName(accommodationDetail.name);
+      setTotalReview(accommodationDetail.totalReview);
+      setRating(accommodationDetail.rating);
+    }
+  }, [accommodationData]);
+
+  useEffect(() => {
+    if (imagesData) {
+      // setCanScrollNext(!imagesData.data.last);
+      setImages((prevImages) => [...prevImages, ...imagesData.data.content]);
+    }
+  }, [imagesData]);
+
+  useEffect(() => {
+    api?.on("slidesInView", () => {
+      // console.log("canScrollNext : ", canScrollNext);
+      // if (!canScrollNext) {
+      //   return;
+      // }
+
+      if (!api?.canScrollNext()) {
+        setCurrentPage(currentPage + 1);
       }
     });
-  }, [api]);
+  }, [api, currentPage]);
+  // }, [api, canScrollNext, currentPage]);
+
+  if (isAccommodationLoading || isImagesLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isAccommodationError || isImagesError) {
+    return <div>Error</div>;
+  }
 
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100">
       {onCalendar ? (
         <div className="relative flex h-full w-[360px] flex-col bg-white px-[20px]">
-          <CalendarPage2
-            // setAdultNumber={setAdultNumber}
-            // setCalendar={setCalendar}
-            // setKidNumber={setKidNumber}
-            setOnCalendar={setOnCalendar}
-            // calendar={calendar}
-            // adultNumber={adultNumber}
-            // kidNumber={kidNumber}
-          />
+          <CalendarPage2 setOnCalendar={setOnCalendar} />
         </div>
       ) : (
         <div className="flex w-[360px] flex-col gap-2 bg-white">
@@ -125,7 +131,7 @@ export default function AccommodationDetail({
             <button onClick={onClickBack}>
               <img src="/ic_back.png" alt="뒤로가기" />
             </button>
-            <span className="text-base font-bold">title</span>
+            <span className="text-base font-bold">{name}</span>
             <button onClick={onClickCart}>
               <img src="/ic_productdetail_market.png" alt="장바구니" />
             </button>
@@ -135,13 +141,27 @@ export default function AccommodationDetail({
             <Carousel
               opts={{
                 align: "start",
+                watchDrag: false,
+                duration: 10,
+                // slidesToScroll: 5,
                 //   startIndex: 1,
                 //   loop: true,
               }}
               setApi={setApi}
             >
               <CarouselContent>
-                <CarouselItem>
+                {images.map((images, index) => (
+                  <CarouselItem key={index}>
+                    <Image
+                      src={images.imageUrl}
+                      alt="productList"
+                      width={360}
+                      height={228}
+                      //   className="size-[110px]"
+                    />
+                  </CarouselItem>
+                ))}
+                {/* <CarouselItem>
                   <Image
                     src="/images/beach_resort_standard.jpg"
                     alt="productList"
@@ -170,7 +190,7 @@ export default function AccommodationDetail({
                     //   className="size-[110px]"
                   />
                   {slideIndex + 1}
-                </CarouselItem>
+                </CarouselItem> */}
               </CarouselContent>
               <CarouselPrevious className="left-2" />
               <CarouselNext className="right-2" />
@@ -181,26 +201,26 @@ export default function AccommodationDetail({
             <div className="flex flex-col ">
               <div className="flex items-center">
                 <div className="h-[18px] rounded-[9px] border border-[#8728FF] px-[9px] py-[2px] text-[10px] text-[#8728FF]">
-                  {/* {dummy.tag} */}TEST TAG
+                  {accommodationCategory}
                 </div>
               </div>
               <div className="mt-[3px] flex items-center font-bold">
-                <span className="text-base">TEST</span>
+                <span className="text-base">{name}</span>
               </div>
               <div className="mt-px flex items-center">
-                <span className="text-[14px] ">4</span>
+                <span className="text-[14px] ">{rating}</span>
                 <span className="ml-[5px] flex gap-[2px] text-[14px]">
-                  {RatingStars(4)}
+                  {RatingStars(rating)}
                 </span>
                 <span className="ml-[6px] text-[12px] text-[#999999]">
-                  {/* {`(${dummy.reviewCount.toLocaleString()})`} */}
-                  (400)
+                  {/* {`(${dummy.reviewCount.toLocaleString()})`} */}(
+                  {totalReview})
                 </span>
               </div>
               <div className="mt-[2px] flex items-center">
                 <span className="text-[10px] text-[#7F7F7F]">
                   {/* {dummy.distance} */}
-                  TEST DIS
+                  TEST DISTANCE - 보류
                 </span>
               </div>
             </div>
@@ -240,9 +260,9 @@ export default function AccommodationDetail({
                 </div>
 
                 {/* 객실 리스트 */}
-                {dummy.rooms.map((roomInfo, index) => (
-                  <Room roomInfo={roomInfo} key={index} />
-                ))}
+                <AccommodationRoomList
+                  accommodationId={params.accommodationId}
+                />
               </TabsContent>
               <TabsContent value="review">
                 <ReviewList />
