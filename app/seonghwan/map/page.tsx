@@ -6,6 +6,7 @@ import searchIcon from "@/assets/searchIcon.png";
 import calendarIcon from "@/assets/calendarIcon.png";
 import personnelIcon from "@/assets/personnelIcon.png";
 import Footer from "@/components/Footer";
+import { Router } from "lucide-react";
 
 export default function Map() {
   const [searchText, setSearchText] = useState("지역, 숙소 검색");
@@ -16,8 +17,9 @@ export default function Map() {
     lng: number;
   } | null>(null);
   const [accommodations, setAccommodations] = useState<
-    { name: string; address: string }[]
+    { name: string; address: string; rating: any; reviewCount: any }[]
   >([]);
+  const [selectedAccommodation, setSelectedAccommodation] = useState("");
 
   useEffect(() => {
     const mapScript = document.createElement("script");
@@ -69,7 +71,7 @@ export default function Map() {
 
   // 지도에 마커 표시
   const displayMarkers = (
-    data: { name: string; address: string }[],
+    data: { name: string; address: string; rating: any; reviewCount: any }[],
     map: any
   ) => {
     const bounds = new window.kakao.maps.LatLngBounds(); // 지도 범위 조정용
@@ -102,7 +104,8 @@ export default function Map() {
 
             // 마커에 클릭 이벤트 추가
             window.kakao.maps.event.addListener(marker, "click", () => {
-              infowindow.open(map, marker);
+              infowindow.open(map, marker),
+                setSelectedAccommodation(accommodation);
             });
 
             // 지도 범위에 좌표 추가
@@ -148,22 +151,56 @@ export default function Map() {
             </button>
           </div>
         </div>
-
         {/* 지도 */}
         <div id="map" className="z-0 w-[360px] flex-1"></div>
-
-        {/* 숙소 리스트 UI */}
-        <div className="p-4 bg-gray-100">
-          <h2 className="text-lg font-semibold mb-4">숙소 리스트</h2>
-          <ul>
+        {/* 숙소 리스트
+        <div className="absolute bottom-0 w-full bg-white p-4 shadow-md">
+          <h2 className="text-lg font-semibold mb-2">숙소 리스트</h2>
+          <div className="flex gap-2 overflow-x-auto">
             {accommodations.map((accommodation, index) => (
-              <li key={index} className="mb-2">
-                <strong>{accommodation.name}</strong> - {accommodation.address}
-              </li>
+              <button
+                key={index}
+                onClick={() => setSelectedAccommodation(accommodation)}
+                className="flex-shrink-0 px-4 py-2 border rounded-lg bg-gray-100 hover:bg-gray-200"
+              >
+                {accommodation.name}
+              </button>
             ))}
-          </ul>
-        </div>
+          </div>
+        </div> */}
+        {selectedAccommodation && (
+          <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-20 flex items-center justify-center">
+            <div className="bg-white p-6 rounded-lg shadow-lg max-w-md">
+              <h3 className="text-xl font-semibold mb-2">
+                {selectedAccommodation.name}
+              </h3>
+              <p className="text-gray-600">{selectedAccommodation.address}</p>
+              <p className="text-gray-600">
+                별점 :{selectedAccommodation.rating}
+              </p>
+              <p className="text-gray-600">
+                리뷰 : {selectedAccommodation.reviewCount}
+              </p>
 
+              <button
+                className="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg "
+                onClick={() =>
+                  alert(
+                    `${selectedAccommodation.name} 상품 페이지로 이동합니다.`
+                  )
+                }
+              >
+                상품 페이지로 이동
+              </button>
+              <button
+                className="mt-2 px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400"
+                onClick={() => setSelectedAccommodation(null)}
+              >
+                닫기
+              </button>
+            </div>
+          </div>
+        )}
         <Footer />
       </div>
     </div>
