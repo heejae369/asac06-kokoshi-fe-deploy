@@ -17,9 +17,15 @@ export default function Map() {
     lng: number;
   } | null>(null);
   const [accommodations, setAccommodations] = useState<
-    { name: string; address: string; rating: any; reviewCount: any }[]
+    {
+      name: string;
+      address: string;
+      rating: any;
+      reviewCount: any;
+    }[]
   >([]);
   const [selectedAccommodation, setSelectedAccommodation] = useState("");
+  const [mapInstance, setMapInstance] = useState<any>(null); // 지도 객체 저장
 
   useEffect(() => {
     const mapScript = document.createElement("script");
@@ -38,6 +44,43 @@ export default function Map() {
         };
 
         const map = new window.kakao.maps.Map(mapContainer, mapOption);
+        setMapInstance(map); // 지도 객체 저장
+
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const lat = position.coords.latitude;
+              const lng = position.coords.longitude;
+              setUserLocation({ lat, lng }); // 현재 위치 저장
+
+              // 현재 위치에 빨간색 마커 추가
+              const markerPosition = new window.kakao.maps.LatLng(lat, lng);
+              const markerImage = new window.kakao.maps.MarkerImage(
+                "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png", // 빨간색 마커 이미지
+                new window.kakao.maps.Size(50, 50),
+                { offset: new window.kakao.maps.Point(25, 50) }
+              );
+              const marker = new window.kakao.maps.Marker({
+                position: markerPosition,
+                image: markerImage,
+              });
+              marker.setMap(map);
+
+              map.setCenter(markerPosition); // 지도의 중심을 현재 위치로 설정
+            },
+            (error) => {
+              console.error(
+                "GPS로 현재 위치를 가져오는데 실패했습니다:",
+                error
+              );
+              alert(
+                "위치를 가져오지 못했습니다. 브라우저 위치 권한을 확인하세요."
+              );
+            }
+          );
+        } else {
+          alert("이 브라우저는 GPS 위치 정보를 지원하지 않습니다.");
+        }
 
         // 숙소 데이터 가져오기
         fetchAccommodations(map);
@@ -119,6 +162,17 @@ export default function Map() {
     });
   };
 
+  // 내 위치로 이동 버튼 클릭 시 실행
+  const moveToMyLocation = () => {
+    if (userLocation && mapInstance) {
+      const { lat, lng } = userLocation;
+      const moveLatLng = new window.kakao.maps.LatLng(lat, lng);
+      mapInstance.setCenter(moveLatLng); // 지도 중심을 내 위치로 설정
+    } else {
+      alert("현재 위치 정보를 가져오는 중입니다. 잠시 후 다시 시도해주세요.");
+    }
+  };
+
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100 font-sans">
       <div className="relative flex h-full w-[360px] flex-col bg-white">
@@ -153,21 +207,17 @@ export default function Map() {
         </div>
         {/* 지도 */}
         <div id="map" className="z-0 w-[360px] flex-1"></div>
-        {/* 숙소 리스트
-        <div className="absolute bottom-0 w-full bg-white p-4 shadow-md">
-          <h2 className="text-lg font-semibold mb-2">숙소 리스트</h2>
-          <div className="flex gap-2 overflow-x-auto">
-            {accommodations.map((accommodation, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedAccommodation(accommodation)}
-                className="flex-shrink-0 px-4 py-2 border rounded-lg bg-gray-100 hover:bg-gray-200"
-              >
-                {accommodation.name}
-              </button>
-            ))}
-          </div>
-        </div> */}
+
+        {/* 내 위치로 이동 버튼 */}
+        <button
+          className="absolute bottom-16 left-4 p-3 bg-white rounded-full shadow-md"
+          onClick={moveToMyLocation}
+        >
+          <span role="img" aria-label="location">
+            📍
+          </span>
+        </button>
+
         {selectedAccommodation && (
           <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-20 flex items-center justify-center">
             <div className="bg-white p-6 rounded-lg shadow-lg max-w-md">
