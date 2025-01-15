@@ -5,93 +5,43 @@ import Image from "next/image";
 import searchIcon from "@/assets/searchIcon.png";
 import calendarIcon from "@/assets/calendarIcon.png";
 import personnelIcon from "@/assets/personnelIcon.png";
-import selectedMapIcon from "@/assets/selectedMapIcon.png";
-import homeIcon from "@/assets/homeIcon.png";
-import myPageIcon from "@/assets/myPageIcon.png";
 import Footer from "@/components/Footer";
 
 export default function Map() {
   const [searchText, setSearchText] = useState("지역, 숙소 검색");
   const [calendar, setCalendar] = useState("6.2 화 - 6.3 수");
   const [personnel, setPersonnel] = useState("성인 2명");
-  const [userLocation, setUserLocation] = useState(null);
+  const [userLocation, setUserLocation] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
+  const [accommodations, setAccommodations] = useState<
+    { name: string; address: string }[]
+  >([]);
 
   useEffect(() => {
     const mapScript = document.createElement("script");
 
     mapScript.async = true;
-    mapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY}&autoload=false`;
+    mapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY}&autoload=false&libraries=services`;
 
     document.head.appendChild(mapScript);
 
     const onLoadKakaoMap = () => {
       window.kakao.maps.load(() => {
-        // 현재 위치 가져오기
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              const lat = position.coords.latitude;
-              const lng = position.coords.longitude;
-              setUserLocation({ lat, lng });
+        const mapContainer = document.getElementById("map");
+        const mapOption = {
+          center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 기본 중심 위치 (제주도)
+          level: 3,
+        };
 
-              const mapContainer = document.getElementById("map");
-              const mapOption = {
-                center: new window.kakao.maps.LatLng(lat, lng),
-                level: 3,
-              };
+        const map = new window.kakao.maps.Map(mapContainer, mapOption);
 
-              // 지도 생성
-              const map = new window.kakao.maps.Map(mapContainer, mapOption);
-
-              // 현재 위치 마커 생성
-              const markerPosition = new window.kakao.maps.LatLng(lat, lng);
-              const marker = new window.kakao.maps.Marker({
-                position: markerPosition,
-              });
-
-              // 마커 지도에 표시
-              marker.setMap(map);
-
-              // 커스텀 오버레이 생성
-              const content = `
-                <div style="padding:5px;background:#fff;border-radius:50%;border:2px solid #8728FF;">
-                  <div style="width:10px;height:10px;border-radius:50%;background:#8728FF;"></div>
-                </div>`;
-
-              const customOverlay = new window.kakao.maps.CustomOverlay({
-                position: markerPosition,
-                content: content,
-                map: map,
-              });
-
-              // 지도 컨트롤 추가
-              const zoomControl = new window.kakao.maps.ZoomControl();
-              map.addControl(
-                zoomControl,
-                window.kakao.maps.ControlPosition.RIGHT
-              );
-            },
-            (error) => {
-              console.error("현재 위치를 가져오는데 실패했습니다:", error);
-              // 기본 위치 (제주도)로 설정
-              const mapContainer = document.getElementById("map");
-              const mapOption = {
-                center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-                level: 3,
-              };
-              new window.kakao.maps.Map(mapContainer, mapOption);
-            },
-            {
-              enableHighAccuracy: true,
-              maximumAge: 0,
-              timeout: 5000,
-            }
-          );
-        } else {
-          alert("이 브라우저에서는 위치 정보를 제공하지 않습니다.");
-        }
+        // 숙소 데이터 가져오기
+        fetchAccommodations(map);
       });
     };
+
     mapScript.addEventListener("load", onLoadKakaoMap);
 
     return () => {
@@ -99,9 +49,77 @@ export default function Map() {
     };
   }, []);
 
+  // 숙소 데이터 가져오기
+  const fetchAccommodations = async (map: any) => {
+    try {
+      const response = await fetch(
+        "http://localhost:8080/api/accommodation/map"
+      ); // 백엔드 API 호출
+      if (!response.ok) {
+        throw new Error("숙소 데이터를 가져오는데 실패했습니다.");
+      }
+
+      const data = await response.json();
+      setAccommodations(data); // 상태로 저장
+      displayMarkers(data, map); // 지도에 마커 표시
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // 지도에 마커 표시
+  const displayMarkers = (
+    data: { name: string; address: string }[],
+    map: any
+  ) => {
+    const bounds = new window.kakao.maps.LatLngBounds(); // 지도 범위 조정용
+
+    const geocoder = new window.kakao.maps.services.Geocoder();
+    data.forEach((accommodation) => {
+      geocoder.addressSearch(
+        accommodation.address,
+        (result: any[], status: any) => {
+          if (status === window.kakao.maps.services.Status.OK) {
+            const coords = new window.kakao.maps.LatLng(
+              result[0].y,
+              result[0].x
+            );
+
+            // 마커 생성
+            const marker = new window.kakao.maps.Marker({
+              map: map,
+              position: coords,
+            });
+
+            // 인포윈도우 생성
+            const infowindow = new window.kakao.maps.InfoWindow({
+              content: `
+              <div style="width:150px;text-align:center;padding:6px 0;">
+                <strong>${accommodation.name}</strong>
+              </div>
+            `,
+            });
+
+            // 마커에 클릭 이벤트 추가
+            window.kakao.maps.event.addListener(marker, "click", () => {
+              infowindow.open(map, marker);
+            });
+
+            // 지도 범위에 좌표 추가
+            bounds.extend(coords);
+            map.setBounds(bounds); // 지도 범위 조정
+          } else {
+            console.error("주소 검색에 실패했습니다:", accommodation.address);
+          }
+        }
+      );
+    });
+  };
+
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100 font-sans">
       <div className="relative flex h-full w-[360px] flex-col bg-white">
+        {/* 검색 및 필터 */}
         <div className="z-20 h-[146px] shadow-[0px_4px_4px_rgba(0,_0,_0,_0.18)]">
           <div className="mt-[51px]">
             <button className="mx-[20px] flex h-[37px] w-[320px] items-center rounded-[18px] bg-[#F6F6F6]">
@@ -130,7 +148,22 @@ export default function Map() {
             </button>
           </div>
         </div>
+
+        {/* 지도 */}
         <div id="map" className="z-0 w-[360px] flex-1"></div>
+
+        {/* 숙소 리스트 UI */}
+        <div className="p-4 bg-gray-100">
+          <h2 className="text-lg font-semibold mb-4">숙소 리스트</h2>
+          <ul>
+            {accommodations.map((accommodation, index) => (
+              <li key={index} className="mb-2">
+                <strong>{accommodation.name}</strong> - {accommodation.address}
+              </li>
+            ))}
+          </ul>
+        </div>
+
         <Footer />
       </div>
     </div>

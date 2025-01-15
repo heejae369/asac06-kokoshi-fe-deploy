@@ -26,7 +26,7 @@ const Mypage = () => {
   const userEmail =
     typeof window !== "undefined" ? localStorage.getItem("userEmail") : null;
 
-  console.log(userEmail);
+  // console.log(userEmail);
 
   // 데이터 서버에서 가져오기
   React.useEffect(() => {
