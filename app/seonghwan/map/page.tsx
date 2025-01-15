@@ -269,7 +269,6 @@ export default function Map() {
                   <p className="text-xs">x</p>
                 </button>
               </div>
-              <div></div>
             </div>
           </div>
         )}
