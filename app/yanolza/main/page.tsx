@@ -38,20 +38,16 @@ export default function Home() {
 
           <IconButtons />
 
-          <section className={styles.eventSection}>
-            <div className={styles.eventBanner}>
-              <h2>여름 초특가</h2>
-              <p>Summer Event!</p>
-              <p>초특가 할인 숙소를 만나보세요.</p>
-            </div>
-          </section>
+          <button className="mx-4 px-4">
+            <img src="/images/img_home_banner.png" alt="" />
+          </button>
 
           <section className={styles.recentSection}>
             <h3>최근 본 숙소</h3>
             <Swiper
               modules={[Pagination]}
               spaceBetween={12} // 슬라이드 간 간격
-              slidesPerView={2} // 한 번에 보여지는 슬라이드 수
+              slidesPerView={2.2} // 한 번에 보여지는 슬라이드 수
               loop={false} // 슬라이드 반복
             >
               <div>
