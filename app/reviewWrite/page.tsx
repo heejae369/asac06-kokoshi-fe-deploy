@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import styles from "@/styles/ReviewWrite.module.css";
+import Footer from "@/components/Footer";
 
 const Review = () => {
   const [rating, setRating] = useState<number>(0); // 별점 상태
@@ -173,7 +174,7 @@ const Review = () => {
           </div>
         </div>
       )}
-
+      <Footer />
       {/* 등록 버튼 */}
       <button className={styles.submitButton} onClick={handleSubmit}>
         등록하기

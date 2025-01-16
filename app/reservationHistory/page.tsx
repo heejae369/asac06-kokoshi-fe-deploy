@@ -2,6 +2,7 @@
 import React from "react";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Footer from "@/components/Footer";
 
 const ReservationHistory = () => {
   const router = useRouter();
@@ -125,6 +126,7 @@ const ReservationHistory = () => {
             </button>
           </div>
         </div>
+        <Footer />
       </div>
     </div>
   );

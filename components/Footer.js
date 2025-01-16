@@ -21,7 +21,7 @@ const Footer = () => {
           >
             <img
               src={map.src}
-              alt="지도"
+              alt="내위치"
               className={`${styles.icon} ${
                 pathname === "/seonghwan/map" ? styles.activeIcon : ""
               }`}
@@ -29,7 +29,7 @@ const Footer = () => {
             <span
               className={`${pathname === "/seonghwan/map" ? styles.activeText : ""}`}
             >
-              지도
+              내위치
             </span>
           </div>
         </Link>
