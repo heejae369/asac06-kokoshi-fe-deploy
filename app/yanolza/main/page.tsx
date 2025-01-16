@@ -1,9 +1,13 @@
+"use client";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "@/styles/Home.module.css";
 import Footer from "@/components/Footer";
 import IconButtons from "@/components/IconButtons";
 import search from "@/assets/icon/search.png";
+import "swiper/css";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination } from "swiper/modules";
 
 export default function Home() {
   return (
@@ -44,21 +48,30 @@ export default function Home() {
 
           <section className={styles.recentSection}>
             <h3>최근 본 숙소</h3>
-            <div className={styles.recentList}>
-              {[
-                { name: "코코시하우스", price: "45,000원" },
-                { name: "알라베티 호텔", price: "253,000원" },
-                { name: "로첼라 루 호텔", price: "85,000원" },
-              ].map((item, index) => (
-                <div key={index} className={styles.recentItem}>
-                  <div className={styles.imagePlaceholder}></div>
-                  <div className={styles.itemInfo}>
-                    <p>{item.name}</p>
-                    <p>{item.price}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <Swiper
+              modules={[Pagination]}
+              spaceBetween={12} // 슬라이드 간 간격
+              slidesPerView={2} // 한 번에 보여지는 슬라이드 수
+              loop={false} // 슬라이드 반복
+            >
+              <div>
+                {[
+                  { name: "코코시하우스", price: "45,000원" },
+                  { name: "알라베티 호텔", price: "253,000원" },
+                  { name: "로첼라 루 호텔", price: "85,000원" },
+                ].map((item, index) => (
+                  <SwiperSlide key={index}>
+                    <div className={styles.recentItem}>
+                      <div className={styles.imagePlaceholder}></div>
+                      <div className={styles.itemInfo}>
+                        <p>{item.name}</p>
+                        <p>{item.price}</p>
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </div>
+            </Swiper>
           </section>
         </main>
 
