@@ -13,7 +13,7 @@ import PwValidation from "@/feature/signup/PwValidation";
 import CheckPwValidation from "@/feature/signup/CheckPwValidation";
 import SignupPostApi from "@/feature/signup/SignupPostApi";
 
-export default function LoginPage() {
+export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [pw, setPw] = useState("");
