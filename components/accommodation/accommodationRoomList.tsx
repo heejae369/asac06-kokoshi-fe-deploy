@@ -75,7 +75,7 @@ export const AccommodationRoomList = ({
   }
 
   const onClickReservation = ({ roomId }: { roomId: number }) => {
-    router.push(`1/${roomId}`);
+    router.push(`${accommodationId}/${roomId}`);
   };
 
   // router.push(url, as, options)
