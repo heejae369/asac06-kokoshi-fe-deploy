@@ -7,6 +7,8 @@ import {
   UseAccommodationRoomListArg,
   UseAccommodationImagesRes,
   UseAccommodationImagesArg,
+  UseAccommodationRoomImagesRes,
+  UseAccommodationRoomImagesArg,
 } from "@/feature/accommodation/type/accommodation.type";
 import { api } from "@/lib/api";
 
@@ -44,7 +46,7 @@ export const accommodationApi = api.injectEndpoints({
     >({
       query: ({ requestAccommodationRoomDetail }) => {
         return {
-          url: `/api/accommodation/${requestAccommodationRoomDetail.roomId}/roomDetail`,
+          url: `/api/room/${requestAccommodationRoomDetail.roomId}`,
           params: requestAccommodationRoomDetail,
           method: "GET",
         };
@@ -60,6 +62,19 @@ export const accommodationApi = api.injectEndpoints({
           // url: `/api/accommodation/${requestAccommodationRoomList.accommodationId}/roomList`,
           url: `/api/accommodation/${requestAccommodationImages.accommodationId}/images`,
           params: requestAccommodationImages,
+          method: "GET",
+        };
+      },
+    }),
+
+    accommodationRoomImages: builder.query<
+      UseAccommodationRoomImagesRes,
+      UseAccommodationRoomImagesArg
+    >({
+      query: ({ requestAccommodationRoomImages }) => {
+        return {
+          url: `/api/room/images`,
+          params: requestAccommodationRoomImages,
           method: "GET",
         };
       },

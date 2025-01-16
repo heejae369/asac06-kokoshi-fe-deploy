@@ -1,6 +1,5 @@
 import {
   ApiResponse,
-  Page,
   Pageable,
   Slice,
 } from "@/feature/common/types/apiResponse";
@@ -10,15 +9,6 @@ export enum RoomType {
   ALL = "ALL",
 }
 
-// export enum AccommodationCategory {
-//   HOTEL = "호텔",
-//   MOTEL = "모텔",
-//   PENSION = "펜션",
-//   RESORT = "리조트",
-//   GUESTHOUSE = "게스트하우스",
-// }
-
-// accommodation - detail
 export interface requestAccommodationDetail {
   accommodationId: string;
 }
@@ -45,9 +35,19 @@ export interface requestAccommodationImages extends Pageable {
 export interface UseAccommodationImagesArg {
   requestAccommodationImages: requestAccommodationImages;
 }
-export type UseAccommodationImagesRes = ApiResponse<Slice<AccommodationImage>>;
 
-export interface AccommodationImage {
+export type UseAccommodationImagesRes = ApiResponse<Slice<SlideImage>>;
+
+export interface requestAccommodationRoomImages extends Pageable {
+  roomId: string;
+}
+
+export interface UseAccommodationRoomImagesArg {
+  requestAccommodationRoomImages: requestAccommodationRoomImages;
+}
+export type UseAccommodationRoomImagesRes = ApiResponse<Slice<SlideImage>>;
+
+export interface SlideImage {
   imageUrl: string;
 }
 
@@ -68,15 +68,15 @@ export type UseAccommodationRoomListRes = ApiResponse<Room[]>;
 // accmmondationRoom - datail
 export interface requestAccommodationRoomDetail {
   roomId: string;
-  reservationStart: string;
-  reservationEnd: string;
+  startDate: string;
+  endDate: string;
   capacity: number;
 }
 export interface UseAccommodationRoomDetailArg {
   requestAccommodationRoomDetail: requestAccommodationRoomDetail;
 }
 export type UseAccommodationRoomDetailRes = ApiResponse<Room>;
-// export interface RoomDetail {
+
 export interface Room {
   roomId: number;
   name: string;
@@ -84,7 +84,6 @@ export interface Room {
   thumbnail: string;
   capacity: number;
   maxCapacity: number;
-  //숙박은 default
   minPrice: number;
   checkIn: string;
   checkOut: string;
@@ -93,7 +92,6 @@ export interface Room {
   dayUseInfo: {
     dayUseMinPrice: number;
     dayUseTime: number;
-
     dayUseStartTime: string | null;
     dayUseEndTime: string | null;
     dayUseAvailableQuantity: number | null;
@@ -107,22 +105,3 @@ export const accommodationCategory = {
   RESORT: "리조트",
   GUESTHOUSE: "게스트하우스",
 };
-
-// export const roomType = {
-//   STAY: "STAY",
-//   ALL: "ALL",
-// };
-
-// export interface Rooms {
-//   title: string;
-//   thunbnail: string;
-//   capacity: number;
-//   maxCapacity: number;
-//   minPrice: number;
-//   checkIn: string;
-//   checkOut: string;
-//   type: RoomType;
-//   // 아래는 RoomType에 따라 없을수도 있는 값
-//   dayUseMinPrice: number;
-//   dayUseTime: string;
-// }
