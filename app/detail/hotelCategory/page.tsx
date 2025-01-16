@@ -19,7 +19,7 @@ export default function HotelCategory() {
 
         <SelectRegion />
 
-        <h2 className="mt-3 font-bold">지금 핫한 숙소!</h2>
+        <h2 className="mt-2 font-bold">지금 핫한 숙소!</h2>
         <HotelCards />
 
         <h2 className="font-bold">예약이 빨리 마감되는 숙소!</h2>

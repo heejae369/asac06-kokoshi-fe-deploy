@@ -20,8 +20,6 @@ export default function LoginPostApi({
           console.log(res.message);
           localStorage.setItem("userEmail", res.data.userEmail);
           router.push("/yanolza/main");
-
-          // 쿠키에 refresh tokken 저장
         } else if (res.status === false && res.message.includes("회원")) {
           console.log(res.message);
           setSignUp(false);
