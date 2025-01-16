@@ -8,8 +8,10 @@ import search from "@/assets/icon/search.png";
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100">
       <div className={styles.container}>
@@ -38,7 +40,7 @@ export default function Home() {
 
           <IconButtons />
 
-          <button className="mx-4 px-4">
+          <button className="mx-4 px-4" onClick={() => router.push("event")}>
             <img src="/images/img_home_banner.png" alt="" />
           </button>
 
