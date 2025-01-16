@@ -21,7 +21,7 @@ export default function EventBanner() {
           loop={true} // 슬라이드 반복
         >
           <SwiperSlide>
-            <button onClick={() => router.push("#55")}>
+            <button onClick={() => router.push("/yanolza/event")}>
               <img src={hotel_banner.src} alt="Banner 1" />
             </button>
           </SwiperSlide>

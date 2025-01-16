@@ -20,7 +20,7 @@ interface IconItem {
 const IconButtons: React.FC = () => {
   const items: IconItem[] = [
     { id: 1, name: "모텔", icon: motel.src, path: "motel" },
-    { id: 2, name: "호텔", icon: hotel.src, path: "hotel" },
+    { id: 2, name: "호텔", icon: hotel.src, path: "hotelCategory" },
     {
       id: 3,
       name: "펜션/풀빌라",
