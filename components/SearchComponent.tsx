@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import blackBackIcon from "@/assets/blckBackIcon.png";
 import searchIcon from "@/assets/searchIcon.png";
 import calendarIcon from "@/assets/calendarIcon.png";
 import personnelIcon from "@/assets/personnelIcon.png";
@@ -8,8 +7,7 @@ import inputClearIcon from "@/assets/inputClearIcon.png";
 import { formattedMonthToDay } from "@/feature/DateFormat";
 import { useEffect, useState } from "react";
 import { useCalendar } from "@/feature/CalendarContext";
-import { addRecentSearches } from "@/feature/RecentSearchLocalStorage";
-import { useRouter } from "next/navigation";
+import MainHeaders from "./MainHeaders";
 
 export default function SearchComponenet({
   setOnCalendar,
@@ -26,37 +24,13 @@ export default function SearchComponenet({
     setText("");
   };
 
-  const handleBackIcon = () => {
-    router.back();
-  };
-
   useEffect(() => {
     if (searchText) setText(searchText);
   }, [searchText]);
 
   return (
     <>
-      {/* <div className="relative h-[82px] font-semibold">
-        <div className="mt-[59px] flex h-[24px] items-center">
-          <button className="ml-[8px] h-[19px]" onClick={handleBackIcon}>
-            <Image
-              src={blackBackIcon}
-              alt="blackBackIcon"
-              width={9}
-              height={19}
-            />
-          </button>
-          <div className="mr-[17px] flex flex-1 justify-center">
-            <span className="text-[16px] tracking-[-0.8px]">검색</span>
-          </div>
-        </div>
-      </div> */}
-      <Headers
-        title={"검색"}
-        // handleOnClick1={handleBackIcon}
-        backIcon={true}
-        handleOnClick2={handleBackIcon}
-      />
+      <MainHeaders title={"검색"} backIcon={true} />
       <SearchInput
         handleSearch={handleSearch}
         setText={setText}
@@ -131,51 +105,5 @@ const DateToCalendar = ({ setOnCalendar }) => {
         </button>
       </div>
     </>
-  );
-};
-
-interface HeadersProps {
-  title: string;
-  backIcon?: boolean;
-  handleOnClick2?: () => void;
-}
-
-export const Headers = ({
-  title,
-  backIcon = false,
-  handleOnClick2,
-}: HeadersProps) => {
-  const router = useRouter();
-
-  const handleBackIcon = () => {
-    router.back();
-  };
-
-  return (
-    <div className="relative mt-[58px] flex justify-between">
-      <div className="flex w-1/5 items-center">
-        {backIcon && (
-          <button className="ml-[8px] h-[19px]" onClick={handleBackIcon}>
-            <Image
-              src={blackBackIcon}
-              alt="blackBackIcon"
-              width={9}
-              height={19}
-            />
-          </button>
-        )}
-      </div>
-      <div className="font-semibold">
-        <span className="text-[16px] tracking-[-0.8px]">{title}</span>
-      </div>
-      <div className="flex w-1/5 items-center justify-end">
-        {handleOnClick2 && (
-          <button onClick={handleOnClick2}>
-            {/* 추가적인 렌더링 요소 */}
-            <span>버튼</span>
-          </button>
-        )}
-      </div>
-    </div>
   );
 };
