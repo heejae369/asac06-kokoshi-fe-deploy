@@ -28,6 +28,7 @@ export default function CalendarPage2({ setOnCalendar }) {
 
   // 날짜 선택 함수
   const handleDateSelect = (selectedDate) => {
+    console.log(selectedDate);
     if (Array.isArray(selectedDate) && selectedDate.length === 2) {
       const [startDate, endDate] = selectedDate;
       setCheckInDate(formattedDate(startDate));

@@ -33,6 +33,25 @@ export const formattedYearToDay = (start, end) => {
   ~ ${end.year}.${formatWithLeadingZero(end.month)}.${formatWithLeadingZero(end.day)} (${end.dayOfWeek})`;
 };
 
+export const formattedYearToDayNotDayOfWeek = (start, end) => {
+  const formatWithLeadingZero = (value) => value.toString().padStart(2, "0");
+
+  // 요일 계산 함수
+  const getDayOfWeek = (year, month, day) => {
+    const date = new Date(year, month - 1, day); // month는 0부터 시작
+    const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
+    return dayNames[date.getDay()];
+  };
+
+  // 요일이 없으면 자동으로 채우기
+  start.dayOfWeek =
+    start.dayOfWeek || getDayOfWeek(start.year, start.month, start.day);
+  end.dayOfWeek = end.dayOfWeek || getDayOfWeek(end.year, end.month, end.day);
+
+  return `${start.year}.${formatWithLeadingZero(start.month)}.${formatWithLeadingZero(start.day)} (${start.dayOfWeek}) 
+  ~ ${end.year}.${formatWithLeadingZero(end.month)}.${formatWithLeadingZero(end.day)} (${end.dayOfWeek})`;
+};
+
 export const formattedMonthToDay = (start, end) => {
   return `${start.month}.${start.day} ${start.dayOfWeek} - ${end.month}.${end.day} ${end.dayOfWeek}`;
 };
@@ -61,6 +80,8 @@ export const dayUseTimeFormat = (
   end: string,
   interval: number
 ) => {
+  console.log("start : ", start);
+  console.log("end : ", end);
   const startDate = new Date(`2025-01-10T${start}:00`); // 시작 시간
   const endDate = new Date(`2025-01-10T${end}:00`); // 종료 시간
   const times: string[] = [];
@@ -71,6 +92,7 @@ export const dayUseTimeFormat = (
     currentTime = new Date(currentTime.getTime() + interval * 60000); // 간격 추가
   }
 
+  console.log("times : ", times);
   return times;
 };
 

@@ -41,25 +41,29 @@ interface TopBarProps {
   onDeleteSelected: () => void;
 }
 
-const TopBar: React.FC<TopBarProps> = ({ allChecked, onToggleAll, onDeleteSelected }) => {
+const TopBar: React.FC<TopBarProps> = ({
+  allChecked,
+  onToggleAll,
+  onDeleteSelected,
+}) => {
   return (
-    <div className="flex justify-between items-center px-4 py-2 border-b border-gray-200">
-      <label className="flex items-center gap-2">
-        <input
-          type="checkbox"
-          checked={allChecked}
-          onChange={onToggleAll}
-          className="w-5 h-5"
-        />
-        <span className="text-sm font-medium text-gray-900">전체 선택</span>
-      </label>
-      <button
-        onClick={onDeleteSelected}
-        className="text-sm text-red-500"
-      >
-        선택 삭제
-      </button>
-    </div>
+    <>
+      <div className="mb-3 mt-6 flex items-center justify-between">
+        <label className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={allChecked}
+            onChange={onToggleAll}
+            className="size-5"
+          />
+          <span className="text-sm font-medium text-gray-900">전체 선택</span>
+        </label>
+        <button onClick={onDeleteSelected} className="text-sm text-red-500">
+          선택 삭제
+        </button>
+      </div>
+      <hr className="mb-[22px]"></hr>
+    </>
   );
 };
 
