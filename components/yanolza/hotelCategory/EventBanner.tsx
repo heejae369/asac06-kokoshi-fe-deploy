@@ -27,16 +27,24 @@ export default function EventBanner() {
             </button>
           </SwiperSlide>
           <SwiperSlide>
-            <img src={hotel_banner.src} alt="Banner 2" />
+            <button onClick={() => router.push("/yanolza/event")}>
+              <img src={hotel_banner.src} alt="Banner 2" />
+            </button>
           </SwiperSlide>
           <SwiperSlide>
-            <img src={hotel_banner.src} alt="Banner 3" />
+            <button onClick={() => router.push("/yanolza/event")}>
+              <img src={hotel_banner.src} alt="Banner 3" />
+            </button>
           </SwiperSlide>
           <SwiperSlide>
-            <img src={hotel_banner.src} alt="Banner 4" />
+            <button onClick={() => router.push("/yanolza/event")}>
+              <img src={hotel_banner.src} alt="Banner 4" />
+            </button>
           </SwiperSlide>
           <SwiperSlide>
-            <img src={hotel_banner.src} alt="Banner 5" />
+            <button onClick={() => router.push("/yanolza/event")}>
+              <img src={hotel_banner.src} alt="Banner 5" />
+            </button>
           </SwiperSlide>
           <div
             className="swiper-pagination"
