@@ -1,10 +1,12 @@
-import { Headers } from "@/components/SearchComponent";
+"use client";
+
+import MainHeaders from "@/components/MainHeaders";
 
 export default function EventPage() {
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100">
       <div className="w-[360px] bg-white px-5">
-        <Headers title={"이벤트"} backIcon={true} />
+        <MainHeaders title={"이벤트"} backIcon={true} />
         <img
           className="mt-3"
           src="/images/img_home_banner.png"
