@@ -44,11 +44,12 @@ const IconButtons: React.FC = () => {
     <div className={styles.container}>
       {items.map((item) => (
         <div key={item.id} className={styles.iconButton}>
-          <div className={styles.circle}>
-            <button onClick={() => handleNextClick(item.path)}>
-              <img src={item.icon} alt={item.name} className={styles.icon} />
-            </button>
-          </div>
+          <button
+            className={styles.circle}
+            onClick={() => handleNextClick(item.path)}
+          >
+            <img src={item.icon} alt={item.name} className={styles.icon} />
+          </button>
           <span className={styles.label}>{item.name}</span>
         </div>
       ))}
