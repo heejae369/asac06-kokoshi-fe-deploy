@@ -20,7 +20,7 @@ interface IconItem {
 const IconButtons: React.FC = () => {
   const items: IconItem[] = [
     { id: 1, name: "모텔", icon: motel.src, path: "motel" },
-    { id: 2, name: "호텔", icon: hotel.src, path: "hotel" },
+    { id: 2, name: "호텔", icon: hotel.src, path: "hotelCategory" },
     {
       id: 3,
       name: "펜션/풀빌라",
@@ -44,11 +44,12 @@ const IconButtons: React.FC = () => {
     <div className={styles.container}>
       {items.map((item) => (
         <div key={item.id} className={styles.iconButton}>
-          <div className={styles.circle}>
-            <button onClick={() => handleNextClick(item.path)}>
-              <img src={item.icon} alt={item.name} className={styles.icon} />
-            </button>
-          </div>
+          <button
+            className={styles.circle}
+            onClick={() => handleNextClick(item.path)}
+          >
+            <img src={item.icon} alt={item.name} className={styles.icon} />
+          </button>
           <span className={styles.label}>{item.name}</span>
         </div>
       ))}

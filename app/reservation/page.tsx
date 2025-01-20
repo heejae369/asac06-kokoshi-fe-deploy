@@ -1,8 +1,10 @@
 "use client";
 
-import { Headers } from "@/components/SearchComponent";
+import MainHeaders from "@/components/MainHeaders";
+import { KakaoPayReady } from "@/feature/fetch/KakaoPayFetch";
 import Image from "next/image";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Reservation() {
   const data = [
@@ -19,6 +21,7 @@ export default function Reservation() {
       checkInTIme: "16:00",
       checkOutTime: "12:00",
       price: "50,000원",
+      quantity: 1,
     },
     {
       id: 2,
@@ -33,21 +36,46 @@ export default function Reservation() {
       checkInTIme: "16:00",
       checkOutTime: "12:00",
       price: "50,000원",
+      quantity: 1,
     },
   ];
   const user = { userName: "유성환", userPhoneNumber: "010-2295-2483" };
   const [onReservationPerson, setOnReservationPerson] = useState(false);
   const [name, setName] = useState(user.userName);
   const [phoneNumber, setPhoneNumber] = useState(user.userPhoneNumber);
+  const [paymentType, setPaymentType] = useState("");
+
+  const router = useRouter();
 
   const handleReservationPerson = () => {
     setOnReservationPerson((prev) => !prev);
   };
 
+  const handlePayment = async () => {
+    if (paymentType) {
+      const requestBody = {
+        quantity: data.reduce((sum, item) => sum + item.quantity, 0),
+        totalAmount: 200000,
+        userId: 1,
+        roomId: 1,
+        reservationNumber: "1234",
+      };
+      console.log(requestBody);
+      const response = await KakaoPayReady({ requestBody });
+      console.log(paymentType);
+
+      if (response?.next_redirect_pc_url) {
+        router.push(response.next_redirect_pc_url);
+      } else {
+        console.error("결제 요청 실패", response);
+      }
+    }
+  };
+
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100 font-sans">
-      <div className="w-[360px] bg-white relative flex flex-col h-full px-[20px]">
-        <Headers
+      <div className="relative flex h-full w-[360px] flex-col bg-white px-[20px]">
+        <MainHeaders
           title={onReservationPerson ? "예약자 정보" : "예약"}
           backIcon={true}
         />
@@ -63,32 +91,32 @@ export default function Reservation() {
           </>
         ) : (
           <>
-            <div className="tracking-[-0.8px] mt-[15px]">
+            <div className="mt-[15px] tracking-[-0.8px]">
               {data?.length > 0 &&
                 data.map((item, index) => (
                   <div key={item.id}>
                     <ProductList data={item} />
                     {index < data.length - 1 && (
-                      <hr className="w-[320px] my-[20px]" />
+                      <hr className="my-[20px] w-[320px]" />
                     )}
                   </div>
                 ))}
             </div>
-            <hr className="w-[360px] my-[20px] m-[-20px] border-t-[6px]"></hr>
+            <hr className="m-[-20px] my-[20px] w-[360px] border-t-[6px]"></hr>
             <ReservationPerson
               name={name}
               phoneNumber={phoneNumber}
               handleReservationPerson={handleReservationPerson}
             />
-            <hr className="w-[360px] my-[20px] m-[-20px] border-t-[6px]"></hr>
+            <hr className="m-[-20px] my-[20px] w-[360px] border-t-[6px]"></hr>
             <CouponAndPoint />
-            <hr className="w-[360px] my-[20px] m-[-20px] border-t-[6px]"></hr>
+            <hr className="m-[-20px] my-[20px] w-[360px] border-t-[6px]"></hr>
             <DiscountAndPaymentInfo />
-            <hr className="w-[360px] my-[20px] m-[-20px] border-t-[6px]"></hr>
-            <PaymentSelcet />
+            <hr className="m-[-20px] my-[20px] w-[360px] border-t-[6px]"></hr>
+            <PaymentSelect setPaymentType={setPaymentType} />
             <RequiredTerms />
             <Notification />
-            <PaymentButton />
+            <PaymentButton handlePayment={handlePayment} />
           </>
         )}
       </div>
@@ -121,7 +149,7 @@ const ProductList = ({ data }) => {
       <div className="mt-[3px] flex font-bold">
         <span className="text-[14px]">{data.name}</span>
       </div>
-      <div className="mt-[2px] flex items-center mb-[30px]">
+      <div className="mb-[30px] mt-[2px] flex items-center">
         <span className="text-[12px] font-[600] text-[#4C4C4C]">
           {data.roomName} {`(${data.roomMin}/${data.roomMax})`}
         </span>
@@ -193,7 +221,7 @@ const ProductList = ({ data }) => {
         </div>
         <div className="flex items-end justify-between">
           <span className="text-[12px]">결제금액</span>
-          <span className="font-bold mr-[-20px]">{data.price}</span>
+          <span className="mr-[-20px] font-bold">{data.price}</span>
         </div>
       </div>
     </div>
@@ -231,8 +259,8 @@ const CouponAndPoint = ({}) => {
       <TitleText title={"쿠폰 및 포인트 사용"} />
       <div className="mt-[15px] flex justify-between">
         <span className="text-[14px]">쿠폰</span>
-        <button className="flex items-center text-[14px] gap-[7px]">
-          <span className="text-[#999999] font-bold">{`사용 가능 쿠폰 ${couponCount}장`}</span>
+        <button className="flex items-center gap-[7px] text-[14px]">
+          <span className="font-bold text-[#999999]">{`사용 가능 쿠폰 ${couponCount}장`}</span>
           <Image
             src={"/assets/icon/ic_r_arrow_gray_12px.png"}
             alt="r_arrow"
@@ -241,17 +269,17 @@ const CouponAndPoint = ({}) => {
           ></Image>
         </button>
       </div>
-      <div className="flex justify-between mt-[15px]">
-        <div className="flex gap-[7px] items-center">
+      <div className="mt-[15px] flex justify-between">
+        <div className="flex items-center gap-[7px]">
           <span className="text-[14px]">포인트</span>
-          <span className="text-[10px] text-[#999999] font-bold">
+          <span className="text-[10px] font-bold text-[#999999]">
             1,200P 사용가능
           </span>
         </div>
-        <div className="flex gap-[7px] items-center">
-          <span className="text-[14px] text-[#999999] font-bold">-0P</span>
-          <button className="bg-[#E5E5E5] flex items-center px-[5px] py-[4px] rounded-[6px]">
-            <span className="text-[10px] text-[#999999] font-bold">
+        <div className="flex items-center gap-[7px]">
+          <span className="text-[14px] font-bold text-[#999999]">-0P</span>
+          <button className="flex items-center rounded-[6px] bg-[#E5E5E5] px-[5px] py-[4px]">
+            <span className="text-[10px] font-bold text-[#999999]">
               전액 사용
             </span>
           </button>
@@ -269,7 +297,7 @@ const DiscountAndPaymentInfo = () => {
     <div>
       <TitleText title={"할인 및 결제 정보"} />
       <div className="mt-[15px] flex flex-col">
-        <div className="flex justify-between tracking-[-0.8px] mb-[20px]">
+        <div className="mb-[20px] flex justify-between tracking-[-0.8px]">
           <span className="text-[14px]">결제 금액</span>
           <span className="text-[14px] font-bold">234,000원</span>
         </div>
@@ -289,59 +317,94 @@ const DiscountAndPaymentInfo = () => {
   );
 };
 
-const PaymentSelcet = () => {
-  const [creditCard, setCreditCard] = useState(false);
-  const [accountTransfer, setAccountTransfer] = useState(false);
-  const [kakaoPay, setKakaoPay] = useState(false);
+const PaymentSelect = ({ setPaymentType }) => {
+  const [selectedPayment, setSelectedPayment] = useState("");
 
-  const handleCreditCard = () => {
-    setCreditCard((prev) => !prev);
-    setAccountTransfer(false);
-    setKakaoPay(false);
-  };
+  const paymentTypes = [
+    {
+      id: "creditCard",
+      imageUrl: "/assets/icon/ic_pay_card_tablet.png",
+      imageWidth: 45,
+      imageHeight: 30,
+      text: "신용카드",
+    },
+    {
+      id: "accountTransfer",
+      imageUrl: "/assets/icon/ic_pay_account_tablet.png",
+      imageWidth: 39,
+      imageHeight: 28,
+      text: "실시간 계좌이체",
+    },
+    {
+      id: "kakaoPay",
+      imageUrl: "/assets/icon/ic_pay_kakaopay_tablet.png",
+      imageWidth: 45,
+      imageHeight: 30,
+      text: "카카오페이",
+    },
+  ];
 
-  const handleAccountTransfer = () => {
-    setAccountTransfer((prev) => !prev);
-    setCreditCard(false);
-    setKakaoPay(false);
-  };
-
-  const handleKakaoPay = () => {
-    setKakaoPay((prev) => !prev);
-    setAccountTransfer(false);
-    setCreditCard(false);
+  const handlePaymentSelect = (id) => {
+    if (selectedPayment === id) {
+      setSelectedPayment("");
+      setPaymentType("");
+    } else {
+      setSelectedPayment(id);
+      setPaymentType(id);
+    }
   };
 
   return (
     <div>
       <TitleText title={"결제 수단 선택"} />
-      <div className="flex gap-[4px] mt-[12px]">
-        <PaymentType
-          imageUrl={"/assets/icon/ic_pay_card_tablet.png"}
-          imageWidth={45}
-          imageHeight={30}
-          text={"신용카드"}
-          handleOnClick={handleCreditCard}
-          bool={creditCard}
-        />
-        <PaymentType
-          imageUrl={"/assets/icon/ic_pay_account_tablet.png"}
-          imageWidth={39}
-          imageHeight={28}
-          text={"실시간 계좌이체"}
-          handleOnClick={handleAccountTransfer}
-          bool={accountTransfer}
-        />
-        <PaymentType
-          imageUrl={"/assets/icon/ic_pay_kakaopay_tablet.png"}
-          imageWidth={45}
-          imageHeight={30}
-          text={"카카오페이"}
-          handleOnClick={handleKakaoPay}
-          bool={kakaoPay}
-        />
+      <div className="mt-[12px] flex gap-[4px]">
+        {paymentTypes.map((type) => (
+          <PaymentType
+            key={type.id}
+            imageUrl={type.imageUrl}
+            imageWidth={type.imageWidth}
+            imageHeight={type.imageHeight}
+            text={type.text}
+            handleOnClick={() => handlePaymentSelect(type.id)}
+            isSelected={selectedPayment === type.id}
+          />
+        ))}
       </div>
     </div>
+  );
+};
+
+const PaymentType = ({
+  imageUrl,
+  imageWidth,
+  imageHeight,
+  text,
+  handleOnClick,
+  isSelected,
+}) => {
+  return (
+    <button className="relative tracking-[-0.8px]" onClick={handleOnClick}>
+      <Image
+        src={
+          isSelected
+            ? "/assets/icon/Rectangle 25.png"
+            : "/assets/icon/Rectangle_400.png"
+        }
+        alt="Rectangle"
+        width={110}
+        height={110}
+      />
+      <Image
+        className="absolute left-1/2 top-1/2 translate-x-[-50%] translate-y-[-75%]"
+        src={imageUrl}
+        alt={text}
+        width={imageWidth}
+        height={imageHeight}
+      />
+      <span className="absolute left-1/2 top-1/2 translate-x-[-50%] translate-y-[60%] whitespace-nowrap text-[12px] font-bold text-[#8728FF]">
+        {text}
+      </span>
+    </button>
   );
 };
 
@@ -371,8 +434,8 @@ const RequiredTerms = () => {
     setThirdParty((prev) => !prev);
   };
   return (
-    <div className="flex flex-col mt-[30px] gap-[10px]">
-      <div className="flex items-center gap-[11px] mb-[5px]">
+    <div className="mt-[30px] flex flex-col gap-[10px]">
+      <div className="mb-[5px] flex items-center gap-[11px]">
         <button onClick={handleTotallyAgree}>
           <Image
             src={
@@ -385,11 +448,11 @@ const RequiredTerms = () => {
             height={20}
           ></Image>
         </button>
-        <span className="text-[14px] tracking-[-0.5px] font-bold">
+        <span className="text-[14px] font-bold tracking-[-0.5px]">
           필수 약관 전체 동의
         </span>
       </div>
-      <div className="flex items-center gap-[14px] ml-[3px]">
+      <div className="ml-[3px] flex items-center gap-[14px]">
         <button onClick={handleUseOfInfomation}>
           <Image
             src={
@@ -406,7 +469,7 @@ const RequiredTerms = () => {
           {"[필수] 개인정보 수집 및 이용"}
         </span>
       </div>
-      <div className="flex items-center gap-[14px] ml-[3px]">
+      <div className="ml-[3px] flex items-center gap-[14px]">
         <button onClick={handleThirdParty}>
           <Image
             src={
@@ -431,63 +494,26 @@ const Notification = () => {
   const notificationText =
     "코코시는 통신판매중개자로서 통신판매의 당사자가 아니며, 상품의 예약, 이용 및 환불 등과 관련한 의무와 책임은 각 판매자에게 있습니다.";
   return (
-    <div className="bg-[#F6F6F6] py-[16px] px-[13px] mt-[10px] rounded-[7px]">
-      <span className="text-[12px] text-[#666666] tracking-[-0.8px] leading-[1]">
+    <div className="mt-[10px] rounded-[7px] bg-[#F6F6F6] px-[13px] py-[16px]">
+      <span className="text-[12px] leading-[1] tracking-[-0.8px] text-[#666666]">
         {notificationText}
       </span>
     </div>
   );
 };
 
-const PaymentButton = () => {
+const PaymentButton = ({ handlePayment }) => {
   return (
     <div>
-      <button className="w-full h-[50px] bg-[#B2B2B2] rounded-[5px] mt-[50px] mb-[20px]">
-        <span className="text-white font-bold tracking-[-0.5px]">
+      <button
+        className="mb-[20px] mt-[50px] h-[50px] w-full rounded-[5px] bg-[#B2B2B2]"
+        onClick={handlePayment}
+      >
+        <span className="font-bold tracking-[-0.5px] text-white">
           225,000원 결제하기
         </span>
       </button>
     </div>
-  );
-};
-
-const PaymentType = ({
-  imageUrl,
-  imageWidth,
-  imageHeight,
-  text,
-  handleOnClick,
-  bool,
-}) => {
-  return (
-    <>
-      <button className="relative tracking-[-0.8px]" onClick={handleOnClick}>
-        <Image
-          src={
-            bool
-              ? "/assets/icon/Rectangle 25.png"
-              : "/assets/icon/Rectangle_400.png"
-          }
-          alt="Rectangle_400"
-          width={110}
-          height={110}
-        ></Image>
-        <Image
-          className="absolute left-1/2 top-1/2 translate-x-[-50%] translate-y-[-75%]"
-          src={
-            bool && text == "실시간 계좌이체"
-              ? "/assets/icon/ic_pay_account.png"
-              : imageUrl
-          }
-          alt={imageUrl}
-          width={imageWidth}
-          height={imageHeight}
-        ></Image>
-        <span className="absolute left-1/2 top-1/2 translate-x-[-50%] translate-y-[60%] whitespace-nowrap text-[12px] font-bold text-[#8728FF]">
-          {text}
-        </span>
-      </button>
-    </>
   );
 };
 
@@ -533,7 +559,7 @@ const OnReservationPerson = ({
           onChange={(e) => setName(e.currentTarget.value)}
           onFocus={handleFirstFocus}
           onBlur={handleFirstBlur}
-          className={`w-[320px] h-[45px] text-[14px] border-[2px] rounded-[7px] ${isFirstFocused ? "border-[#8728FF] focus:outline-none" : "border-[#E5E5E5]"} px-[15px]`}
+          className={`h-[45px] w-[320px] rounded-[7px] border-[2px] text-[14px] ${isFirstFocused ? "border-[#8728FF] focus:outline-none" : "border-[#E5E5E5]"} px-[15px]`}
         />
         <Image
           src={
@@ -544,7 +570,7 @@ const OnReservationPerson = ({
           alt="ic_search_delete"
           width={15}
           height={12}
-          className="absolute top-1/2 transform -translate-y-1/2 right-0 mr-[18px]"
+          className="absolute right-0 top-1/2 mr-[18px] -translate-y-1/2 transform"
         ></Image>
       </div>
       <div className="mt-[14px]">
@@ -556,7 +582,7 @@ const OnReservationPerson = ({
           onChange={(e) => handlePhoneChange(e)}
           onFocus={handleSecondFocus}
           onBlur={handleSecondBlur}
-          className={`w-[320px] h-[45px] text-[14px] border-[2px] rounded-[7px] ${isSecondFocused ? "border-[#8728FF] focus:outline-none" : "border-[#E5E5E5]"} px-[15px]`}
+          className={`h-[45px] w-[320px] rounded-[7px] border-[2px] text-[14px] ${isSecondFocused ? "border-[#8728FF] focus:outline-none" : "border-[#E5E5E5]"} px-[15px]`}
         />
         <Image
           src={
@@ -567,12 +593,12 @@ const OnReservationPerson = ({
           alt="ic_search_delete"
           width={15}
           height={12}
-          className="absolute top-1/2 transform -translate-y-1/2 right-0 mr-[18px]"
+          className="absolute right-0 top-1/2 mr-[18px] -translate-y-1/2 transform"
         ></Image>
       </div>
       <div>
         <button
-          className="w-[320px] h-[50px] bg-[#8728FF] fixed bottom-0 left-1/2 transform -translate-x-1/2 my-4 rounded-[5px]"
+          className="fixed bottom-0 left-1/2 my-4 h-[50px] w-[320px] -translate-x-1/2 transform rounded-[5px] bg-[#8728FF]"
           onClick={handleReservationPerson}
         >
           <span className="text-white">설정완료</span>

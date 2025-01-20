@@ -78,107 +78,109 @@ const Review = () => {
   };
 
   return (
-    <div className={styles.container}>
-      {/* 제목 */}
-      <h1 className={styles.headerTitle}>후기 작성하기</h1>
+    <div className="flex h-screen w-full justify-center bg-gray-100">
+      <div className={styles.container}>
+        {/* 제목 */}
+        <h1 className={styles.headerTitle}>후기 작성하기</h1>
 
-      {/* 별점 */}
-      <div className={styles.ratingSection}>
-        <p className={styles.ratingValue}>{rating.toFixed(1)}</p>
-        <div className={styles.stars}>
-          {[...Array(5)].map((_, i) => (
-            <span
-              key={i}
-              className={`${styles.star} ${i < rating ? styles.filledStar : ""}`}
-              onClick={() => handleRating(i + 1)}
-            >
-              ★
-            </span>
-          ))}
-        </div>
-        <p className={styles.ratingInfo}>숙소에 대한 별점을 눌러주세요.</p>
-      </div>
-
-      <hr className={styles.hr} />
-
-      {/* 후기 작성 입력 */}
-      <div className={styles.reviewInput}>
-        <p>후기 작성하기</p>
-      </div>
-      <textarea
-        className={styles.textarea}
-        placeholder="숙소에 대한 상세한 후기를 입력해주세요."
-        value={reviewText}
-        onChange={(e) => setReviewText(e.target.value)}
-      ></textarea>
-
-      {/* 사진 업로드 */}
-      <div className={styles.imageUploadContainer}>
-        <button
-          className={styles.imageUploadButton}
-          onClick={() => setIsModalOpen(true)}
-        >
-          + 사진 업로드
-        </button>
-
-        <div className={styles.imagePreviewContainer}>
-          {images.map((image, index) => (
-            <div key={index} className={styles.imagePreview}>
-              <img
-                src={URL.createObjectURL(image)}
-                alt={`Uploaded ${index + 1}`}
-                className={styles.uploadedImage}
-              />
-              <button
-                type="button"
-                className={styles.removeImageButton}
-                onClick={() => handleRemoveImage(index)}
+        {/* 별점 */}
+        <div className={styles.ratingSection}>
+          <p className={styles.ratingValue}>{rating.toFixed(1)}</p>
+          <div className={styles.stars}>
+            {[...Array(5)].map((_, i) => (
+              <span
+                key={i}
+                className={`${styles.star} ${i < rating ? styles.filledStar : ""}`}
+                onClick={() => handleRating(i + 1)}
               >
-                ×
-              </button>
-            </div>
-          ))}
+                ★
+              </span>
+            ))}
+          </div>
+          <p className={styles.ratingInfo}>숙소에 대한 별점을 눌러주세요.</p>
         </div>
-      </div>
 
-      {/* 모달 */}
-      {isModalOpen && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modal}>
-            <button
-              className={styles.modalButton}
-              onClick={() => {
-                alert("사진 찍기 기능이 호출되었습니다.");
-                setIsModalOpen(false);
-              }}
-            >
-              사진 찍기
-            </button>
-            <label htmlFor="imageInput" className={styles.modalButton}>
-              사진 보관함
-            </label>
-            <input
-              type="file"
-              id="imageInput"
-              className={styles.hiddenInput}
-              accept="image/*"
-              multiple
-              onChange={handleImageUpload}
-            />
-            <button
-              className={styles.cancelButton}
-              onClick={() => setIsModalOpen(false)}
-            >
-              취소
-            </button>
+        <hr className={styles.hr} />
+
+        {/* 후기 작성 입력 */}
+        <div className={styles.reviewInput}>
+          <p>후기 작성하기</p>
+        </div>
+        <textarea
+          className={styles.textarea}
+          placeholder="숙소에 대한 상세한 후기를 입력해주세요."
+          value={reviewText}
+          onChange={(e) => setReviewText(e.target.value)}
+        ></textarea>
+
+        {/* 사진 업로드 */}
+        <div className={styles.imageUploadContainer}>
+          <button
+            className={styles.imageUploadButton}
+            onClick={() => setIsModalOpen(true)}
+          >
+            + 사진 업로드
+          </button>
+
+          <div className={styles.imagePreviewContainer}>
+            {images.map((image, index) => (
+              <div key={index} className={styles.imagePreview}>
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt={`Uploaded ${index + 1}`}
+                  className={styles.uploadedImage}
+                />
+                <button
+                  type="button"
+                  className={styles.removeImageButton}
+                  onClick={() => handleRemoveImage(index)}
+                >
+                  ×
+                </button>
+              </div>
+            ))}
           </div>
         </div>
-      )}
-      <Footer />
-      {/* 등록 버튼 */}
-      <button className={styles.submitButton} onClick={handleSubmit}>
-        등록하기
-      </button>
+
+        {/* 모달 */}
+        {isModalOpen && (
+          <div className={styles.modalOverlay}>
+            <div className={styles.modal}>
+              <button
+                className={styles.modalButton}
+                onClick={() => {
+                  alert("사진 찍기 기능이 호출되었습니다.");
+                  setIsModalOpen(false);
+                }}
+              >
+                사진 찍기
+              </button>
+              <label htmlFor="imageInput" className={styles.modalButton}>
+                사진 보관함
+              </label>
+              <input
+                type="file"
+                id="imageInput"
+                className={styles.hiddenInput}
+                accept="image/*"
+                multiple
+                onChange={handleImageUpload}
+              />
+              <button
+                className={styles.cancelButton}
+                onClick={() => setIsModalOpen(false)}
+              >
+                취소
+              </button>
+            </div>
+          </div>
+        )}
+        <Footer />
+        {/* 등록 버튼 */}
+        <button className={styles.submitButton} onClick={handleSubmit}>
+          등록하기
+        </button>
+      </div>
     </div>
   );
 };

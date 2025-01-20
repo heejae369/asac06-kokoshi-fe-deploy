@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import LoginPostApi from "@/feature/LoginPostApi";
+import LoginAxios from "@/feature/LoginAxios";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -97,8 +97,8 @@ export default function LoginPage() {
           className="h-[50px] w-full rounded-sm text-[1rem]"
           variant={"point"}
           disabled={email.length < 1 || pw.length < 8}
-          onClick={async () =>
-            LoginPostApi({
+          onClick={() =>
+            LoginAxios({
               setShowValidation,
               setSignUp,
               setSamePassword,

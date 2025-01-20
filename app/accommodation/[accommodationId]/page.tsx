@@ -22,7 +22,7 @@ import { formattedMonthToDay } from "@/feature/DateFormat";
 import { useCalendar } from "@/feature/CalendarContext";
 import { AccommodationRoomList } from "@/components/accommodation/accommodationRoomList";
 import { accommodationApi } from "@/feature/accommodation/api/api";
-import { AccommodationImage } from "@/feature/accommodation/type/accommodation.type";
+import { SlideImage } from "@/feature/accommodation/type/accommodation.type";
 
 // interface ImgComponent {
 //   imageUrl: string;
@@ -33,7 +33,7 @@ export default function AccommodationDetail({
 }: {
   params: { accommodationId: string };
 }) {
-  const [images, setImages] = useState<AccommodationImage[]>([]);
+  const [images, setImages] = useState<SlideImage[]>([]);
 
   const [accommodationCategory, setAccommodationCategory] = useState("");
   const [name, setName] = useState("");
@@ -45,7 +45,7 @@ export default function AccommodationDetail({
 
   const [api, setApi] = useState<CarouselApi>();
   const [currentPage, setCurrentPage] = useState(0);
-  const [canScrollNext, setCanScrollNext] = useState(true);
+  // const [canScrollNext, setCanScrollNext] = useState(true);
 
   // const [imageIndex, setImageIndex] = useState<number>(0);
   // const [slideIndex, setSlideIndex] = useState<number>(0);
@@ -161,36 +161,6 @@ export default function AccommodationDetail({
                     />
                   </CarouselItem>
                 ))}
-                {/* <CarouselItem>
-                  <Image
-                    src="/images/beach_resort_standard.jpg"
-                    alt="productList"
-                    width={360}
-                    height={228}
-                    //   className="size-[110px]"
-                  />
-                  {slideIndex <= 1 ? slideIndex - 1 : test.length}
-                </CarouselItem>
-                <CarouselItem>
-                  <Image
-                    src="/images/beach_resort_standard.jpg"
-                    alt="productList"
-                    width={360}
-                    height={228}
-                    //   className="size-[110px]"
-                  />
-                  {slideIndex}
-                </CarouselItem>
-                <CarouselItem>
-                  <Image
-                    src={test}
-                    alt="productList"
-                    width={360}
-                    height={228}
-                    //   className="size-[110px]"
-                  />
-                  {slideIndex + 1}
-                </CarouselItem> */}
               </CarouselContent>
               <CarouselPrevious className="left-2" />
               <CarouselNext className="right-2" />
@@ -265,7 +235,11 @@ export default function AccommodationDetail({
                 />
               </TabsContent>
               <TabsContent value="review">
-                <ReviewList />
+                <ReviewList
+                  accommodationId={params.accommodationId}
+                  rating={rating}
+                  totalReview={totalReview}
+                />
               </TabsContent>
             </Tabs>
           </div>

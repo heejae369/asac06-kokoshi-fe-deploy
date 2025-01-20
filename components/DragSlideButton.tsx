@@ -1,17 +1,21 @@
+import { useCalendar } from "@/feature/CalendarContext";
 import {
   calculateTimeDifference,
   dayUseTimeFormat,
+  formattedRequestDate,
+  isToday,
 } from "@/feature/DateFormat";
 import { useRef, useState, useEffect } from "react";
 
-export const DragSlideTimeButton = ({ reservationType, dummy }) => {
+export const DragSlideTimeButton = ({ roomDetail, onCheckTimeChange }) => {
   const scrollRef = useRef(null);
   const [isDrag, setIsDrag] = useState(false);
   const [startX, setStartX] = useState(0);
   const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
   const [noticeText, setNoticeText] = useState("");
+  const { checkInDate } = useCalendar();
 
-  const maxDuration = dummy.dayUseInfo.dayUseTime * 2;
+  const maxDuration = roomDetail.dayUseInfo.dayUseTime * 2;
 
   useEffect(() => {
     if (selectedTimes.length > 0 && selectedTimes.length < 9) {
@@ -27,19 +31,28 @@ export const DragSlideTimeButton = ({ reservationType, dummy }) => {
     }
   }, [selectedTimes]);
 
+  const sendCheckTime = (selectedTimes: string[]) => {
+    console.log(selectedTimes);
+    const selectCheckTime = {
+      selectCheckInTime: selectedTimes[0],
+      selectCheckOutTime: selectedTimes[selectedTimes.length - 1],
+    };
+    onCheckTimeChange(selectCheckTime);
+  };
+
   const handleButtonClick = (time: string) => {
     // 선택된 시간 계산
     const clickedTimeIndex = dayUseTimeFormat(
-      dummy.dayUseInfo.dayUseStartTime,
-      dummy.dayUseInfo.dayUseEndTime,
-      30
+      roomDetail.dayUseInfo.dayUseStartTime,
+      roomDetail.dayUseInfo.dayUseEndTime,
+      60
     ).indexOf(time);
 
     // 대실 최대 시간을 기준으로 뒤의 시간을 모두 선택
     const selectedTimesRange = dayUseTimeFormat(
-      dummy.dayUseInfo.dayUseStartTime,
-      dummy.dayUseInfo.dayUseEndTime,
-      30
+      roomDetail.dayUseInfo.dayUseStartTime,
+      roomDetail.dayUseInfo.dayUseEndTime,
+      60
     ).slice(clickedTimeIndex, clickedTimeIndex + maxDuration + 1);
 
     if (selectedTimes[0] == time) {
@@ -47,8 +60,13 @@ export const DragSlideTimeButton = ({ reservationType, dummy }) => {
     } else {
       setSelectedTimes(selectedTimesRange);
     }
-    console.log(selectedTimes);
   };
+
+  useEffect(() => {
+    if (selectedTimes.length > 0) {
+      sendCheckTime(selectedTimes);
+    }
+  }, [selectedTimes]);
 
   // 드래그 시작
   const onDragStart = (e) => {
@@ -94,36 +112,44 @@ export const DragSlideTimeButton = ({ reservationType, dummy }) => {
 
   return (
     <div>
-      {reservationType === "dayuse" ? (
-        <>
-          <div
-            className="DragSlide mt-[5px] flex h-[50px] items-center gap-[7px] overflow-x-auto"
-            ref={scrollRef}
-            onMouseDown={onDragStart}
-            onMouseUp={onDragEnd}
-            onMouseLeave={onDragEnd}
-            onMouseMove={isDrag ? onThrottleDragMove : null}
-          >
-            {dayUseTimeFormat(
-              dummy.dayUseInfo.dayUseStartTime,
-              dummy.dayUseInfo.dayUseEndTime,
-              30
-            ).map((item, index) => (
-              <TimeButton
-                key={index}
-                time={item}
-                isSelected={selectedTimes.includes(item)}
-                handleButtonClick={() => handleButtonClick(item)} // 클릭 시에만 활성화
-              />
-            ))}
-          </div>
-          {noticeText && (
-            <div>
-              <span className="text-[10px] text-red-500">{noticeText}</span>
-            </div>
-          )}
-        </>
-      ) : null}
+      <div
+        className="DragSlide mt-[5px] flex h-[50px] items-center gap-[7px] overflow-x-auto"
+        ref={scrollRef}
+        onMouseDown={onDragStart}
+        onMouseUp={onDragEnd}
+        onMouseLeave={onDragEnd}
+        onMouseMove={isDrag ? onThrottleDragMove : null}
+      >
+        {dayUseTimeFormat(
+          roomDetail.dayUseInfo.dayUseStartTime,
+          roomDetail.dayUseInfo.dayUseEndTime,
+          60
+        )
+          .filter(
+            (_, index, array) => index !== 0 && index !== array.length - 1
+          )
+          .filter((item) => {
+            const currentTime = new Date();
+            const targetTime = new Date(
+              `${formattedRequestDate(checkInDate)}T${item}`
+            );
+            return currentTime <= targetTime; // 현재 시간보다 이후의 시간만 통과
+          })
+          .map((item, index) => (
+            // 현재 시간 보다 작은 checkindate + time 은 버튼 생성 스킵
+            <TimeButton
+              key={index}
+              time={item}
+              isSelected={selectedTimes.includes(item)}
+              handleButtonClick={() => handleButtonClick(item)} // 클릭 시에만 활성화
+            />
+          ))}
+      </div>
+      {noticeText && (
+        <div>
+          <span className="text-[10px] text-red-500">{noticeText}</span>
+        </div>
+      )}
     </div>
   );
 };

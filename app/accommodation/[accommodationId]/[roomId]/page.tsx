@@ -10,73 +10,40 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import CalendarPage2 from "@/components/CalendarPage2";
 import { useDispatch } from "react-redux";
 import { openModal } from "@/lib/slice/modalSlice";
 import { Modal } from "@/components/Modal";
 import { useCalendar } from "@/feature/CalendarContext";
-import { formattedMonthToDay } from "@/feature/DateFormat";
 import {
-  dayUseTimeFormat,
-  calculateTimeDifference,
+  formattedMonthToDay,
+  formattedRequestDate,
 } from "@/feature/DateFormat";
 import "@/styles/DragSlide.css";
-import ReactSlick from "@/components/ReactSlick";
-import { DragSlideTimeButton } from "@/components/DragSlideButton";
+import {
+  requestAccommodationRoomDetail,
+  Room,
+  SlideImage,
+} from "@/feature/accommodation/type/accommodation.type";
+import { accommodationApi } from "@/feature/accommodation/api/api";
+import { ReservationType } from "@/components/accommodation/reservationModalContent";
 
-export default function RoomDetail({ params }: { params: { roomId: string } }) {
+export default function RoomDetail({
+  params,
+}: {
+  params: { roomId: string; accommodationId: string };
+}) {
   const [onCalendar, setOnCalendar] = useState(false);
   const { adultNumber, checkInDate, checkOutDate } = useCalendar();
 
-  const imageData = [
-    "/img_productdetail_hotel01_tablet.png",
-    "/hotel1.png",
-    "/hotel2.png",
-    "/hotel3.png",
-    "/hotel4.png",
-    "/img_productdetail_hotel01_tablet.png",
-    "/img_productdetail_hotel01_tablet.png",
-    "/img_productdetail_hotel01_tablet.png",
-    "/img_productdetail_hotel01_tablet.png",
-    "/img_productdetail_hotel01_tablet.png",
-    "/img_productdetail_hotel01_tablet.png",
-    "/img_productdetail_hotel01_tablet.png",
-    "/img_productdetail_hotel01_tablet.png",
-    "/img_productdetail_hotel01_tablet.png",
-    "/img_productdetail_hotel01_tablet.png",
-    "/img_productdetail_hotel01_tablet.png",
-  ];
-
-  // 이미지 총 갯수 필요
-  const dummy = {
-    title: "프리미엄 트윈",
-    comment: "주차불가 / 마운틴뷰 OR 오션뷰 OR 시티뷰 랜덤배정",
-    capacity: 2,
-    maxCapacity: 4,
-    type: "NORMAL | ALL",
-    //숙박은 default
-    minPrice: "20,000원",
-    checkIn: "15:00",
-    checkOut: "11:00",
-    reserveAvailable: true,
-    dayUseInfo: {
-      dayUseAvailable: true,
-      dayUseStartTime: "13:00",
-      dayUseEndTime: "21:00",
-      dayUseMinPrice: "15,000원",
-      dayUseTime: "4",
-    },
-  };
-
   const [api, setApi] = useState<CarouselApi>();
-  const [imageIndex, setImageIndex] = useState<number>(0);
-  const [slideIndex, setSlideIndex] = useState<number>(0);
-  const [reservationType, setReservationType] = useState("");
+  const [currentPage, setCurrentPage] = useState(0);
 
-  // const test = "/images/test.jpg";
-  const test = "/hote1.png";
+  const [roomDetail, setRoomDetail] = useState<Room>();
+  const [images, setImages] = useState<SlideImage[]>([]);
+  const [reservationType, setReservationType] = useState("STAY");
 
   // 장바구니 수
   const cartCount = "1";
@@ -92,32 +59,75 @@ export default function RoomDetail({ params }: { params: { roomId: string } }) {
   };
 
   const onClickReservation = () => {
-    setReservationType("");
-    console.log("reserv click");
+    setReservationType("STAY");
     dispatch(openModal());
   };
 
   const onClickDayUseReservation = () => {
-    setReservationType("dayuse");
-    console.log("dayUse reserv click");
+    setReservationType("DAY_USE");
     dispatch(openModal());
   };
 
-  //   사용 보류
-  useEffect(() => {
-    let lastPosition = api?.scrollProgress(); // 이전 스크롤 위치
-    let slidesMoved = 0;
-    api?.on("scroll", () => {
-      const currentPosition = api.scrollProgress(); // 현재 스크롤 위치
+  const requestAccommodationRoomDetail: requestAccommodationRoomDetail = {
+    roomId: params.roomId,
+    startDate: formattedRequestDate(checkInDate),
+    endDate: formattedRequestDate(checkOutDate),
+    capacity: adultNumber,
+  };
 
-      // 스크롤 위치가 변경되면 이동량 계산
-      if (Math.abs(currentPosition - lastPosition) > 0.5) {
-        slidesMoved++;
-        console.log(`Slides moved: ${slidesMoved}`);
-        lastPosition = currentPosition; // 이전 위치 업데이트
+  const {
+    data: roomDetailData,
+    isLoading: isRoomDetailLoading,
+    isError: isRoomDetailError,
+  } = accommodationApi.useAccommodationRoomDetailQuery({
+    requestAccommodationRoomDetail: requestAccommodationRoomDetail,
+  });
+
+  const {
+    data: imagesData,
+    isLoading: isImagesLoading,
+    isError: isImagesError,
+  } = accommodationApi.useAccommodationRoomImagesQuery({
+    requestAccommodationRoomImages: {
+      roomId: params.roomId,
+      page: currentPage,
+      size: 3,
+    },
+  });
+
+  useEffect(() => {
+    if (roomDetailData) {
+      setRoomDetail(roomDetailData.data);
+    }
+  }, [roomDetailData]);
+
+  useEffect(() => {
+    if (imagesData) {
+      // setCanScrollNext(!imagesData.data.last);
+      setImages((prevImages) => [...prevImages, ...imagesData.data.content]);
+    }
+  }, [imagesData]);
+
+  useEffect(() => {
+    api?.on("slidesInView", () => {
+      // console.log("canScrollNext : ", canScrollNext);
+      // if (!canScrollNext) {
+      //   return;
+      // }
+
+      if (!api?.canScrollNext()) {
+        setCurrentPage(currentPage + 1);
       }
     });
-  }, [api]);
+  }, [api, currentPage]);
+
+  if (isRoomDetailLoading || isImagesLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isRoomDetailError || isImagesError) {
+    return <div>Error</div>;
+  }
 
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100">
@@ -144,65 +154,47 @@ export default function RoomDetail({ params }: { params: { roomId: string } }) {
           </div>
           {/* 숙소 이미지 영역 */}
           <div className="mb-[13px] mt-[12px]">
-            <ReactSlick dataImages={imageData} />
-            {/*<Carousel
+            <Carousel
               opts={{
                 align: "start",
-                //   startIndex: 1,
-                //   loop: true,
+                watchDrag: false,
+                duration: 10,
               }}
               setApi={setApi}
             >
               <CarouselContent>
-                <CarouselItem>
-                  <Image
-                    // src="/images/beach_resort_standard.jpg"
-                    src="/img_productdetail_hotel01_tablet.png"
-                    alt="productList"
-                    width={360}
-                    height={228}
-                    //   className="size-[110px]"
-                  />
-                  
-                </CarouselItem>
-                <CarouselItem>
-                  <Image
-                    // src="/images/beach_resort_standard.jpg"
-                    src="/img_productdetail_hotel01_tablet.png"
-                    alt="productList"
-                    width={360}
-                    height={228}
-                    //   className="size-[110px]"
-                  />
-                  
-                </CarouselItem>
-                <CarouselItem>
-                  <Image
-                    src={test}
-                    alt="productList"
-                    width={360}
-                    height={228}
-                    //   className="size-[110px]"
-                  />
-                  
-                </CarouselItem>
+                {images.map((images, index) => (
+                  <CarouselItem key={index}>
+                    <Image
+                      src={images.imageUrl}
+                      alt="productList"
+                      width={360}
+                      height={228}
+                    />
+                  </CarouselItem>
+                ))}
               </CarouselContent>
               <CarouselPrevious className="left-2" />
               <CarouselNext className="right-2" />
-            </Carousel>*/}
+            </Carousel>
           </div>
           <div className="px-5">
             <div className="flex flex-col gap-[5px] pb-4">
               <div className="mt-[3px] flex items-center font-bold">
-                <span className="text-base">{dummy.title}</span>
+                <span className="text-base">{roomDetail?.name}</span>
               </div>
               <div className="flex items-center">
-                <span className="text-xs text-[#7F7F7F]">{dummy.comment}</span>
+                <span className="text-xs text-[#7F7F7F]">
+                  {roomDetail?.comment}
+                </span>
               </div>
               <div className="mt-[6px] flex flex-col items-start gap-2 rounded-md bg-gray-100 p-3 text-xs text-gray-800">
                 <div className="flex">
                   <div className="pr-3 font-bold text-[#7F7F7F]">객실 정보</div>
-                  <div className="pl-1 text-[#4C4C4C]">기준 2인 (최대 3인)</div>
+                  <div className="pl-1 text-[#4C4C4C]">
+                    기준 {roomDetail?.capacity}인 (최대{" "}
+                    {roomDetail?.maxCapacity}인)
+                  </div>
                 </div>
               </div>
             </div>
@@ -256,22 +248,22 @@ export default function RoomDetail({ params }: { params: { roomId: string } }) {
                       <div className="flex items-center text-xs text-[#7F7F7F]">
                         이용시간
                         <span className="py-1 pl-2 font-normal text-[#4C4C4C]">
-                          {`최대 ${dummy.dayUseInfo.dayUseTime}시간 이용`}
+                          {`최대 ${roomDetail?.dayUseInfo?.dayUseTime}시간 이용`}
                         </span>
                       </div>
                       <div className="flex items-center text-xs text-[#7F7F7F]">
                         운영시간
                         <span className="py-1 pl-2 font-normal text-[#4C4C4C]">
-                          {`${dummy.dayUseInfo.dayUseStartTime} ~ ${dummy.dayUseInfo.dayUseEndTime}`}
+                          {`${roomDetail?.dayUseInfo?.dayUseStartTime} ~ ${roomDetail?.dayUseInfo?.dayUseEndTime}`}
                         </span>
                       </div>
                     </div>
                     <div className="flex flex-col items-end justify-end">
                       <span className="px-1 text-[10px] text-[#8728FF]">
-                        1개 남음
+                        {roomDetail?.dayUseInfo?.dayUseAvailableQuantity}개 남음
                       </span>
                       <span className="px-1 pb-px text-right text-base font-bold">
-                        {dummy.dayUseInfo.dayUseMinPrice}
+                        {roomDetail?.dayUseInfo?.dayUseMinPrice}
                       </span>
                     </div>
                   </div>
@@ -303,22 +295,22 @@ export default function RoomDetail({ params }: { params: { roomId: string } }) {
                       <div className="flex items-center text-xs text-[#7F7F7F]">
                         체크인
                         <span className="py-1 pl-2 font-normal text-[#4C4C4C]">
-                          {dummy.checkIn}
+                          {roomDetail?.checkIn}
                         </span>
                       </div>
                       <div className="flex items-center text-xs text-[#7F7F7F]">
                         체크아웃
                         <span className="py-1 pl-2 font-normal text-[#4C4C4C]">
-                          {dummy.checkOut}
+                          {roomDetail?.checkOut}
                         </span>
                       </div>
                     </div>
                     <div className="flex flex-col items-end justify-end">
                       <span className="px-1 text-[10px] text-[#8728FF]">
-                        1개 남음
+                        {roomDetail?.availableQuantity}개 남음
                       </span>
                       <span className="px-1 pb-px text-right text-base font-bold">
-                        {dummy.minPrice}
+                        {roomDetail?.minPrice}
                       </span>
                     </div>
                   </div>
@@ -351,72 +343,11 @@ export default function RoomDetail({ params }: { params: { roomId: string } }) {
         </div>
       )}
       <Modal>
-        <ReservationType dummy={dummy} reservationType={reservationType} />
+        <ReservationType
+          roomDetail={roomDetail}
+          reservationType={reservationType}
+        />
       </Modal>
     </div>
   );
 }
-
-const ReservationType = ({ dummy, reservationType }) => {
-  return (
-    <>
-      <div className="mb-[16px] mt-[25px] text-[16px] font-bold">{`${reservationType == "dayuse" ? "대실 예약" : "숙박 예약"}`}</div>
-      <div className="flex justify-between">
-        <Image
-          // src="/images/beach_resort_standard.jpg"
-          src="/hotel2.png"
-          alt=""
-          width={95}
-          height={95}
-        />
-        <div className="flex flex-col gap-1">
-          <span>{dummy.title}</span>
-          <div className="flex w-[218px] items-center justify-center gap-[7px] rounded-md bg-gray-100 p-[10px] text-xs">
-            <div className="text-center">
-              <span className="text-[#999999]">체크인</span>
-              <br />
-              <span>2023.06.14(수)</span>
-              <br />
-              <span>16:00</span>
-            </div>
-            <div className="rounded-2xl bg-[#CCCCCC] px-[8px] py-[2px] text-[10px] text-[#666666]">
-              {"1박"}
-            </div>
-            <div className="text-center">
-              <span className="text-[#999999]">체크아웃</span>
-              <br />
-              <span>2025.06.15(목)</span>
-              <br />
-              <span>11:00</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <DragSlideTimeButton reservationType={reservationType} dummy={dummy} />
-      <div
-        className={`${reservationType == "dayuse" ? "mt-[9px]" : "mt-[14px]"} text-[12px] text-[#B2B2B2]`}
-      >
-        ⦁ &nbsp;&nbsp;현장상황에 따라 객실 랜덤배정 (객실지정불가) <br />
-        ⦁ &nbsp;&nbsp;예약 후 10분 내 취소될 경우 취소 수수료가 발생하지
-        않습니다. <br />
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*체크인 시간 경과 후 제외)
-      </div>
-      <div className="mb-[15px] mt-[20px] flex justify-between">
-        {/* 숙박 몇박인지, 대실 몇시간인지 계산하는 로직 추가해야 함. */}
-        <div>
-          <span className="font-bold">{`${reservationType == "dayuse" ? `대실 ` : "숙박 "}`}</span>
-          <span className="font-normal">{`${reservationType == "dayuse" ? `(${dummy.dayUseInfo.dayUseTime}시간)` : "(1박)"}`}</span>
-        </div>
-        <span className="font-bold">{`${reservationType == "dayuse" ? dummy.dayUseInfo.dayUseMinPrice : dummy.minPrice}`}</span>
-      </div>
-      <div className="flex justify-between">
-        <Button className="w-[155px] rounded-lg border border-[#8728FF] bg-white px-8 text-[#8728FF] hover:bg-purple-50">
-          장바구니 담기
-        </Button>
-        <Button className="w-[155px] px-8" variant={"point"}>
-          장바구니 담기
-        </Button>
-      </div>
-    </>
-  );
-};

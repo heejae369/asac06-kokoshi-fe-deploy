@@ -35,6 +35,7 @@ export const getSearchResult = async (
     return data;
   } catch (err) {
     console.log(err);
+    return undefined;
   }
 };
 
@@ -56,5 +57,6 @@ export const getTopKeywords = async () => {
     return data;
   } catch (err) {
     console.log(err);
+    return undefined;
   }
 };
