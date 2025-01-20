@@ -2,7 +2,7 @@
 import React from "react";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Headers } from "@/components/SearchComponent";
+import MainHeaders from "@/components/MainHeaders";
 import Footer from "@/components/Footer";
 
 const ReservationHistory = () => {
@@ -20,7 +20,7 @@ const ReservationHistory = () => {
         {/* Header */}
         <div className="sticky top-0 z-10 -mx-5 h-24 w-[360px] bg-white">
           <div className="absolute w-full px-5">
-            <Headers title={"예약내역"} backIcon={true} />
+            <MainHeaders title={"예약내역"} backIcon={true} />
           </div>
         </div>
 
