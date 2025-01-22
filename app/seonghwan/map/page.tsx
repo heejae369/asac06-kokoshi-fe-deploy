@@ -7,11 +7,20 @@ import calendarIcon from "@/assets/calendarIcon.png";
 import personnelIcon from "@/assets/personnelIcon.png";
 import Footer from "@/components/Footer";
 import { Router } from "lucide-react";
+import { formattedMonthToDay } from "@/feature/DateFormat";
+import { useCalendar } from "@/feature/CalendarContext";
+import CalendarPage2 from "@/components/CalendarPage2";
+import SearchComponenet from "@/components/SearchComponent";
+import MapSearchComponent from "@/components/MapSearchComponent";
+import inputClearIcon from "@/assets/inputClearIcon.png";
+import MapCaleder from "@/components/map/Mapcalender";
 
 export default function Map() {
   const [searchText, setSearchText] = useState("지역, 숙소 검색");
-  const [calendar, setCalendar] = useState("6.2 화 - 6.3 수");
-  const [personnel, setPersonnel] = useState("성인 2명");
+  const [onCalendar, setOnCalendar] = useState(false);
+  const { checkInDate, checkOutDate, adultNumber } = useCalendar();
+  const [text, setText] = useState(searchText || "");
+
   const [userLocation, setUserLocation] = useState<{
     lat: number;
     lng: number;
@@ -22,9 +31,10 @@ export default function Map() {
       address: string;
       rating: any;
       reviewCount: any;
-      img: string;
+      img: string | null;
     }[]
   >([]);
+
   const [selectedAccommodation, setSelectedAccommodation] = useState("");
   const [mapInstance, setMapInstance] = useState<any>(null); // 지도 객체 저장
 
@@ -95,6 +105,19 @@ export default function Map() {
     };
   }, []);
 
+  // [추가] onCalendar 상태 변경 시 지도 재조정
+  useEffect(() => {
+    if (!onCalendar && mapInstance) {
+      // 지도 크기와 중심 좌표를 재조정
+      mapInstance.relayout(); // 지도 크기 재조정
+      if (userLocation) {
+        const { lat, lng } = userLocation;
+        const moveLatLng = new window.kakao.maps.LatLng(lat, lng);
+        mapInstance.setCenter(moveLatLng); // 지도 중심 좌표를 현재 위치로 설정
+      }
+    }
+  }, [onCalendar, mapInstance]); // onCalendar 상태가 변경될 때 실행
+
   // 숙소 데이터 가져오기
   const fetchAccommodations = async (map: any) => {
     try {
@@ -120,7 +143,7 @@ export default function Map() {
       address: string;
       rating: any;
       reviewCount: any;
-      img: string;
+      img: string | null;
     }[],
     map: any
   ) => {
@@ -143,7 +166,7 @@ export default function Map() {
               position: coords,
             });
 
-            // 인포윈도우 생성
+            // 인포윈도우 생성 마커에 붙어있음
             const infowindow = new window.kakao.maps.InfoWindow({
               content: `
               <div style="width:150px;text-align:center;padding:6px 0;">
@@ -182,36 +205,23 @@ export default function Map() {
 
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100 font-sans">
-      <div className="relative flex h-full w-[360px] flex-col bg-white">
+      <div className="absolute flex h-full w-[360px] flex-col bg-white">
         {/* 검색 및 필터 */}
-        <div className="z-20 h-[146px] shadow-[0px_4px_4px_rgba(0,_0,_0,_0.18)]">
-          <div className="mt-[51px]">
-            <button className="mx-[20px] flex h-[37px] w-[320px] items-center rounded-[18px] bg-[#F6F6F6]">
-              <Image src={searchIcon} alt="search" className="ml-[15px]" />
-              <span className="ml-[7px] h-[20px] text-[13px] font-[600] tracking-[-0.8px] text-[#999999]">
-                {searchText}
-              </span>
-            </button>
-          </div>
-          <div className="flex gap-[7px] px-[20px] pt-[6px]">
-            <button className="flex h-[37px] w-[200px] items-center rounded-[18px] bg-[#F6F6F6]">
-              <Image src={calendarIcon} alt="calendar" className="ml-[17px]" />
-              <span className="ml-[8px] h-[20px] text-[13px] font-[600] tracking-[-0.45px]">
-                {calendar}
-              </span>
-            </button>
-            <button className="flex h-[37px] w-[114px] items-center rounded-[18px] bg-[#F6F6F6]">
-              <Image
-                src={personnelIcon}
-                alt="personnel"
-                className="ml-[15px]"
-              />
-              <span className="ml-[8px] h-[20px] text-[13px] font-[600] tracking-[-0.45px]">
-                {personnel}
-              </span>
-            </button>
-          </div>
-        </div>
+        {onCalendar ? (
+          <>
+            <div className="w-[360px] h-full bg-white">
+              <MapCaleder setOnCalendar={setOnCalendar} />
+            </div>
+            {/* </div> */}
+          </>
+        ) : (
+          <MapSearchComponent
+            searchText={searchText}
+            setSearchText={setSearchText}
+            setOnCalendar={setOnCalendar}
+            // handleSearch={handleSearch}
+          />
+        )}
         {/* 지도 */}
         <div id="map" className="z-0 w-[360px] flex-1"></div>
 
@@ -220,9 +230,7 @@ export default function Map() {
           className="absolute bottom-16 left-4 p-3 bg-white rounded-full shadow-md"
           onClick={moveToMyLocation}
         >
-          <span role="img" aria-label="location">
-            📍
-          </span>
+          <span role="img" aria-label="location"></span>
         </button>
 
         {selectedAccommodation && (
@@ -272,7 +280,6 @@ export default function Map() {
             </div>
           </div>
         )}
-
         <Footer />
       </div>
     </div>
