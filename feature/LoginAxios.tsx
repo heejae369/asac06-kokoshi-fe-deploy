@@ -13,10 +13,14 @@ export default function LoginPostApi({
   // 로그인 요청
   try {
     axios
-      .post("http://localhost:8080/users/login", {
-        userEmail: email,
-        userPassword: pw,
-      })
+      .post(
+        "http://localhost:8080/users/login",
+        {
+          userEmail: email,
+          userPassword: pw,
+        },
+        { withCredentials: true }
+      )
       .then((response) => {
         if (response.data.status === true) {
           console.log(response.data.message);
