@@ -48,7 +48,7 @@ export default function MapCaleder({ setOnCalendar }) {
 
   return (
     <>
-      <div className="relative h-[70px] font-semibold">
+      <div className="relative h-[70px] font-semibold ">
         <div className="mt-[47px] flex h-[24px] items-center">
           <button
             className="ml-[8px] size-[12px]"
@@ -61,7 +61,7 @@ export default function MapCaleder({ setOnCalendar }) {
           </div>
         </div>
       </div>
-      <div className="mt-[12px] flex gap-[7px]">
+      <div className="mt-[12px] gap-[7px] flex items-center justify-center">
         <button
           className="flex h-[37px] w-[200px] items-center rounded-[18px] bg-[#F6F6F6]"
           onClick={() => setOnCalendar(true)}
@@ -84,7 +84,7 @@ export default function MapCaleder({ setOnCalendar }) {
           <Image
             src={personnelIcon}
             alt="personnel"
-            className="ml-[15px]"
+            className="ml-[15px] "
             width={18}
             height={18}
           />
@@ -94,7 +94,7 @@ export default function MapCaleder({ setOnCalendar }) {
         </button>
       </div>
       <CalendarPage onDateSelect={handleDateSelect} />
-      <hr className="mx-[-20px] mt-[20px] w-[360px] border-[3.5px] border-[#E5E5E5]" />
+      <hr className=" mt-[20px] w-[360px] border-[3.5px] border-[#E5E5E5] flex items-center" />
       <div className="mt-[20px] px-4">
         <span className="text-[16px] font-bold">인원</span>
       </div>
