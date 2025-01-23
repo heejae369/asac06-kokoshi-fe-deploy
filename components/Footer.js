@@ -62,18 +62,18 @@ const Footer = () => {
         <Link href="/mypage">
           <div
             className={`${styles.navItem} ${
-              pathname === "/mypage" ? styles.active : ""
+              pathname.startsWith("/mypage") ? styles.active : ""
             }`}
           >
             <img
               src={myPage.src}
               alt="마이페이지"
               className={`${styles.icon} ${
-                pathname === "/mypage" ? styles.activeIcon : ""
+                pathname.startsWith("/mypage") ? styles.activeIcon : ""
               }`}
             />
             <span
-              className={`${pathname === "/mypage" ? styles.activeText : ""}`}
+              className={`${pathname.startsWith("/mypage") ? styles.activeText : ""}`}
             >
               마이페이지
             </span>
