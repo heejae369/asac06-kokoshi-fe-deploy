@@ -4,7 +4,7 @@ export default function JwtPostApi({ accessToken, router }) {
   // 로그인 요청
   try {
     axios
-      .get("http://localhost:8080/users/access", {
+      .get(`${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/users/access`, {
         headers: { Authorization: accessToken },
         withCredentials: true,
       })
