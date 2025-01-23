@@ -49,55 +49,74 @@ const CartItem: React.FC<CartItemProps> = ({
   const endDay = getDayOfWeek(reservationEnd);
 
   return (
-    <div className="p-4 border-b border-gray-200">
+    <div className="py-4">
       <div className="flex gap-4">
         <input
           type="checkbox"
           checked={isChecked}
           onChange={() => onCheck(id)}
-          className="w-5 h-5 mt-2"
+          className="mt-2 h-5 w-5"
         />
-        <div className="flex flex-col flex-1">
-          <div className="flex gap-4">
+        <div className="flex flex-1 flex-col">
+          <div className="flex gap-2 tracking-[-0.6px]">
             <img
               src="/hotel1.png"
               alt={name}
-              className="w-20 h-20 rounded-md object-cover"
+              className="h-20 w-20 rounded-md object-cover"
             />
-            <div className="flex flex-col flex-1">
-              <span className="text-xs font-bold text-purple-600">{type}</span>
-              <span className="text-sm font-semibold text-gray-900">
-                {name}
-              </span>
-              <span className="text-xs text-gray-900">
-                {reservationStart}({startDay}) ~ {reservationEnd}({endDay}),{" "}
-                {nights}박
-              </span>
+            <div className="flex flex-col">
+              <div className="flex items-center">
+                <div className="h-[18px] rounded-[9px] border border-[#8728FF] px-[9px] py-[2px] text-[10px] text-[#8728FF]">
+                  {type}
+                </div>
+              </div>
+              <div className="flex h-[21px] items-center">
+                <span className="text-sm font-semibold text-gray-900">
+                  {name}
+                </span>
+              </div>
+              <div className="flex h-[18px] items-center">
+                <span className="text-xs text-gray-900">
+                  {reservationStart}({startDay}) ~ {reservationEnd}({endDay}),{" "}
+                  {nights}박
+                </span>
+              </div>
               <span className="text-xs text-gray-600">
-                기준 {capacity}명 / 최대 {maxCapacity}명
+                디럭스 트윈 기준 {capacity}명 / 최대 {maxCapacity}명
               </span>
             </div>
           </div>
           <div className="mt-4">
-            <div className="flex justify-between bg-gray-100 p-2 rounded-md">
+            <div className="flex justify-between rounded-md bg-gray-100 px-[15px] py-3 text-xs">
               <span className="text-xs font-medium text-gray-600">
                 이용시간
               </span>
-              <div className="flex gap-2">
-                <span className="text-xs text-gray-600">체크인 {checkIn}</span>
-                <span className="text-xs text-gray-600">
-                  체크아웃 {checkOut}
-                </span>
+              <div className="flex gap-4">
+                <div className="flex gap-[5px]">
+                  <span className="text-gray-600">체크인</span>
+                  <span className="">{checkIn.substring(0, 5)}</span>
+                </div>
+                <div>
+                  <span className="text-gray-600">체크아웃</span>
+                  <span className="">{checkOut.substring(0, 5)}</span>
+                </div>
               </div>
             </div>
-            <div className="mt-2 flex flex-col items-end">
+            <div className="mt-3 flex flex-col items-end">
               {specialPrice && (
-                <span className="bg-purple-300 text-xs text-purple-600 mb-1">
-                  선착순 {specialPrice.toLocaleString()}원 특가
-                </span>
+                // <span className="mb-1 bg-purple-300 text-xs text-purple-600 px-[5px]">
+                //   선착순 {specialPrice.toLocaleString()}원 특가
+                // </span>
+                <div className="flex h-[16px] items-center bg-[#8728FF] bg-opacity-20 px-[5px]">
+                  <span className="text-[10px] font-bold text-[#8728FF]">
+                    선착순 {specialPrice.toLocaleString()}원 특가
+                  </span>
+                </div>
               )}
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-purple-600">{stock}개 남음</span>
+              <div className="flex items-end gap-[10px]">
+                <span className="pb-[3px] text-xs text-[#8728FF]">
+                  {stock}개 남음
+                </span>
                 <span className="text-lg font-bold text-gray-900">
                   {price.toLocaleString()}원
                 </span>

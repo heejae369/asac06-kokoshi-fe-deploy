@@ -186,8 +186,8 @@ export default function CartPage() {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="flex flex-col items-center w-full bg-gray-100">
-      <div className="w-[360px] bg-white px-4">
+    <div className="flex w-full flex-col items-center bg-gray-100">
+      <div className="w-[360px] bg-white px-5">
         <MainHeaders title={title} backIcon={true} homeIcon={true} />
         <TopBar
           allChecked={isAllChecked}
@@ -196,8 +196,11 @@ export default function CartPage() {
         />
         <div>
           {cartItems.length > 0 ? (
-            cartItems.map((item) => (
-              <CartItem key={item.id} {...item} onCheck={toggleItemCheck} />
+            cartItems.map((item, index) => (
+              <>
+                <CartItem key={item.id} {...item} onCheck={toggleItemCheck} />
+                {index < cartItems.length - 1 && <hr />}
+              </>
             ))
           ) : (
             <p className="text-center text-gray-500">
@@ -205,32 +208,33 @@ export default function CartPage() {
             </p>
           )}
         </div>
-        <div className="py-4 border-t-2 border-gray-300">
-          <h2 className="text-sm font-semibold text-gray-900 mb-2">
+        <hr className="w-[360px] ml-[-20px] border-[3.5px]"></hr>
+        <div className="py-4 flex flex-col gap-[20px]">
+          <h2 className="text-sm font-semibold text-gray-900 mb-[5px]">
             할인 및 결제 정보
           </h2>
-          <div className="flex justify-between text-sm text-gray-600 mb-2">
+          <div className="flex justify-between text-sm text-gray-600">
             <span>결제 금액</span>
             <span className="font-semibold text-gray-900">
               {totalAmount.toLocaleString()}원
             </span>
           </div>
-          <div className="flex justify-between text-sm text-gray-600 mb-2">
+          <div className="flex justify-between text-sm text-gray-600">
             <span>할인 금액</span>
             <span className="font-semibold text-red-500">
               {totalDiscount.toLocaleString()}원
             </span>
           </div>
-          <div className="w-full h-[1px] bg-gray-200 my-2"></div>
-          <div className="flex justify-between text-sm text-gray-600 mb-4">
+          <div className=" h-px w-full bg-gray-200"></div>
+          <div className=" flex justify-between text-sm text-gray-600">
             <span>결제 예상 금액</span>
             <span className="font-semibold text-gray-900">
               {expectedAmount.toLocaleString()}원
             </span>
           </div>
         </div>
-        <div className="py-4 border-t border-gray-200">
-          <div className="flex justify-between items-center mb-4">
+        <div className="border-t border-gray-200 py-4">
+          <div className="mb-4 flex items-center justify-between">
             <span className="text-sm text-gray-600">
               총 {cartItems.length}건
             </span>

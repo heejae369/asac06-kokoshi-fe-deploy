@@ -1,5 +1,6 @@
 export const getSearchResult = async (
   searchKeyword,
+  adultNumber,
   checkInDate,
   checkOutDate,
   filterApply
@@ -7,6 +8,8 @@ export const getSearchResult = async (
   console.log(
     "keyword : ",
     searchKeyword,
+    "\nadultNumber : ",
+    adultNumber,
     "\ncheckInDate : ",
     checkInDate,
     "\ncheckOutDate : ",
@@ -22,7 +25,7 @@ export const getSearchResult = async (
   );
   try {
     const response = await fetch(
-      `http://localhost:8080/api/accommodation/searchResult/${searchKeyword}?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&accommodationCategory=${filterApply.accommodationCategory}&minPrice=${filterApply.priceRange[0]}&maxPrice=${filterApply.priceRange[1]}&keyword=${filterApply.keyword}`,
+      `http://localhost:8080/api/accommodation/searchResult/${searchKeyword}?adultNumber=${adultNumber}&checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&accommodationCategory=${filterApply.accommodationCategory}&minPrice=${filterApply.priceRange[0]}&maxPrice=${filterApply.priceRange[1]}&keyword=${filterApply.keyword}`,
       {
         method: "GET",
         headers: {

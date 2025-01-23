@@ -32,11 +32,12 @@ export default function Search() {
       if (text) {
         const data = await getSearchResult(
           text,
+          adultNumber,
           formattedRequestDate(checkInDate),
           formattedRequestDate(checkOutDate),
           filterApply
         );
-        if (array != "코코시 추천순" && data) {
+        if (array != "코코시 추천순" && !Array.isArray(data)) {
           setSearchResultData(dataArray(data, array));
         } else setSearchResultData(data);
       } else {
