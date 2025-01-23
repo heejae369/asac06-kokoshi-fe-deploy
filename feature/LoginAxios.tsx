@@ -14,7 +14,7 @@ export default function LoginPostApi({
   try {
     axios
       .post(
-        "http://localhost:8080/users/login",
+        `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/users/login`,
         {
           userEmail: email,
           userPassword: pw,

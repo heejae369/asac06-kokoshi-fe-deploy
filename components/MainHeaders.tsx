@@ -21,7 +21,7 @@ export default function MainHeaders({
   const router = useRouter();
   const cartCount = useSelector((state: RootState) => state.cart.cartCount);
 
-  const homeUrl = "http://localhost:3000/yanolza/main";
+  const homeUrl = `${process.env.NEXT_PUBLIC_CLIENT_BASE_URL}/yanolza/main`;
 
   const handleBackIcon = () => {
     router.back();
