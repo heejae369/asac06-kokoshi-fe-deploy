@@ -8,7 +8,6 @@ import passwordShow from "@/assets/icon/ic_pw_see.png";
 import or from "@/assets/or.png";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -38,27 +37,27 @@ export default function LoginPage() {
         </div>
         <div className="mt-9 flex flex-col gap-[5px]">
           {/* 이메일 입력창 */}
-          <Input
+          <input
             value={email}
             onChange={(e) => {
               let emailValue = e.target.value;
               emailValue = emailValue.replace(/\n/g, "");
               setEmail(emailValue.slice(0, 20));
             }}
-            className="rounded-sm bg-[#F4F4F4]"
+            className="h-12 rounded bg-[#F4F4F4] p-4"
             type="email"
             placeholder="이메일"
           />
           {/* 비밀번호 입력창 */}
           <div className="relative">
-            <Input
+            <input
               value={pw}
               onChange={(e) => {
                 let pwValue = e.target.value;
                 pwValue = pwValue.replace(/\n/g, "");
                 setPw(pwValue.slice(0, 20));
               }}
-              className="rounded-sm bg-[#F4F4F4]"
+              className="h-12 w-full rounded bg-[#F4F4F4] p-4"
               type={hidePw}
               placeholder="비밀번호"
               autoComplete="new-password"
