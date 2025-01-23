@@ -3,8 +3,9 @@
 import MainHeaders from "@/components/MainHeaders";
 import { KakaoPayReady } from "@/feature/fetch/KakaoPayFetch";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import blackBackIcon from "@/assets/blckBackIcon.png";
 
 export default function Reservation() {
   const data = [
@@ -44,41 +45,86 @@ export default function Reservation() {
   const [name, setName] = useState(user.userName);
   const [phoneNumber, setPhoneNumber] = useState(user.userPhoneNumber);
   const [paymentType, setPaymentType] = useState("");
+  const [totaltTerms, setTotalTerms] = useState(false);
+  const [isPayment, setIsPayment] = useState(false);
 
+  const [productRadio, setProductRadio] = useState(
+    data.reduce((acc, item) => {
+      acc[item.id] = { walkRadio: false, vehicleRadio: false };
+      return acc;
+    }, {})
+  );
   const router = useRouter();
+
+  const handleRadioChange = (id, type) => {
+    setProductRadio((prev) => {
+      const updatedProductRadio = { ...prev };
+      if (type === "walkRadio") {
+        updatedProductRadio[id] = { walkRadio: true, vehicleRadio: false };
+      } else {
+        updatedProductRadio[id] = { walkRadio: false, vehicleRadio: true };
+      }
+      return updatedProductRadio;
+    });
+  };
 
   const handleReservationPerson = () => {
     setOnReservationPerson((prev) => !prev);
   };
 
+  useEffect(() => {
+    if (
+      Object.values(productRadio).every(
+        (radio) => radio.walkRadio || radio.vehicleRadio
+      ) &&
+      name &&
+      phoneNumber &&
+      paymentType &&
+      totaltTerms
+    ) {
+      setIsPayment(true);
+    } else {
+      setIsPayment(false);
+    }
+  }, [name, phoneNumber, totaltTerms, paymentType, productRadio]);
+
   const handlePayment = async () => {
-    if (paymentType) {
+    if (isPayment) {
       const requestBody = {
         quantity: data.reduce((sum, item) => sum + item.quantity, 0),
         totalAmount: 200000,
         userId: 1,
         roomId: 1,
-        reservationNumber: "1234",
+        // reservationNumber: "1234",
       };
-      console.log(requestBody);
-      const response = await KakaoPayReady({ requestBody });
       console.log(paymentType);
+      if (paymentType === "kakaoPay") {
+        const response = await KakaoPayReady({ requestBody });
 
-      if (response?.next_redirect_pc_url) {
-        router.push(response.next_redirect_pc_url);
-      } else {
-        console.error("결제 요청 실패", response);
-      }
+        if (response?.next_redirect_pc_url) {
+          router.push(response.next_redirect_pc_url);
+        } else {
+          console.error("결제 요청 실패", response);
+        }
+      } else alert("준비중입니다.");
     }
   };
 
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100 font-sans">
-      <div className="relative flex h-full w-[360px] flex-col bg-white px-[20px]">
-        <MainHeaders
-          title={onReservationPerson ? "예약자 정보" : "예약"}
-          backIcon={true}
-        />
+      <div className="relative flex h-full w-[360px] flex-col overflow-y-auto bg-white px-[20px]">
+        {onReservationPerson ? (
+          <>
+            <OnReservationPersonTitle
+              handleReservationPerson={handleReservationPerson}
+            />
+          </>
+        ) : (
+          <MainHeaders
+            title={onReservationPerson ? "예약자 정보" : "예약"}
+            backIcon={true}
+          />
+        )}
         {onReservationPerson ? (
           <>
             <OnReservationPerson
@@ -95,7 +141,17 @@ export default function Reservation() {
               {data?.length > 0 &&
                 data.map((item, index) => (
                   <div key={item.id}>
-                    <ProductList data={item} />
+                    <ProductList
+                      data={item}
+                      walkRadio={productRadio[item.id]?.walkRadio}
+                      setWalkRadio={() =>
+                        handleRadioChange(item.id, "walkRadio")
+                      }
+                      vehicleRadio={productRadio[item.id]?.vehicleRadio}
+                      setVehicleRadio={() =>
+                        handleRadioChange(item.id, "vehicleRadio")
+                      }
+                    />
                     {index < data.length - 1 && (
                       <hr className="my-[20px] w-[320px]" />
                     )}
@@ -114,9 +170,15 @@ export default function Reservation() {
             <DiscountAndPaymentInfo />
             <hr className="m-[-20px] my-[20px] w-[360px] border-t-[6px]"></hr>
             <PaymentSelect setPaymentType={setPaymentType} />
-            <RequiredTerms />
+            <RequiredTerms
+              totaltTerms={totaltTerms}
+              setTotalTerms={setTotalTerms}
+            />
             <Notification />
-            <PaymentButton handlePayment={handlePayment} />
+            <PaymentButton
+              handlePayment={handlePayment}
+              isPayment={isPayment}
+            />
           </>
         )}
       </div>
@@ -124,16 +186,19 @@ export default function Reservation() {
   );
 }
 
-const ProductList = ({ data }) => {
-  const [walkRadio, setWalkRadio] = useState(false);
-  const [vehicleRadio, setVehiccleRadio] = useState(false);
-
+const ProductList = ({
+  data,
+  walkRadio,
+  setWalkRadio,
+  vehicleRadio,
+  setVehicleRadio,
+}) => {
   const handleWalkRadio = () => {
     setWalkRadio((prev) => !prev);
   };
 
   const handleVehicleRadio = () => {
-    setVehiccleRadio((prev) => !prev);
+    setVehicleRadio((prev) => !prev);
   };
 
   // 몇박인지 계산해야함.
@@ -175,7 +240,9 @@ const ProductList = ({ data }) => {
           </div>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-[12px]">방문수단</span>
+          <span className="text-[12px]">
+            방문수단<span className="text-[#D53560] font-bold">*</span>
+          </span>
           <div className="flex gap-[15px] font-bold">
             <button
               className="flex items-center gap-[5px]"
@@ -231,7 +298,7 @@ const ProductList = ({ data }) => {
 const ReservationPerson = ({ name, phoneNumber, handleReservationPerson }) => {
   return (
     <div className="tracking-[-0.5px]">
-      <TitleText title={"예약자 정보"} />
+      <EssentialText title={"예약자 정보"} />
       <div className="mt-[15px] flex justify-between text-[14px]">
         <div className="flex gap-[20px]">
           <span>{name}</span>
@@ -408,38 +475,42 @@ const PaymentType = ({
   );
 };
 
-const RequiredTerms = () => {
-  const [totallyAgree, setTotallyAgree] = useState(false);
-  const [useOfInfomation, setUseOfInfomation] = useState(false);
-  const [thirdParty, setThirdParty] = useState(false);
+const RequiredTerms = ({ totaltTerms, setTotalTerms }) => {
+  const [firstTerms, setFirstTerms] = useState(false);
+  const [secondTerms, setSecondTerms] = useState(false);
 
   const handleTotallyAgree = () => {
-    if (!totallyAgree) {
-      setUseOfInfomation(true);
-      setThirdParty(true);
+    if (!totaltTerms) {
+      setFirstTerms(true);
+      setSecondTerms(true);
     } else {
-      setUseOfInfomation(false);
-      setThirdParty(false);
+      setFirstTerms(false);
+      setSecondTerms(false);
     }
-    setTotallyAgree((prev) => !prev);
+    setTotalTerms((prev) => !prev);
   };
 
   const handleUseOfInfomation = () => {
-    if (useOfInfomation) setTotallyAgree(false);
-    setUseOfInfomation((prev) => !prev);
+    if (firstTerms) setTotalTerms(false);
+    setFirstTerms((prev) => !prev);
   };
 
   const handleThirdParty = () => {
-    if (thirdParty) setTotallyAgree(false);
-    setThirdParty((prev) => !prev);
+    if (secondTerms) setTotalTerms(false);
+    setSecondTerms((prev) => !prev);
   };
+
+  useEffect(() => {
+    if (firstTerms && secondTerms) setTotalTerms(true);
+  }, [firstTerms, secondTerms]);
+
   return (
     <div className="mt-[30px] flex flex-col gap-[10px]">
       <div className="mb-[5px] flex items-center gap-[11px]">
         <button onClick={handleTotallyAgree}>
           <Image
             src={
-              totallyAgree
+              totaltTerms
                 ? "/assets/icon/ic_squarecheck_p.png"
                 : "/assets/icon/ic_squarecheck_g.png"
             }
@@ -456,7 +527,7 @@ const RequiredTerms = () => {
         <button onClick={handleUseOfInfomation}>
           <Image
             src={
-              useOfInfomation
+              firstTerms
                 ? "/assets/icon/ic_check_p.png"
                 : "/assets/icon/ic_check_g.png"
             }
@@ -473,7 +544,7 @@ const RequiredTerms = () => {
         <button onClick={handleThirdParty}>
           <Image
             src={
-              thirdParty
+              secondTerms
                 ? "/assets/icon/ic_check_p.png"
                 : "/assets/icon/ic_check_g.png"
             }
@@ -502,12 +573,13 @@ const Notification = () => {
   );
 };
 
-const PaymentButton = ({ handlePayment }) => {
+const PaymentButton = ({ handlePayment, isPayment }) => {
   return (
     <div>
       <button
-        className="mb-[20px] mt-[50px] h-[50px] w-full rounded-[5px] bg-[#B2B2B2]"
+        className={`mb-[20px] mt-[50px] h-[50px] w-full rounded-[5px] ${isPayment ? "bg-[#8782FF]" : "bg-[#B2B2B2]"}`}
         onClick={handlePayment}
+        disabled={!isPayment}
       >
         <span className="font-bold tracking-[-0.5px] text-white">
           225,000원 결제하기
@@ -526,12 +598,47 @@ const OnReservationPerson = ({
 }) => {
   const [isFirstFocused, setIsFirstFocused] = useState(false);
   const [isSecondFocused, setIsSecondFocused] = useState(false);
+  const [reservationName, setReservationName] = useState(name);
+  const [reservationPhoneNumber, setReservationPhoneNumber] =
+    useState(phoneNumber);
 
   const handleFirstFocus = () => setIsFirstFocused(true);
   const handleFirstBlur = () => setIsFirstFocused(false);
 
   const handleSecondFocus = () => setIsSecondFocused(true);
   const handleSecondBlur = () => setIsSecondFocused(false);
+
+  const handleClearName = () => {
+    setReservationName("");
+  };
+
+  const handleClearPhoneNumber = () => {
+    setReservationPhoneNumber("");
+  };
+
+  // 초성만 체크하는 함수
+  const isHangulInitial = (str) => {
+    const regex = /^[ㄱ-ㅎ]+$/;
+    return regex.test(str);
+  };
+
+  const handleComplete = () => {
+    // 이름 검사 (한 글자 이하 또는 초성인 경우)
+    if (reservationName.length < 2 || isHangulInitial(reservationName)) {
+      alert("이름을 올바르게 입력해주세요.");
+      return;
+    }
+
+    // 전화번호 검사
+    if (reservationPhoneNumber.length < 12) {
+      alert("전화번호를 올바르게 입력해주세요.");
+      return;
+    }
+
+    setName(reservationName);
+    setPhoneNumber(reservationPhoneNumber);
+    handleReservationPerson();
+  };
 
   const handlePhoneChange = (e) => {
     const inputText = e.currentTarget.value.replace(/[^0-9]/g, "");
@@ -545,7 +652,7 @@ const OnReservationPerson = ({
       formattedText = `${inputText.slice(0, 3)}-${inputText.slice(3, 7)}-${inputText.slice(7, 11)}`;
     }
 
-    setPhoneNumber(formattedText);
+    setReservationPhoneNumber(formattedText);
   };
 
   return (
@@ -555,55 +662,84 @@ const OnReservationPerson = ({
       </div>
       <div className="relative mt-[10px]">
         <input
-          value={name}
-          onChange={(e) => setName(e.currentTarget.value)}
+          value={reservationName}
+          onChange={(e) => setReservationName(e.currentTarget.value)}
           onFocus={handleFirstFocus}
           onBlur={handleFirstBlur}
           className={`h-[45px] w-[320px] rounded-[7px] border-[2px] text-[14px] ${isFirstFocused ? "border-[#8728FF] focus:outline-none" : "border-[#E5E5E5]"} px-[15px]`}
         />
-        <Image
-          src={
-            isFirstFocused
-              ? "/assets/icon/ic_search_delete_p.png"
-              : "/assets/icon/ic_search_delete.png"
-          }
-          alt="ic_search_delete"
-          width={15}
-          height={12}
-          className="absolute right-0 top-1/2 mr-[18px] -translate-y-1/2 transform"
-        ></Image>
+        <button onClick={handleClearName}>
+          <Image
+            src={
+              isFirstFocused
+                ? "/assets/icon/ic_search_delete_p.png"
+                : "/assets/icon/ic_search_delete.png"
+            }
+            alt="ic_search_delete"
+            width={15}
+            height={12}
+            className="absolute right-0 top-1/2 mr-[18px] -translate-y-1/2 transform"
+          ></Image>
+        </button>
       </div>
       <div className="mt-[14px]">
         <span className="text-[14px]">휴대폰 번호</span>
       </div>
       <div className="relative mt-[10px]">
         <input
-          value={phoneNumber}
+          value={reservationPhoneNumber}
           onChange={(e) => handlePhoneChange(e)}
           onFocus={handleSecondFocus}
           onBlur={handleSecondBlur}
           className={`h-[45px] w-[320px] rounded-[7px] border-[2px] text-[14px] ${isSecondFocused ? "border-[#8728FF] focus:outline-none" : "border-[#E5E5E5]"} px-[15px]`}
         />
-        <Image
-          src={
-            isSecondFocused
-              ? "/assets/icon/ic_search_delete_p.png"
-              : "/assets/icon/ic_search_delete.png"
-          }
-          alt="ic_search_delete"
-          width={15}
-          height={12}
-          className="absolute right-0 top-1/2 mr-[18px] -translate-y-1/2 transform"
-        ></Image>
+        <button onClick={handleClearPhoneNumber}>
+          <Image
+            src={
+              isSecondFocused
+                ? "/assets/icon/ic_search_delete_p.png"
+                : "/assets/icon/ic_search_delete.png"
+            }
+            alt="ic_search_delete"
+            width={15}
+            height={12}
+            className="absolute right-0 top-1/2 mr-[18px] -translate-y-1/2 transform"
+          ></Image>
+        </button>
       </div>
       <div>
         <button
           className="fixed bottom-0 left-1/2 my-4 h-[50px] w-[320px] -translate-x-1/2 transform rounded-[5px] bg-[#8728FF]"
-          onClick={handleReservationPerson}
+          onClick={handleComplete}
         >
           <span className="text-white">설정완료</span>
         </button>
       </div>
+    </div>
+  );
+};
+
+const OnReservationPersonTitle = ({ handleReservationPerson }) => {
+  const handleBackIcon = () => {
+    handleReservationPerson();
+  };
+
+  return (
+    <div className="relative mt-[58px] flex justify-between">
+      <div className="flex w-1/5 items-center">
+        <button className="ml-[8px] h-[19px]" onClick={handleBackIcon}>
+          <Image
+            src={blackBackIcon}
+            alt="blackBackIcon"
+            width={9}
+            height={19}
+          />
+        </button>
+      </div>
+      <div className="font-semibold">
+        <span className="text-[16px] tracking-[-0.8px]">예약자 정보</span>
+      </div>
+      <div className="flex w-1/5 items-center justify-end"></div>
     </div>
   );
 };
@@ -613,6 +749,17 @@ const TitleText = ({ title }) => {
     <>
       <div className="tracking-[-0.8px]">
         <span className="text-[14px] font-bold">{title}</span>
+      </div>
+    </>
+  );
+};
+
+const EssentialText = ({ title }) => {
+  return (
+    <>
+      <div className="tracking-[-0.8px]">
+        <span className="text-[14px] font-bold">{title}</span>
+        <span className="text-[14px] font-bold text-[#D53560]">*</span>
       </div>
     </>
   );

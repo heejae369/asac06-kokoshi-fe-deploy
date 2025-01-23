@@ -1,3 +1,5 @@
+"use client";
+
 import { RatingStars } from "@/components/RatingStar";
 import {
   Carousel,

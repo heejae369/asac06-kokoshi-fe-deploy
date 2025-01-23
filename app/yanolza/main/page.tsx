@@ -1,6 +1,5 @@
 "use client";
 import Head from "next/head";
-import Image from "next/image";
 import styles from "@/styles/Home.module.css";
 import Footer from "@/components/Footer";
 import IconButtons from "@/components/IconButtons";
@@ -9,9 +8,11 @@ import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import { useRouter } from "next/navigation";
+import { useRef } from "react";
 
 export default function Home() {
   const router = useRouter();
+  const searchRef = useRef("");
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100">
       <div className={styles.container}>
@@ -35,6 +36,15 @@ export default function Home() {
               type="text"
               className={styles.input}
               placeholder="어떤 숙소를 찾으시나요?"
+              ref={searchRef}
+              onChange={(e) => {
+                searchRef.current = e.target.value;
+              }}
+              onKeyUp={(e) => {
+                if (e.keyCode == 13) {
+                  router.push(`/search?search=${searchRef.current}`);
+                }
+              }}
             />
           </div>
 
@@ -54,18 +64,23 @@ export default function Home() {
             >
               <div>
                 {[
-                  { name: "코코시하우스", price: "45,000원" },
-                  { name: "알라베티 호텔", price: "253,000원" },
-                  { name: "로첼라 루 호텔", price: "85,000원" },
+                  { name: "코코시하우스", price: "45,000원", page: 0 },
+                  { name: "알라베티 호텔", price: "253,000원", page: 1 },
+                  { name: "로첼라 루 호텔", price: "85,000원", page: 2 },
                 ].map((item, index) => (
                   <SwiperSlide key={index}>
-                    <div className={styles.recentItem}>
-                      <div className={styles.imagePlaceholder}></div>
-                      <div className={styles.itemInfo}>
-                        <p>{item.name}</p>
-                        <p>{item.price}</p>
+                    <button
+                      key={index}
+                      onClick={() => router.push("/accommodation/" + item.page)}
+                    >
+                      <div className={styles.recentItem}>
+                        <div className={styles.imagePlaceholder}></div>
+                        <div className={styles.itemInfo}>
+                          <p>{item.name}</p>
+                          <p>{item.price}</p>
+                        </div>
                       </div>
-                    </div>
+                    </button>
                   </SwiperSlide>
                 ))}
               </div>

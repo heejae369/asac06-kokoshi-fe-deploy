@@ -1,6 +1,6 @@
 "use client";
 
-import SearchComponenet from "@/components/SearchComponent";
+import SearchComponent from "@/components/SearchComponent";
 import { useEffect, useState } from "react";
 import CalendarPage2 from "@/components/CalendarPage2";
 import SearchBasic from "@/components/SearchBasic";
@@ -11,9 +11,10 @@ import { formattedRequestDate } from "@/feature/DateFormat";
 import { dataArray } from "@/feature/DataArray";
 import { useCalendar } from "@/feature/CalendarContext";
 import { addRecentSearches } from "@/feature/RecentSearchLocalStorage";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function Search() {
-  const { checkInDate, checkOutDate, adultNumber, kidNumber } = useCalendar();
+  const { checkInDate, checkOutDate, adultNumber } = useCalendar();
 
   const [searchText, setSearchText] = useState("");
   const [onCalendar, setOnCalendar] = useState(false);
@@ -25,6 +26,17 @@ export default function Search() {
     priceRange: [10000, 300000],
     keyword: [],
   });
+  const router = useRouter();
+  const searchParams = useSearchParams(); // useSearchParams 훅 사용
+
+  useEffect(() => {
+    if (searchParams) {
+      const search = searchParams.get("search"); // 'search' 쿼리 파라미터 값을 가져옴
+      console.log("Search query parameter:", search);
+      fetchData(search);
+      addRecentSearches(search);
+    }
+  }, [searchParams]);
 
   const fetchData = async (text) => {
     console.log("fetchData 실행");
@@ -32,6 +44,7 @@ export default function Search() {
       if (text) {
         const data = await getSearchResult(
           text,
+          adultNumber,
           formattedRequestDate(checkInDate),
           formattedRequestDate(checkOutDate),
           filterApply
@@ -66,8 +79,8 @@ export default function Search() {
   }, [filterApply]);
 
   const handleSearch = (text) => {
-    fetchData(text);
-    addRecentSearches(text);
+    router.push(`/search?search=${text}`);
+    // fetchData(text);
   };
 
   return (
@@ -89,7 +102,7 @@ export default function Search() {
               </>
             ) : (
               <>
-                <SearchComponenet
+                <SearchComponent
                   searchText={searchText}
                   setSearchText={setSearchText}
                   setOnCalendar={setOnCalendar}

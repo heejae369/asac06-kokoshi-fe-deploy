@@ -66,10 +66,12 @@ export default function SearchBasic({ setSearchText, handleSearch }) {
         handleSearchText={handleSearchText}
       />
       <SearchTitle searchTitle={"인기 검색어"} />
-      <TopKeyword
-        topKeywords={topKeywords}
-        handleSearchText={handleSearchText}
-      />
+      {topKeywords && (
+        <TopKeyword
+          topKeywords={topKeywords}
+          handleSearchText={handleSearchText}
+        />
+      )}
     </>
   );
 }

@@ -62,7 +62,7 @@ const TopBar: React.FC<TopBarProps> = ({
           선택 삭제
         </button>
       </div>
-      <hr className="mb-[22px]"></hr>
+      <hr></hr>
     </>
   );
 };
