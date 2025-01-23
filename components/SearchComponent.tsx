@@ -8,6 +8,7 @@ import { formattedMonthToDay } from "@/feature/DateFormat";
 import { useEffect, useState } from "react";
 import { useCalendar } from "@/feature/CalendarContext";
 import MainHeaders from "./MainHeaders";
+import { useRouter } from "next/navigation";
 
 export default function SearchComponenet({
   setOnCalendar,
@@ -19,9 +20,13 @@ export default function SearchComponenet({
 
   const { checkInDate, checkOutDate, adultNumber } = useCalendar();
 
+  const router = useRouter();
+
   const handleClear = () => {
     setSearchText("");
     setText("");
+    const url = window.location.pathname; // 현재 경로를 가져옵니다
+    router.replace(url);
   };
 
   useEffect(() => {
