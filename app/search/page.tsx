@@ -26,6 +26,14 @@ export default function Search() {
     keyword: [],
   });
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get("search");
+    if (query) {
+      fetchData(query);
+    }
+  }, []);
+
   const fetchData = async (text) => {
     console.log("fetchData 실행");
     try {
