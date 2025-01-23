@@ -15,7 +15,7 @@ import MapSearchComponent from "@/components/MapSearchComponent";
 import inputClearIcon from "@/assets/inputClearIcon.png";
 import MapCaleder from "@/components/map/Mapcalender";
 
-export default function Map() {
+export default function MapComponent() {
   const [searchText, setSearchText] = useState("지역, 숙소 검색");
   const [onCalendar, setOnCalendar] = useState(false);
   const { checkInDate, checkOutDate, adultNumber } = useCalendar();
@@ -208,74 +208,69 @@ export default function Map() {
 
   return (
     <>
-      <MapSearchComponent />
+      {/* 검색 및 필터 */}
+
+      {/* 지도 */}
+      <div id="map" className="z-0 w-[360px] flex-1 ml-[-20px]"></div>
+
+      {/* 내 위치로 이동 버튼 */}
+      <button
+        className="absolute bottom-16 left-4 p-3 bg-white rounded-full shadow-md"
+        onClick={moveToMyLocation}
+      >
+        <span role="img" aria-label="location">
+          📍
+        </span>
+      </button>
+
+      {selectedAccommodation && (
+        <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-20 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md flex">
+            {/* 왼쪽 이미지 섹션 */}
+            <div className="w-1/3 mr-4">
+              <div className="w-full h-48 bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
+                <img
+                  src={selectedAccommodation.img}
+                  alt={selectedAccommodation.name}
+                  className="max-w-full max-h-full"
+                />
+              </div>
+            </div>
+
+            {/* 오른쪽 텍스트 섹션 */}
+            <div className="flex-1">
+              <h3 className="text-xl font-semibold mb-2">
+                {selectedAccommodation.name}
+              </h3>
+              <p className="text-gray-600">{selectedAccommodation.address}</p>
+              <p className="text-gray-600 mt-1">
+                별점 : {selectedAccommodation.rating}
+              </p>
+              <p className="text-gray-600 mt-1">
+                리뷰 : {selectedAccommodation.reviewCount}
+              </p>
+
+              <button
+                className="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg"
+                onClick={() =>
+                  alert(
+                    `${selectedAccommodation.name} 상품 페이지로 이동합니다.`
+                  )
+                }
+              >
+                <p className="text-xs">예약 페이지로 이동</p>
+              </button>
+              <button
+                className="mt-4 px-4 py-2 ml-2 bg-gray-300 rounded-lg hover:bg-gray-400"
+                onClick={() => setSelectedAccommodation(null)}
+              >
+                <p className="text-xs">x</p>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      <Footer />
     </>
   );
-  // return (
-  //   <>
-  //     검색 및 필터
-
-  //     {/* 지도 */}
-  //     <div id="map" className="z-0 w-[360px] flex-1"></div>
-
-  //     {/* 내 위치로 이동 버튼 */}
-  //     <button
-  //       className="absolute bottom-16 left-4 p-3 bg-white rounded-full shadow-md"
-  //       onClick={moveToMyLocation}
-  //     >
-  //       <span role="img" aria-label="location">
-  //         📍
-  //       </span>
-  //     </button>
-
-  //     {selectedAccommodation && (
-  //       <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-20 flex items-center justify-center">
-  //         <div className="bg-white p-6 rounded-lg shadow-lg max-w-md flex">
-  //           {/* 왼쪽 이미지 섹션 */}
-  //           <div className="w-1/3 mr-4">
-  //             <div className="w-full h-48 bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
-  //               <img
-  //                 src={selectedAccommodation.img}
-  //                 alt={selectedAccommodation.name}
-  //                 className="max-w-full max-h-full"
-  //               />
-  //             </div>
-  //           </div>
-
-  //           {/* 오른쪽 텍스트 섹션 */}
-  //           <div className="flex-1">
-  //             <h3 className="text-xl font-semibold mb-2">
-  //               {selectedAccommodation.name}
-  //             </h3>
-  //             <p className="text-gray-600">{selectedAccommodation.address}</p>
-  //             <p className="text-gray-600 mt-1">
-  //               별점 : {selectedAccommodation.rating}
-  //             </p>
-  //             <p className="text-gray-600 mt-1">
-  //               리뷰 : {selectedAccommodation.reviewCount}
-  //             </p>
-
-  //             <button
-  //               className="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg"
-  //               onClick={() =>
-  //                 alert(
-  //                   `${selectedAccommodation.name} 상품 페이지로 이동합니다.`
-  //                 )
-  //               }
-  //             >
-  //               <p className="text-xs">예약 페이지로 이동</p>
-  //             </button>
-  //             <button
-  //               className="mt-4 px-4 py-2 ml-2 bg-gray-300 rounded-lg hover:bg-gray-400"
-  //               onClick={() => setSelectedAccommodation(null)}
-  //             >
-  //               <p className="text-xs">x</p>
-  //             </button>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     )}
-  //     <Footer />
-  //   </>
-  // );
 }

@@ -135,14 +135,14 @@ const Mypage = () => {
           <div className={styles.infoItem}>
             <p className={styles.label}>포인트</p>
             <p className={styles.value}>
-              {userData.userPoint !== null ? `${userData.userPoint} P` : "-"} P
+              {userData.userPoint !== null ? `${userData.userPoint} P` : "-"}
             </p>
           </div>
           <div className={styles.divider}></div>
           <div className={styles.infoItem}>
             <p className={styles.label}>보유한 쿠폰</p>
             <p className={styles.value}>
-              {userData.coupons !== null ? `${userData.coupons}개` : "-"}개
+              {userData.coupons !== null ? `${0}개` : "-"}
             </p>
           </div>
         </div>
