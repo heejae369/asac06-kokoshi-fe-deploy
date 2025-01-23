@@ -180,7 +180,7 @@ const SearchProductList = ({ dummy, handlePageRouter }) => {
       <div className="flex h-[133px] rounded-[10px] p-[11px] shadow-[0px_4px_11px_4px_rgba(121,121,121,0.1)]">
         <div className="size-[110px]">
           <Image
-            src={dummy.image}
+            src={dummy.thumbnail}
             // src={"/hotel1.png"}
             alt="productList"
             width={110}
