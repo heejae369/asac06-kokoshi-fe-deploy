@@ -62,6 +62,18 @@ export default function LoginPage() {
               type={hidePw}
               placeholder="비밀번호"
               autoComplete="new-password"
+              onKeyUp={(e) => {
+                if (e.keyCode == 13) {
+                  LoginAxios({
+                    setShowValidation,
+                    setSignUp,
+                    setSamePassword,
+                    email,
+                    pw,
+                    router,
+                  });
+                }
+              }}
             />
             {/* 비밀번호 표시하기 버튼 */}
             {hidePw == "password" && (
