@@ -139,3 +139,7 @@ const getDayOfWeek = (year, month, day) => {
   const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
   return dayNames[date.getDay()];
 };
+
+export const formattedGetDate = (date) => {
+  return `${date.year}.${date.month}.${date.day}(${date.dayOfWeek})`;
+};
