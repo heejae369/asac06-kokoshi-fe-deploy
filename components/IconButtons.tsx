@@ -9,6 +9,7 @@ import leisure from "@/assets/icon/leisure.png";
 import global from "@/assets/icon/global_icon.png";
 import airTicket from "@/assets/icon/airTicket_icon.png";
 import { useRouter } from "next/navigation";
+import path from "path";
 
 interface IconItem {
   id: number;
@@ -20,7 +21,7 @@ interface IconItem {
 const IconButtons: React.FC = () => {
   const items: IconItem[] = [
     { id: 1, name: "모텔", icon: motel.src, path: "motel" },
-    { id: 2, name: "호텔", icon: hotel.src, path: "hotelCategory" },
+    { id: 2, name: "호텔", icon: hotel.src, path: "hotel" },
     {
       id: 3,
       name: "펜션/풀빌라",
@@ -37,7 +38,7 @@ const IconButtons: React.FC = () => {
   // 버튼 클릭 시 /detail/hotelDetail/{path}로 라우팅
   const handleNextClick = (path: string) => {
     const url = `/detail/${path}`;
-    router.push(url);
+    router.push(url, path);
   };
 
   return (
@@ -58,3 +59,4 @@ const IconButtons: React.FC = () => {
 };
 
 export default IconButtons;
+path;
