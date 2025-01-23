@@ -16,26 +16,30 @@ export default function SelectRegion() {
   const regions: Region[] = [
     {
       region: "서울/경인",
-      url: "/seonghwan/search?seoul",
+      url: "/search?search=서울경인",
       img: hotel_seoul.src,
     },
     {
       region: "충청",
-      url: "/seonghwan/search?chungcheong",
+      url: "/search?search=충청",
       img: hotel_chungcheong.src,
     },
     {
       region: "경상",
-      url: "/seonghwan/search?qyeungsang",
+      url: "/search?search=경상",
       img: hotel_gyeungsang.src,
     },
-    { region: "전라", url: "/seonghwan/search?jeonla", img: hotel_jeonla.src },
+    {
+      region: "전라",
+      url: "/search?search=전라",
+      img: hotel_jeonla.src,
+    },
     {
       region: "강원",
-      url: "/seonghwan/search?gangwon",
+      url: "/search?search=강원",
       img: hotel_gangwon.src,
     },
-    { region: "제주", url: "/seonghwan/search?jeju", img: hotel_jeju.src },
+    { region: "제주", url: "/search?jeju", img: hotel_jeju.src },
   ];
   return (
     <>
