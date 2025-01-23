@@ -1,32 +1,23 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
-import searchIcon from "@/assets/searchIcon.png";
-import calendarIcon from "@/assets/calendarIcon.png";
-import personnelIcon from "@/assets/personnelIcon.png";
 import Footer from "@/components/Footer";
-import { Router } from "lucide-react";
-import { formattedMonthToDay } from "@/feature/DateFormat";
 import { useCalendar } from "@/feature/CalendarContext";
-import CalendarPage2 from "@/components/CalendarPage2";
-import SearchComponenet from "@/components/SearchComponent";
-import MapSearchComponent from "@/components/MapSearchComponent";
-import inputClearIcon from "@/assets/inputClearIcon.png";
-import MapCaleder from "@/components/map/Mapcalender";
+import { useRouter } from "next/navigation";
 
 export default function MapComponent() {
   const [searchText, setSearchText] = useState("지역, 숙소 검색");
   const [onCalendar, setOnCalendar] = useState(false);
   const { checkInDate, checkOutDate, adultNumber } = useCalendar();
   const [text, setText] = useState(searchText || "");
-
+  const router = useRouter();
   const [userLocation, setUserLocation] = useState<{
     lat: number;
     lng: number;
   } | null>(null);
   const [accommodations, setAccommodations] = useState<
     {
+      id: any;
       name: string;
       address: string;
       rating: any;
@@ -139,6 +130,7 @@ export default function MapComponent() {
   // 지도에 마커 표시
   const displayMarkers = (
     data: {
+      id: number;
       name: string;
       address: string;
       rating: any;
@@ -205,6 +197,12 @@ export default function MapComponent() {
       alert("현재 위치 정보를 가져오는 중입니다. 잠시 후 다시 시도해주세요.");
     }
   };
+  const moveReservation = (id) => {
+    router.push(`/accommodation/${id}`);
+  };
+  useEffect(() => {
+    setSelectedAccommodation(""); // 상태 초기화
+  }, []);
 
   return (
     <>
@@ -252,11 +250,7 @@ export default function MapComponent() {
 
               <button
                 className="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg"
-                onClick={() =>
-                  alert(
-                    `${selectedAccommodation.name} 상품 페이지로 이동합니다.`
-                  )
-                }
+                onClick={() => moveReservation(selectedAccommodation.id)}
               >
                 <p className="text-xs">예약 페이지로 이동</p>
               </button>
