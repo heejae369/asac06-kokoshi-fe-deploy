@@ -190,7 +190,7 @@ const Mypage = () => {
             <a href="mypage/faq">자주 묻는 질문</a>
           </li>
           <li>
-            <a href="#">설정</a>
+            <a href="mypage/settings">설정</a>
           </li>
         </ul>
 
