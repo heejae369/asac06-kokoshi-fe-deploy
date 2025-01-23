@@ -12,12 +12,8 @@ import checkImage from "@/assets/checkImage.png";
 import { useRouter } from "next/navigation";
 
 export default function SearchResult({
-  // searchText,
-  // adultNumber,
-  // kidNumber,
   setOnFilter,
   searchResultData,
-  // setSearchResultData,
   array,
   setArray,
 }) {
@@ -27,8 +23,8 @@ export default function SearchResult({
 
   const router = useRouter();
 
-  const handlePageRouter = () => {
-    router.push("/accommodation/1");
+  const handlePageRouter = (accommodationId: string) => {
+    router.push(`/accommodation/${accommodationId}`);
   };
 
   const modalOpen = () => {
@@ -190,7 +186,7 @@ const SearchProductList = ({ dummy, handlePageRouter }) => {
             width={110}
             height={110}
             className="size-[110px]"
-            onClick={() => handlePageRouter()}
+            onClick={() => handlePageRouter(dummy.accommodationId)}
           />
         </div>
         <div className="ml-[10px] flex grow flex-col tracking-[-0.5px]">
@@ -212,8 +208,8 @@ const SearchProductList = ({ dummy, handlePageRouter }) => {
             </span>
           </div>
           <div className="mt-[2px] flex items-center">
-            <span className="text-[10px] text-[#7F7F7F]">
-              공덕역 3분
+            <span className="text-[10px] text-[#7F7F7F] h-[16px]">
+              {/* 공덕역 3분 */}
               {/* {dummy.distance} */}
             </span>
           </div>

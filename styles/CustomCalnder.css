@@ -25,7 +25,8 @@
   justify-content: center;
   align-items: center;
   overflow: visible !important;
-  margin-top: 5px;
+  /* margin-top: 5px; */
+  height: 45px;
 }
 
 /* 선택된 날짜 */
@@ -41,8 +42,15 @@
 
 /* 오늘 날짜 */
 .react-calendar__tile--now {
-  background-color: #ff5733;
-  color: white !important;
+  border: 2px solid #ff5733; /* 원하는 색상과 두께로 설정 */
+  color: black !important;
+}
+
+/* 선택된 날짜 (오늘 날짜가 선택되었을 때) */
+.react-calendar__tile--now.react-calendar__tile--active {
+  color: white !important; /* 오늘 날짜가 선택되었을 때 텍스트 색상 */
+  background-color: #8728ff; /* 선택된 날짜 배경색 */
+  border: none;
 }
 
 /* 주말 날짜 */

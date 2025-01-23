@@ -32,6 +32,7 @@ export default function Search() {
       if (text) {
         const data = await getSearchResult(
           text,
+          adultNumber,
           formattedRequestDate(checkInDate),
           formattedRequestDate(checkOutDate),
           filterApply

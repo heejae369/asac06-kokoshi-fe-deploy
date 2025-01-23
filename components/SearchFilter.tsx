@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import xIcon from "@/assets/xIcon.png";
 import CustomCheckbox from "@/feature/CustomCheckBox";
 import FilterPriceSlide from "@/feature/FilterPriceSlide";
@@ -13,6 +13,7 @@ export default function SearchFilter({
 }) {
   const [slideRange, setSlideRange] = useState(filterApply.priceRange);
   const [checkedKeywords, setCheckedKeywords] = useState(filterApply.keyword);
+  const [onFilterReset, setOnFilterReset] = useState(false);
 
   const filterList = [
     "전체",
@@ -91,7 +92,6 @@ export default function SearchFilter({
       priceRange: slideRange,
       keyword: checkedKeywords,
     });
-    setOnFilter(false);
   };
 
   const checkKeyword = (keyword) => {
@@ -117,6 +117,22 @@ export default function SearchFilter({
     });
   };
 
+  const filterReset = () => {
+    if (
+      slideRange[0] === 10000 &&
+      slideRange[1] === 300000 &&
+      checkedItems["전체"] === true &&
+      checkedKeywords.length === 0 &&
+      onFilterReset === true
+    ) {
+      setOnFilterReset(false);
+    } else if (onFilterReset === false) setOnFilterReset(true);
+  };
+
+  useEffect(() => {
+    filterReset();
+  }, [slideRange, checkedItems, checkedKeywords]);
+
   return (
     <>
       <div className="relative h-[82px] font-semibold">
@@ -129,8 +145,9 @@ export default function SearchFilter({
           </div>
           <div>
             <button
-              className="text-[14px] tracking-[-1px] text-[#8728FF]"
+              className={`text-[14px] tracking-[-1px] ${onFilterReset ? "text-[#8728FF]" : "text-[#999999]"}`}
               onClick={handleReset}
+              disabled={!onFilterReset}
             >
               초기화
             </button>

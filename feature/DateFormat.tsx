@@ -26,9 +26,11 @@ export default function NowTomorrowDate() {
   return calendar;
 }
 
+// year, month, dat, datofweek
 export const formattedYearToDay = (start, end) => {
   const formatWithLeadingZero = (value) => value.toString().padStart(2, "0");
 
+  // 년.월.일 (요일) ~ 년.월.일 (요일)
   return `${start.year}.${formatWithLeadingZero(start.month)}.${formatWithLeadingZero(start.day)} (${start.dayOfWeek}) 
   ~ ${end.year}.${formatWithLeadingZero(end.month)}.${formatWithLeadingZero(end.day)} (${end.dayOfWeek})`;
 };
@@ -36,18 +38,12 @@ export const formattedYearToDay = (start, end) => {
 export const formattedYearToDayNotDayOfWeek = (start, end) => {
   const formatWithLeadingZero = (value) => value.toString().padStart(2, "0");
 
-  // 요일 계산 함수
-  const getDayOfWeek = (year, month, day) => {
-    const date = new Date(year, month - 1, day); // month는 0부터 시작
-    const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
-    return dayNames[date.getDay()];
-  };
-
   // 요일이 없으면 자동으로 채우기
   start.dayOfWeek =
     start.dayOfWeek || getDayOfWeek(start.year, start.month, start.day);
   end.dayOfWeek = end.dayOfWeek || getDayOfWeek(end.year, end.month, end.day);
 
+  // 년.월.일 (요일) ~ 년.월.일 (요일)
   return `${start.year}.${formatWithLeadingZero(start.month)}.${formatWithLeadingZero(start.day)} (${start.dayOfWeek}) 
   ~ ${end.year}.${formatWithLeadingZero(end.month)}.${formatWithLeadingZero(end.day)} (${end.dayOfWeek})`;
 };
@@ -71,6 +67,7 @@ export const formattedRequestDate = (date) => {
   const month = String(date.month).padStart(2, "0"); // 월이 1자리일 경우 0을 추가
   const day = String(date.day).padStart(2, "0"); // 일이 1자리일 경우 0을 추가
 
+  // 년-월-일
   return `${year}-${month}-${day}`;
 };
 
@@ -111,4 +108,34 @@ export const calculateTimeDifference = (start: string, end: string) => {
   // console.log(`차이: ${hours}시간 ${minutes}분`);
 
   return { hours, minutes };
+};
+
+export const calculateDaysDifference = (
+  startDate: string,
+  endDate: string
+): number => {
+  const start = new Date(startDate); // 첫 번째 날짜
+  const end = new Date(endDate); // 두 번째 날짜
+
+  const timeDiff = end.getTime() - start.getTime(); // 두 날짜의 차이 (밀리초)
+  const dayDiff = timeDiff / (1000 * 3600 * 24); // 밀리초를 일(day) 단위로 변환
+
+  return Math.abs(dayDiff); // 절댓값을 반환 (차이가 음수일 경우 대비)
+};
+
+export const formmattedYearToDayOfWeek = (date) => {
+  const year = date.year;
+  const month = String(date.month).padStart(2, "0"); // 월이 1자리일 경우 0을 추가
+  const day = String(date.day).padStart(2, "0"); // 일이 1자리일 경우 0을 추가
+  const dayOfWeek = date.dayOfWeek;
+
+  // 년.월.일(요일)
+  return `${year}.${month}.${day}(${dayOfWeek})`;
+};
+
+// 요일 계산 함수
+const getDayOfWeek = (year, month, day) => {
+  const date = new Date(year, month - 1, day); // month는 0부터 시작
+  const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
+  return dayNames[date.getDay()];
 };
