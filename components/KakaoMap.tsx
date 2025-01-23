@@ -38,7 +38,7 @@ export default function KakaoMap({
         const mapContainer = document.getElementById("map");
         const mapOption = {
           center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 기본 중심 위치
-          level: 3,
+          level: 1,
         };
 
         const map = new window.kakao.maps.Map(mapContainer, mapOption);
@@ -54,15 +54,16 @@ export default function KakaoMap({
               const markerPosition = new window.kakao.maps.LatLng(lat, lng);
               const markerImage = new window.kakao.maps.MarkerImage(
                 "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png",
-                new window.kakao.maps.Size(50, 50),
-                { offset: new window.kakao.maps.Point(25, 50) }
+                new window.kakao.maps.Size(50, 50), // 마커 이미지 크기
+                { offset: new window.kakao.maps.Point(25, 25) } // 이미지의 중심을 기준으로 설정
               );
+
               const marker = new window.kakao.maps.Marker({
                 position: markerPosition,
                 image: markerImage,
               });
-              marker.setMap(map);
 
+              marker.setMap(map);
               map.setCenter(markerPosition);
             },
             (error) => {
@@ -140,7 +141,9 @@ export default function KakaoMap({
     if (userLocation && mapInstance) {
       const { lat, lng } = userLocation;
       const moveLatLng = new window.kakao.maps.LatLng(lat, lng);
+
       mapInstance.setCenter(moveLatLng);
+      mapInstance.setLevel(1); // 숫자가 낮을수록 지도가 더 확대됩니다 (기본값은 3)
     } else {
       alert("현재 위치 정보를 가져오는 중입니다. 잠시 후 다시 시도해주세요.");
     }

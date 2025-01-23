@@ -1,106 +1,99 @@
 "use client";
-import Image from "next/image";
-import searchIcon from "@/assets/searchIcon.png";
-import calendarIcon from "@/assets/calendarIcon.png";
-import personnelIcon from "@/assets/personnelIcon.png";
-import inputClearIcon from "@/assets/inputClearIcon.png";
-import { formattedMonthToDay } from "@/feature/DateFormat";
+
+import SearchComponenet from "@/components/SearchComponent";
 import { useEffect, useState } from "react";
+import CalendarPage2 from "@/components/CalendarPage2";
+import SearchBasic from "@/components/SearchBasic";
+import SearchResult from "@/components/SearchResult";
+import SearchFilter from "@/components/SearchFilter";
+import { getSearchResult } from "@/feature/fetch/Search";
+import { formattedRequestDate } from "@/feature/DateFormat";
+import { dataArray } from "@/feature/DataArray";
 import { useCalendar } from "@/feature/CalendarContext";
-import MainHeaders from "./MainHeaders";
+import { addRecentSearches } from "@/feature/RecentSearchLocalStorage";
+import MapComponent from "@/components/MapComponent";
 
-export default function MapSearchComponent({
-  setOnCalendar,
-  searchText,
-  setSearchText,
-  // handleSearch,
-}) {
-  const [text, setText] = useState(searchText || "");
+export default function MapSearchComponent() {
+  const { checkInDate, checkOutDate, adultNumber, kidNumber } = useCalendar();
 
-  const { checkInDate, checkOutDate, adultNumber } = useCalendar();
+  const [searchText, setSearchText] = useState("");
+  const [onCalendar, setOnCalendar] = useState(false);
+  const [onFilter, setOnFilter] = useState(false);
+  const [searchResultData, setSearchResultData] = useState([]);
+  const [array, setArray] = useState("코코시 추천순");
+  const [filterApply, setFilterApply] = useState({
+    accommodationCategory: ["전체"],
+    priceRange: [10000, 300000],
+    keyword: [],
+  });
 
-  const handleClear = () => {
-    setSearchText("");
-    setText("");
+  const fetchData = async (text) => {
+    console.log("fetchData 실행");
+    try {
+      if (text) {
+        const data = await getSearchResult(
+          text,
+          formattedRequestDate(checkInDate),
+          formattedRequestDate(checkOutDate),
+          filterApply
+        );
+        if (array != "코코시 추천순" && data) {
+          setSearchResultData(dataArray(data, array));
+        } else setSearchResultData(data);
+      } else {
+        setSearchResultData([]);
+      }
+    } catch (error) {
+      console.error("searchResult : ", error);
+    }
+
+    setSearchText(text);
   };
 
   useEffect(() => {
-    if (searchText) setText(searchText);
-  }, [searchText]);
+    if (searchText) {
+      fetchData(searchText);
+    }
+  }, [checkInDate, checkOutDate]);
+
+  useEffect(() => {
+    if (array != "코코시 추천순" && searchResultData) {
+      setSearchResultData(dataArray(searchResultData, array));
+    }
+  }, [array]);
+
+  useEffect(() => {
+    if (searchText) fetchData(searchText);
+  }, [filterApply]);
+
+  const handleSearch = (text) => {
+    fetchData(text);
+    addRecentSearches(text);
+  };
 
   return (
-    <>
-      <MainHeaders title={"지도"} backIcon={true} />
-      <SearchInput
-        // handleSearch={handleSearch}
-        setText={setText}
-        text={text}
-        handleClear={handleClear}
-      />
-      <DateToCalendar setOnCalendar={setOnCalendar} />
-    </>
+    <div className="tracking-negative flex h-screen w-full justify-center bg-gray-100 font-sans">
+      <div className="relative flex h-full w-[360px] flex-col bg-white px-[20px]">
+        {onCalendar ? (
+          <>
+            <CalendarPage2 setOnCalendar={setOnCalendar} />
+          </>
+        ) : (
+          <>
+            <div className="z-10 shadow-[0px_4px_6px_rgba(0,_0,_0,_0.18)] w-[360px] ml-[-20px]">
+              <div className="flex w-[360px] flex-col px-[20px] pb-[20px]">
+                <SearchComponenet
+                  searchText={searchText}
+                  setSearchText={setSearchText}
+                  setOnCalendar={setOnCalendar}
+                  handleSearch={handleSearch}
+                />
+              </div>
+            </div>
+            <MapComponent />
+          </>
+        )}
+      </div>
+    </div>
   );
 }
-
-const SearchInput = ({ setText, text, handleClear }) => {
-  return (
-    <>
-      <div className="mt-[12px] flex items-center justify-center">
-        <div className="flex h-[37px] w-[320px] items-center rounded-[18px] bg-[#F6F6F6] px-[15px]">
-          <button className="h-[18px] w-[17px]">
-            <Image
-              src={searchIcon}
-              alt="search"
-              className="ml-px size-[18px]"
-            />
-          </button>
-          <input
-            type="text"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            className="ml-[7px] h-full w-[250px] border-none bg-transparent text-[13px] font-medium tracking-[-0.8px] outline-none"
-            placeholder="어떤 숙소를 찾으시나요?"
-          />
-          {text && (
-            <button onClick={handleClear}>
-              <Image
-                src={inputClearIcon}
-                alt="inputClear"
-                className="h-[12px] w-[15px]"
-              />
-            </button>
-          )}
-        </div>
-      </div>
-    </>
-  );
-};
-
-const DateToCalendar = ({ setOnCalendar }) => {
-  const { checkInDate, checkOutDate, adultNumber } = useCalendar();
-
-  return (
-    <>
-      <div className="flex gap-[7px] pt-[6px] mb-1 items-center justify-center">
-        <button
-          className="flex h-[37px] w-[200px] items-center rounded-[18px] bg-[#F6F6F6]"
-          onClick={() => setOnCalendar(true)}
-        >
-          <Image src={calendarIcon} alt="calendar" className="ml-[17px]" />
-          <span className="ml-[8px] h-[20px] text-[13px] font-medium tracking-[-0.45px]">
-            {formattedMonthToDay(checkInDate, checkOutDate)}
-          </span>
-        </button>
-        <button
-          className="flex h-[37px] w-[114px] items-center rounded-[18px] bg-[#F6F6F6]"
-          onClick={() => setOnCalendar(true)}
-        >
-          <Image src={personnelIcon} alt="personnel" className="ml-[15px]" />
-          <span className="ml-[8px] h-[20px] text-[13px] font-medium tracking-[-0.45px]">
-            {`성인 ${adultNumber}명`}
-          </span>
-        </button>
-      </div>
-    </>
-  );
-};
