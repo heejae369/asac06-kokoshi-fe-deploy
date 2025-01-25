@@ -26,7 +26,7 @@ export default function MapComponent() {
     }[]
   >([]);
 
-  const [selectedAccommodation, setSelectedAccommodation] = useState("");
+  const [selectedAccommodation, setSelectedAccommodation] = useState(null);
   const [mapInstance, setMapInstance] = useState<any>(null); // 지도 객체 저장
 
   useEffect(() => {
@@ -170,7 +170,7 @@ export default function MapComponent() {
             window.kakao.maps.event.addListener(marker, "click", () => {
               infowindow.open(map, marker); // 인포윈도우 열기
               setSelectedAccommodation(accommodation);
-
+              console.log(accommodation);
               // 클릭해도 지도 중심과 확대 수준 유지
               if (userLocation) {
                 const { lat, lng } = userLocation;
@@ -201,7 +201,7 @@ export default function MapComponent() {
     router.push(`/accommodation/${id}`);
   };
   useEffect(() => {
-    setSelectedAccommodation(""); // 상태 초기화
+    setSelectedAccommodation(null); // 상태 초기화
   }, []);
 
   return (
@@ -209,7 +209,6 @@ export default function MapComponent() {
       {/* 검색 및 필터 */}
 
       {/* 지도 */}
-      <div id="map" className="z-0 w-[360px] flex-1 ml-[-20px]"></div>
 
       {/* 내 위치로 이동 버튼 */}
       <button
@@ -221,45 +220,55 @@ export default function MapComponent() {
         </span>
       </button>
 
+      <div id="map" className="z-0 w-[360px] flex-1 ml-[-20px]"></div>
       {selectedAccommodation && (
-        <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-20 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md flex">
-            {/* 왼쪽 이미지 섹션 */}
+        <div
+          className="absolute bottom-20 left-1/2 transform -translate-x-1/2 w-[90%] max-w-sm bg-white p-4 rounded-lg shadow-lg"
+          role="button"
+          onClick={() => moveReservation(selectedAccommodation.id)}
+        >
+          {/* 왼쪽 이미지 섹션 */}
+          <div className="flex items-center">
             <div className="w-1/3 mr-4">
-              <div className="w-full h-48 bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
+              <div className="w-full h-24 rounded-lg overflow-hidden flex items-center justify-center">
                 <img
-                  src={selectedAccommodation.img}
-                  alt={selectedAccommodation.name}
-                  className="max-w-full max-h-full"
+                  src={selectedAccommodation.img || "/placeholder-image.jpg"}
+                  alt={selectedAccommodation.name || "숙소 이미지"}
+                  className="object-cover w-full h-full"
                 />
               </div>
             </div>
 
             {/* 오른쪽 텍스트 섹션 */}
             <div className="flex-1">
-              <h3 className="text-xl font-semibold mb-2">
-                {selectedAccommodation.name}
+              <h3 className="text-lg font-semibold text-purple-700 mb-1 truncate">
+                {selectedAccommodation.name || "숙소 이름"}
               </h3>
-              <p className="text-gray-600">{selectedAccommodation.address}</p>
-              <p className="text-gray-600 mt-1">
-                별점 : {selectedAccommodation.rating}
+              <div className="flex items-center space-x-1 text-sm text-purple-600 mb-2">
+                <span className="font-bold">
+                  {selectedAccommodation.rating || "4.0"}
+                </span>
+                <div className="flex items-center">
+                  {/* 별점 표시 */}
+                  {Array.from({
+                    length: Math.floor(selectedAccommodation.rating || "4"),
+                  }).map((_, index) => (
+                    <span key={index} className="text-purple-600 text-lg">
+                      ⭐
+                    </span>
+                  ))}
+                  {/* 리뷰 개수 */}
+                  <span className="text-gray-500 ml-2">
+                    ({selectedAccommodation.reviewCount || "1,136"})
+                  </span>
+                </div>
+              </div>
+              <p className="text-lg font-bold text-gray-900">
+                {selectedAccommodation.price || "75,000"}원
               </p>
-              <p className="text-gray-600 mt-1">
-                리뷰 : {selectedAccommodation.reviewCount}
+              <p className="text-sm text-gray-500">
+                {selectedAccommodation.distance || "김포 공항역 3분"}
               </p>
-
-              <button
-                className="mt-4 px-4 py-2 bg-purple-600 text-white rounded-lg"
-                onClick={() => moveReservation(selectedAccommodation.id)}
-              >
-                <p className="text-xs">예약 페이지로 이동</p>
-              </button>
-              <button
-                className="mt-4 px-4 py-2 ml-2 bg-gray-300 rounded-lg hover:bg-gray-400"
-                onClick={() => setSelectedAccommodation(null)}
-              >
-                <p className="text-xs">x</p>
-              </button>
             </div>
           </div>
         </div>
