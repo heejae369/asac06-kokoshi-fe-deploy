@@ -1,6 +1,9 @@
+import { ReservationNumber } from "@/feature/reservation/type/reservation.type";
+
 interface KakaoPayRequestBody {
-  quantity: number;
-  totalAmount: number;
+  // quantity: number;
+  // totalAmount: number;
+  reservationNumber: ReservationNumber;
 }
 
 export const KakaoPayReady = async ({

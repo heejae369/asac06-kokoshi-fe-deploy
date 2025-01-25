@@ -1,4 +1,4 @@
-export interface PaymentRoom {
+export interface paymentProducts {
   roomImage: string;
   roomName: string;
   reservationRoomPrice: number;
@@ -6,10 +6,12 @@ export interface PaymentRoom {
   reservationRoomEndTime: string;
   reservationRoomStartDate: string;
   reservationRoomEndDate: string;
+  reservationRoomCapacity: number;
+  reservationRoomMaxCapacity: number;
 }
 
 export interface PaymentResponseDto {
-  paymentRooms: PaymentRoom[];
+  paymentProducts: paymentProducts[];
   accommodationCategory: string;
   paymentMethod: string;
   paymentAt: string;

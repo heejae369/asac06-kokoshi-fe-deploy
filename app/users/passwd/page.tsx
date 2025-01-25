@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { requestPwResetEmail } from "@/feature/users/types/users.type";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { pwResetApi } from "@/feature/users/api/api";
+import { userApi } from "@/feature/users/api/api";
 
 export default function PasswordPage() {
   const {
@@ -21,7 +21,7 @@ export default function PasswordPage() {
   };
 
   const [requestPwResetEmail, { isLoading, isSuccess, data }] =
-    pwResetApi.usePasswordResetEmailMutation();
+    userApi.usePasswordResetEmailMutation();
   const onSubmit: SubmitHandler<requestPwResetEmail> = (data) => {
     requestPwResetEmail({ requestPwResetEmail: data });
   };

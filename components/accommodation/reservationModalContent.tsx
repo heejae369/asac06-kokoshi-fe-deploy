@@ -2,8 +2,15 @@ import { DragSlideTimeButton } from "@/components/DragSlideButton";
 import { Button } from "@/components/ui/button";
 import { Room } from "@/feature/accommodation/type/accommodation.type";
 import { useCalendar } from "@/feature/CalendarContext";
+import {
+  formattedGetDate,
+  formattedRequestDate,
+  getDiffDays,
+} from "@/feature/DateFormat";
+import { requestReservation } from "@/feature/reservation/type/reservation.type";
 import Image from "next/image";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export const ReservationType = ({
   roomDetail,
@@ -12,12 +19,52 @@ export const ReservationType = ({
   roomDetail: Room;
   reservationType: string;
 }) => {
+  const router = useRouter();
   const { adultNumber, checkInDate, checkOutDate, dayOfWeek } = useCalendar();
 
-  const [selectTime, setSelectCheckTiem] = useState();
+  const [reservationParam, setReservationParam] = useState<requestReservation>({
+    roomId: roomDetail.roomId,
+    startDate: formattedRequestDate(checkInDate),
+    endDate: formattedRequestDate(checkOutDate),
+    capacity: adultNumber,
+    startTime: roomDetail.checkIn,
+    endTime: roomDetail.checkOut,
+    reservationType: reservationType,
+  });
+
+  const [selectTime, setSelectCheckTiem] = useState({
+    selectCheckInTime: "",
+    selectCheckOutTime: "",
+  });
   const handleDayUseTime = (selectCheckTime) => {
     setSelectCheckTiem(selectCheckTime);
     console.log(selectCheckTime);
+  };
+
+  console.log(selectTime);
+  useEffect(() => {
+    let endDate = "";
+    if (reservationType === "DAY_USE") {
+      endDate = formattedRequestDate(checkInDate);
+    }
+
+    setReservationParam((prevState) => ({
+      ...prevState,
+      startTime: selectTime.selectCheckInTime,
+      endTime: selectTime.selectCheckOutTime,
+      endDate: endDate,
+    }));
+  }, [selectTime]);
+
+  const params = encodeURIComponent(JSON.stringify([reservationParam]));
+  const onClickCart = () => {
+    console.log("장바구니");
+    router.push(`/yanolza/cart?data=${params}`);
+  };
+
+  const onClickReservation = () => {
+    console.log("예약하기");
+    router.push(`/reservation?data=${params}`);
   };
 
   return (
@@ -31,23 +78,27 @@ export const ReservationType = ({
             <div className="text-center">
               <span className="text-[#999999]">체크인</span>
               <br />
-              <span>2023.06.05(수)</span>
+              <span>{formattedGetDate(checkInDate)}</span>
               <br />
-              {!selectTime ? (
+              {reservationType === "STAY" ? (
+                <span>{roomDetail.checkIn}</span>
+              ) : !selectTime ? (
                 <span>선택 전</span>
               ) : (
                 <span>{selectTime.selectCheckInTime}</span>
               )}
             </div>
             <div className="rounded-2xl bg-[#CCCCCC] px-[6px] py-[2px] text-[10px] text-[#666666]">
-              {`${reservationType == "DAY_USE" ? `${roomDetail.dayUseInfo?.dayUseTime}시간` : "(1박)"}`}
+              {`${reservationType == "DAY_USE" ? `${roomDetail.dayUseInfo?.dayUseTime}시간` : `${getDiffDays(checkInDate, checkOutDate)}박`}`}
             </div>
             <div className="text-center">
               <span className="text-[#999999]">체크아웃</span>
               <br />
-              <span>2023.06.06(목)</span>
+              <span>{formattedGetDate(checkOutDate)}</span>
               <br />
-              {!selectTime ? (
+              {reservationType === "STAY" ? (
+                <span>{roomDetail.checkOut}</span>
+              ) : !selectTime ? (
                 <span>선택 전</span>
               ) : (
                 <span>{selectTime.selectCheckOutTime}</span>
@@ -74,15 +125,22 @@ export const ReservationType = ({
         {/* 숙박 몇박인지, 대실 몇시간인지 계산하는 로직 추가해야 함. */}
         <div>
           <span className="font-bold">{`${reservationType == "DAY_USE" ? `대실 ` : "숙박 "}`}</span>
-          <span className="font-normal">{`${reservationType == "DAY_USE" ? `(최대 ${roomDetail.dayUseInfo?.dayUseTime}시간)` : "(1박)"}`}</span>
+          <span className="font-normal">{`${reservationType == "DAY_USE" ? `(최대 ${roomDetail.dayUseInfo?.dayUseTime}시간)` : `${getDiffDays(checkInDate, checkOutDate)}박`}`}</span>
         </div>
         <span className="font-bold">{`${reservationType == "DAY_USE" ? roomDetail.dayUseInfo?.dayUseMinPrice : roomDetail.minPrice}`}</span>
       </div>
       <div className="flex justify-between">
-        <Button className="w-[155px] rounded-lg border border-[#8728FF] bg-white px-8 text-[#8728FF] hover:bg-purple-50">
+        <Button
+          onClick={onClickCart}
+          className="w-[155px] rounded-lg border border-[#8728FF] bg-white px-8 text-[#8728FF] hover:bg-purple-50"
+        >
           장바구니 담기
         </Button>
-        <Button className="w-[155px] px-8" variant={"point"}>
+        <Button
+          onClick={onClickReservation}
+          className="w-[155px] px-8"
+          variant={"point"}
+        >
           예약하기
         </Button>
       </div>

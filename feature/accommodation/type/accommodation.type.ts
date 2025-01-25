@@ -80,7 +80,7 @@ export type UseAccommodationRoomDetailRes = ApiResponse<Room>;
 export interface Room {
   roomId: number;
   name: string;
-  comment: string;
+  comment?: string;
   thumbnail: string;
   capacity: number;
   maxCapacity: number;
@@ -88,14 +88,14 @@ export interface Room {
   checkIn: string;
   checkOut: string;
   roomType: string;
-  availableQuantity: number | null;
-  dayUseInfo: {
+  availableQuantity?: number;
+  dayUseInfo?: {
     dayUseMinPrice: number;
     dayUseTime: number;
-    dayUseStartTime: string | null;
-    dayUseEndTime: string | null;
-    dayUseAvailableQuantity: number | null;
-  } | null;
+    dayUseStartTime?: string;
+    dayUseEndTime?: string;
+    dayUseAvailableQuantity?: number;
+  };
 }
 
 export const accommodationCategory = {
