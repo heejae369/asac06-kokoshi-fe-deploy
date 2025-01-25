@@ -15,7 +15,7 @@ export const DragSlideTimeButton = ({ roomDetail, onCheckTimeChange }) => {
   const [noticeText, setNoticeText] = useState("");
   const { checkInDate } = useCalendar();
 
-  const maxDuration = roomDetail.dayUseInfo.dayUseTime * 2;
+  const maxDuration = roomDetail.dayUseInfo.dayUseTime;
 
   useEffect(() => {
     if (selectedTimes.length > 0 && selectedTimes.length < 9) {
@@ -24,7 +24,7 @@ export const DragSlideTimeButton = ({ roomDetail, onCheckTimeChange }) => {
         selectedTimes[selectedTimes.length - 1]
       );
       setNoticeText(
-        `⚠️ ${selectedTimes[0]} 체크인 시 ${hours ? `${hours}시간` : null} ${minutes ? `${minutes}분 이용가능` : "이용가능"}`
+        `⚠️ ${selectedTimes[0]} 체크인 시 ${hours ? (hours > roomDetail.dayUseInfo.dayUseTime ? `${roomDetail.dayUseInfo.dayUseTime}` : `${hours}시간`) : null} ${minutes ? `${minutes}분 이용가능` : "이용가능"}`
       );
     } else if (noticeText) {
       setNoticeText("");
