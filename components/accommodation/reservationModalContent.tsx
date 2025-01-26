@@ -46,6 +46,8 @@ export const ReservationType = ({
     let endDate = "";
     if (reservationType === "DAY_USE") {
       endDate = formattedRequestDate(checkInDate);
+    } else {
+      endDate = formattedRequestDate(checkOutDate);
     }
 
     setReservationParam((prevState) => ({

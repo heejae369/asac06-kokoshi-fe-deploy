@@ -2,7 +2,7 @@ import { ApiResponse } from "@/feature/common/types/apiResponse";
 
 export interface requestReservation {
   roomId: number;
-  cartId?: number;
+  cartItemId?: number;
   capacity: number;
   startDate: string;
   endDate: string;

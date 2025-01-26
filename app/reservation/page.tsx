@@ -13,9 +13,9 @@ import {
 } from "@/feature/reservation/type/reservation.type";
 import { userApi } from "@/feature/users/api/api";
 import {
+  calculateDaysDifference,
   calculateTimeDifference,
   getDayOfWeekForString,
-  getDiffDays,
 } from "@/feature/DateFormat";
 
 export default function Reservation() {
@@ -300,7 +300,7 @@ const ProductList = ({
           <div className="flex items-center">
             <div className="flex items-center rounded-[12px] bg-[#E5E5E5] px-[12px] py-[4px]">
               <span className="text-[12px] text-[#333333]">
-                {`${data.reservationType == "DAY_USE" ? `${hours}시간` : `${getDiffDays(data.startDate, data.endDate)}박`}`}
+                {`${data.reservationType == "DAY_USE" ? `${hours}시간` : `${calculateDaysDifference(data.startDate, data.endDate)}박`}`}
               </span>
             </div>
           </div>
