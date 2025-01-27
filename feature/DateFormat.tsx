@@ -79,8 +79,6 @@ export const dayUseTimeFormat = (
   end: string,
   interval: number
 ) => {
-  console.log("start : ", start);
-  console.log("end : ", end);
   const startDate = new Date(`2025-01-10T${start}:00`); // 시작 시간
   const endDate = new Date(`2025-01-10T${end}:00`); // 종료 시간
   const times: string[] = [];
@@ -91,7 +89,6 @@ export const dayUseTimeFormat = (
     currentTime = new Date(currentTime.getTime() + interval * 60000); // 간격 추가
   }
 
-  console.log("times : ", times);
   return times;
 };
 

@@ -120,7 +120,7 @@ const ReservationRoomList = ({ reservationRoom }) => {
         <div className="flex">
           <div>
             <Image
-              src={"/hotel1.png"}
+              src={reservationRoom.roomImage}
               width={100}
               height={100}
               alt="productImage"
