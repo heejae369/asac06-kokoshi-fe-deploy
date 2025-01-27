@@ -30,7 +30,7 @@ export default function Search() {
   const searchParams = useSearchParams(); // useSearchParams 훅 사용
 
   useEffect(() => {
-    if (searchParams) {
+    if (searchParams.size > 0) {
       const search = searchParams.get("search"); // 'search' 쿼리 파라미터 값을 가져옴
       console.log("Search query parameter:", search);
       fetchData(search);

@@ -1,9 +1,20 @@
 import React from "react";
 import styled from "styled-components"; //npm install
 
-const CustomCheckbox = ({ className, checked, size = "1rem", ...props }) => (
+const CustomCheckbox = ({
+  className,
+  checked,
+  size = "1rem",
+  onChange,
+  ...props
+}) => (
   <CheckBoxContainer className={className}>
-    <HiddenCheckBox type="checkbox" checked={checked} {...props} />
+    <HiddenCheckBox
+      type="checkbox"
+      checked={checked}
+      onChange={onChange}
+      {...props}
+    />
     <StyledCheckBox checked={checked} size={size}>
       <Icon viewBox="0 0 24 24" size={size}>
         <polyline points="19 7 10 17 5 12" />

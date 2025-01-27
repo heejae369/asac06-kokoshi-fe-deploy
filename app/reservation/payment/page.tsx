@@ -48,6 +48,7 @@ export default function ReservationPayment() {
   return (
     <>
       <div className="flex h-screen w-full justify-center bg-gray-100 font-sans">
+<<<<<<< Updated upstream
         <div className="relative flex h-full w-[360px] flex-col bg-white px-[20px]">
           <MainHeaders title={"결제 완료"} backIcon={true} />
           <div className="mb-[16px] mt-[26px]">
@@ -75,31 +76,62 @@ export default function ReservationPayment() {
                   <span className="text-[#666666]">
                     {paymentResponse.paymentMethod}
                   </span>
+=======
+        <div className="relative flex h-full w-[360px] flex-col justify-between bg-white px-[20px]">
+          <div>
+            <MainHeaders title={"결제 완료"} backIcon={true} />
+            <div className="mb-[16px] mt-[26px]">
+              <span className="text-[14px] font-bold">상품 정보</span>
+            </div>
+            {paymentResponse?.paymentRooms.map((reservationRoom, index) => {
+              return (
+                <div key={reservationRoom.roomName}>
+                  <ReservationRoomList reservationRoom={reservationRoom} />
+                  {index !== paymentResponse.paymentRooms.length - 1 && (
+                    <hr className="my-[18px]" />
+                  )}
+>>>>>>> Stashed changes
                 </div>
-                <div className="flex gap-[30px]">
-                  <span>결제 일시</span>
-                  <span className="text-[#666666]">
-                    {paymentResponse.paymentAt}
-                  </span>
-                </div>
-                <div className="flex gap-[30px]">
-                  <span>주문 상태</span>
-                  <span className="text-[#666666]">
-                    {paymentResponse.paymentStatus}
-                  </span>
-                </div>
-                <div className="flex gap-[30px]">
-                  <span>주문 번호</span>
-                  <span className="text-[#666666]">
-                    {paymentResponse.reservationNumber}
-                  </span>
-                </div>
-              </>
-            )}
+              );
+            })}
+            <hr className="mb-[17px] ml-[-20px] mt-[14px] w-[360px] border-[3.5px]"></hr>
+            <div className="flex flex-col gap-[17px] text-[14px] tracking-[-1px]">
+              <div>
+                <span className="font-bold">결제 정보</span>
+              </div>
+              {paymentResponse && (
+                <>
+                  <div className="flex gap-[30px]">
+                    <span>결제 수단</span>
+                    <span className="text-[#666666]">
+                      {paymentResponse.accommodationCategory}
+                    </span>
+                  </div>
+                  <div className="flex gap-[30px]">
+                    <span>결제 일시</span>
+                    <span className="text-[#666666]">
+                      {paymentResponse.paymentAt}
+                    </span>
+                  </div>
+                  <div className="flex gap-[30px]">
+                    <span>주문 상태</span>
+                    <span className="text-[#666666]">
+                      {paymentResponse.paymentStatus}
+                    </span>
+                  </div>
+                  <div className="flex gap-[30px]">
+                    <span>주문 번호</span>
+                    <span className="text-[#666666]">
+                      {paymentResponse.reservationNumber}
+                    </span>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
           <div>
             <button
-              className="fixed bottom-0 mb-[20px] mt-[50px] h-[50px] w-[320px] rounded-[5px] bg-[#8728FF]"
+              className="mb-[20px] h-[50px] w-[320px] rounded-[5px] bg-[#8728FF]"
               onClick={handleHome}
             >
               <span className="font-bold tracking-[-0.5px] text-white">
