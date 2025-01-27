@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["yanolza-s3-bucket.s3.ap-southeast-2.amazonaws.com"],
+    domains: ["yanolza-s3-bucket.s3.ap-southeast-2.amazonaws.com"], // 이미지 도메인 설정
   },
   typescript: {
     ignoreBuildErrors: true, // 타입스크립트 빌드 에러를 무시
