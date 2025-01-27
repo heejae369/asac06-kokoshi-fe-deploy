@@ -56,9 +56,9 @@ export default function Search() {
   //     addRecentSearches(search);
 
   // 프리랜더링 문제
-  const searchParams = useSearchParams(); // useSearchParams 훅 사용
 
   useEffect(() => {
+    const searchParams = useSearchParams(); // useSearchParams 훅 사용
     if (searchParams) {
       const search = searchParams.get("search"); // 'search' 쿼리 파라미터 값을 가져옴
       if (search) {
