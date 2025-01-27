@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import * as Accordion from "@radix-ui/react-accordion";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
-import { postApiSendingTest } from "@/feature/PostApiSending";
+import { postApiSendingTest } from "@/feature/postApiSending";
 import BackAndTitle from "@/components/BackAndTitle";
 
 export default function TermPage() {
