@@ -1,10 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "@/styles/ReviewWrite.module.css";
 import Footer from "@/components/Footer";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const Review = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const queryString: string = searchParams.get("data");
+  const param = decodeURIComponent(queryString);
+
   const [rating, setRating] = useState<number>(0); // 별점 상태
   const [reviewText, setReviewText] = useState<string>(""); // 리뷰 텍스트 상태
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
@@ -50,6 +56,7 @@ const Review = () => {
       const formData = new FormData();
       formData.append("rating", rating.toString());
       formData.append("review_text", reviewText);
+      formData.append("reservationRoomId", param);
       // 이미지 파일들 추가
       images.forEach((image, index) => {
         formData.append("image", image);
@@ -65,10 +72,11 @@ const Review = () => {
       console.log("Success:", result);
       alert("후기가 성공적으로 등록되었습니다!");
 
+      router.push("/mypage");
       // 폼 초기화
-      setRating(0);
-      setReviewText("");
-      setImages([]);
+      // setRating(0);
+      // setReviewText("");
+      // setImages([]);
     } catch (error) {
       console.error("Error:", error);
       alert("후기 등록에 실패했습니다. 다시 시도해주세요.");

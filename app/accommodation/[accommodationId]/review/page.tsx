@@ -124,54 +124,58 @@ export const ReviewList = ({
       </div>
 
       {/* 리뷰 상세 */}
-      {reviews.map((reviewInfo, index) => (
-        <div key={index} className="flex w-full border-b-2">
-          <img
-            className="my-4 mr-2 size-10 rounded-full"
-            src="https://via.placeholder.com/48"
-            alt="User profile"
-          />
-          <div className="relative flex w-[272px] flex-col gap-1 py-5 text-xs">
-            <span className="text-sm font-bold">{reviewInfo.nickName}</span>
-            <div className="flex">{RatingStars(reviewInfo.rate)}</div>
-            <span className="max-w-fit rounded-md bg-purple-100 p-1 tracking-[-0.5px] text-purple-700">
-              {reviewInfo.roomName} 이용
-            </span>
-            <span className="absolute right-5 top-5 text-gray-500">
-              {reviewInfo.createDate}
-            </span>
-            <div className="mt-4 text-gray-700">
-              <p>{reviewInfo.content}</p>
-            </div>
-            {reviewInfo.reviewPhoto?.length > 0 && (
-              <div className="mt-4 gap-2">
-                <Carousel
-                  opts={{
-                    align: "start",
-                  }}
-                >
-                  <CarouselContent>
-                    {reviewInfo.reviewPhoto.map((photo, index) => (
-                      <CarouselItem
-                        key={index}
-                        className={`basis-1/${reviewInfo.reviewPhoto?.length}`}
-                      >
-                        <Image
-                          src={photo}
-                          alt="productList"
-                          width={128}
-                          height={96}
-                          className="h-24 w-32"
-                        />
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                </Carousel>
+      {reviews.length === 0 ? (
+        <div className="pt-5">등록된 후기가 없습니다.</div>
+      ) : (
+        reviews.map((reviewInfo, index) => (
+          <div key={index} className="flex w-full border-b-2">
+            <img
+              className="my-4 mr-2 size-10 rounded-full"
+              src="https://via.placeholder.com/48"
+              alt="User profile"
+            />
+            <div className="relative flex w-[272px] flex-col gap-1 py-5 text-xs">
+              <span className="text-sm font-bold">{reviewInfo.nickName}</span>
+              <div className="flex">{RatingStars(reviewInfo.rate)}</div>
+              <span className="max-w-fit rounded-md bg-purple-100 p-1 tracking-[-0.5px] text-purple-700">
+                {reviewInfo.roomName} 이용
+              </span>
+              <span className="absolute right-5 top-5 text-gray-500">
+                {reviewInfo.createDate}
+              </span>
+              <div className="mt-4 text-gray-700">
+                <p>{reviewInfo.content}</p>
               </div>
-            )}
+              {reviewInfo.reviewPhoto?.length > 0 && (
+                <div className="mt-4 gap-2">
+                  <Carousel
+                    opts={{
+                      align: "start",
+                    }}
+                  >
+                    <CarouselContent>
+                      {reviewInfo.reviewPhoto.map((photo, index) => (
+                        <CarouselItem
+                          key={index}
+                          className={`basis-1/${reviewInfo.reviewPhoto?.length}`}
+                        >
+                          <Image
+                            src={photo}
+                            alt="productList"
+                            width={128}
+                            height={96}
+                            className="h-24 w-32"
+                          />
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                  </Carousel>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      )}
       {canScrollNext && <div ref={elementRef}></div>}
     </div>
   );
