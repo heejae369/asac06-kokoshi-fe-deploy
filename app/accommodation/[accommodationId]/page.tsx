@@ -15,7 +15,6 @@ import { Tabs } from "@radix-ui/react-tabs";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import CalendarPage2 from "@/components/CalendarPage2";
-import { ReviewList } from "@/app/accommodation/[accommodationId]/review/page";
 import { RatingStars } from "@/components/RatingStar";
 
 import { formattedMonthToDay } from "@/feature/DateFormat";
@@ -24,6 +23,7 @@ import { AccommodationRoomList } from "@/components/accommodation/accommodationR
 import { accommodationApi } from "@/feature/accommodation/api/api";
 import { SlideImage } from "@/feature/accommodation/type/accommodation.type";
 import { useRouter } from "next/navigation";
+import ReviewList from "@/app/accommodation/[accommodationId]/review/ReviewListComponent";
 
 // interface ImgComponent {
 //   imageUrl: string;
@@ -118,7 +118,7 @@ export default function AccommodationDetail({
 
   if (isAccommodationError || isImagesError) {
     alert("잘못된 접근입니다.");
-    router.push("/yanolza/main");
+    router.push("/");
   }
 
   return (
@@ -193,7 +193,7 @@ export default function AccommodationDetail({
               <div className="mt-[2px] flex items-center">
                 <span className="text-[10px] text-[#7F7F7F]">
                   {/* {dummy.distance} */}
-                  {/* TEST DISTANCE - 보류 */}
+                  TEST DISTANCE - 보류
                 </span>
               </div>
             </div>
