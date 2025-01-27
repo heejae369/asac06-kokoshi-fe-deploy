@@ -24,7 +24,7 @@ interface CartItemData {
   specialPrice?: number; // 숫자 형식의 특가 금액
   stock: number; // 재고 수량
   price: number; // 가격
-  resvervationType: string;
+  reservationType: string;
   isChecked: boolean; // 체크 여부
 }
 
@@ -187,9 +187,9 @@ export default function CartPage() {
     const formattedData = selectedItems.map((item) => ({
       // 여기서 삭제안하면 카트 아이템도 넘겨야함
       // 논의
-      roomId: //item.id, // 방 id  // 백엔드에서 구현후 수정요함
-      cartItemId: cartId, /*|| undefined // */, // 카트 아이템 아이디로 바꿔야한다
-      // roomId : 
+      roomId: item.id, // 방 id  // 백엔드에서 구현후 수정요함
+      cartItems: cartId /*|| undefined // */, // 카트 아이템 아이디로 바꿔야한다
+      // roomId :
       startDate: item.reservationStart,
       endDate: item.reservationEnd,
       capacity: item.capacity,
@@ -200,7 +200,7 @@ export default function CartPage() {
 
     // 데이터를 쿼리스트링으로 변환
     const params = encodeURIComponent(JSON.stringify(formattedData));
-     // cartId?2 params~ 
+    // cartId?2 params~
     // reservation 페이지로 이동
     router.push(`/reservation?data=${params}`);
   };
