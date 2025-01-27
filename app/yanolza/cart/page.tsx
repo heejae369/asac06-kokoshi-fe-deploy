@@ -49,7 +49,7 @@ export default function CartPage() {
         };
 
         const response = await axios.post(
-          "http://localhost:8080/api/cart/getCart",
+          `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/cart/getCart`,
           requestData,
           {
             headers: {
@@ -130,7 +130,7 @@ export default function CartPage() {
       await Promise.all(
         selectedItemIds.map((id) =>
           axios.post(
-            "http://localhost:8080/api/cart/deleteCartItem",
+            `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/cart/deleteCartItem`,
             { cartId: cartId, cartItemId: id, userId },
             {
               headers: {

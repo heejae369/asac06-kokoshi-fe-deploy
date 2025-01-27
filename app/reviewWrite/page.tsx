@@ -62,12 +62,15 @@ const Review = () => {
         formData.append("image", image);
       });
       // API 요청
-      const response = await fetch("http://localhost:8080/api/review", {
-        method: "POST",
-        body: formData,
-        // FormData를 사용할 때는 Content-Type 헤더를 설정안함
-        // 브라우저가 자동으로 multipart/form-data로 설정
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/review`,
+        {
+          method: "POST",
+          body: formData,
+          // FormData를 사용할 때는 Content-Type 헤더를 설정안함
+          // 브라우저가 자동으로 multipart/form-data로 설정
+        }
+      );
       const result = await response.json();
       console.log("Success:", result);
       alert("후기가 성공적으로 등록되었습니다!");
