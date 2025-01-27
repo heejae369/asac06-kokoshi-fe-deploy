@@ -31,27 +31,43 @@ export default function Search() {
     keyword: [],
   });
   const router = useRouter();
-  const searchParams = useSearchParams();
+
+  // 성환님 카테고리 추가 부분  --  추후 적요
+  // const searchParams = useSearchParams();
+
+  // useEffect(() => {
+  //   const category = searchParams.get("category");
+  //   const search = searchParams.get("search");
+
+  //   if (search) {
+  //     setSearchText(search);
+  //   }
+
+  //   if (category) {
+  //     console.log("keyword 변경");
+  //     const categoryArray = category.split(",");
+  //     setFilterApply((prevState) => ({
+  //       ...prevState,
+  //       accommodationCategory: categoryArray,
+  //     }));
+  //   } else {
+  //     console.log("검색어 :", search);
+  //     fetchData(search);
+  //     addRecentSearches(search);
+
+  // 프리랜더링 문제
+  const searchParams = useSearchParams(); // useSearchParams 훅 사용
 
   useEffect(() => {
-    const category = searchParams.get("category");
-    const search = searchParams.get("search");
-
-    if (search) {
-      setSearchText(search);
-    }
-
-    if (category) {
-      console.log("keyword 변경");
-      const categoryArray = category.split(",");
-      setFilterApply((prevState) => ({
-        ...prevState,
-        accommodationCategory: categoryArray,
-      }));
-    } else {
-      console.log("검색어 :", search);
-      fetchData(search);
-      addRecentSearches(search);
+    if (searchParams) {
+      const search = searchParams.get("search"); // 'search' 쿼리 파라미터 값을 가져옴
+      if (search) {
+        console.log("Search query parameter:", search);
+        fetchData(search);
+        addRecentSearches(search);
+        //추가
+        setSearchText(search);
+      }
     }
   }, [searchParams]);
 
@@ -66,7 +82,7 @@ export default function Search() {
           formattedRequestDate(checkOutDate),
           filterApply
         );
-        if (array != "코코시 추천순" && data) {
+        if (array !== "코코시 추천순" && data) {
           setSearchResultData(dataArray(data, array));
         } else setSearchResultData(data);
       } else {
@@ -85,7 +101,7 @@ export default function Search() {
   }, [checkInDate, checkOutDate]);
 
   useEffect(() => {
-    if (array != "코코시 추천순" && searchResultData) {
+    if (array !== "코코시 추천순" && searchResultData) {
       setSearchResultData(dataArray(searchResultData, array));
     }
   }, [array]);
