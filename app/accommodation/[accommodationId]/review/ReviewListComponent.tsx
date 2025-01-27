@@ -12,7 +12,7 @@ import { Review, ReviewStatistics } from "@/feature/review/type/review.type";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
-export const ReviewList = ({
+const ReviewList = ({
   rating,
   totalReview,
   accommodationId,
@@ -180,3 +180,4 @@ export const ReviewList = ({
     </div>
   );
 };
+export default ReviewList;
