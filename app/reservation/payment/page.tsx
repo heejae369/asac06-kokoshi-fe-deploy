@@ -16,10 +16,14 @@ export default function ReservationPayment() {
   const [paymentResponse, setPaymentResponse] =
     useState<PaymentResponseDto | null>(null);
 
+  const [reservationNumber, setReservationNumber] = useState<string | null>(
+    null
+  );
+
   const router = useRouter();
 
-  const searchParams = useSearchParams(); // 쿼리 파라미터 가져오기
-  const reservationNumber = searchParams.get("reservationNumber"); // reservation 파라미터 값 읽기
+  // const searchParams = useSearchParams(); // 쿼리 파라미터 가져오기
+  // const reservationNumber = searchParams.get("reservationNumber"); // reservation 파라미터 값 읽기
 
   const handleHome = () => {
     router.push("/yanolza/main");
@@ -28,6 +32,10 @@ export default function ReservationPayment() {
   // 예약번호, 결제번호
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search); // 쿼리 파라미터 가져오기
+    const reservationNumber = searchParams.get("reservationNumber"); // reservation 파라미터 값 읽기
+    setReservationNumber(reservationNumber);
+
     const paymentFetch = async () => {
       if (reservationNumber != null) {
         console.log(reservationNumber);
