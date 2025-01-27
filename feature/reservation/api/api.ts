@@ -1,4 +1,6 @@
 import {
+  UseReservationHistoryArg,
+  UseReservationHistoryRes,
   UseReservationMutationArg,
   UseReservationMutationRes,
   UseRoomInfoForReserveArg,
@@ -29,6 +31,19 @@ export const reservationApi = api.injectEndpoints({
         return {
           url: `/api/room/reserve/${requestRoomInfoForReserve.roomId}`,
           params: requestRoomInfoForReserve,
+          method: "GET",
+        };
+      },
+    }),
+
+    reservationList: builder.query<
+      UseReservationHistoryRes,
+      UseReservationHistoryArg
+    >({
+      query: ({ requestReservationHistory }) => {
+        return {
+          url: `/api/reservation/reservationHistory`,
+          params: requestReservationHistory,
           method: "GET",
         };
       },

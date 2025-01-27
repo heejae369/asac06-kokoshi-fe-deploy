@@ -2,6 +2,7 @@ import { DragSlideTimeButton } from "@/components/DragSlideButton";
 import { Button } from "@/components/ui/button";
 import { Room } from "@/feature/accommodation/type/accommodation.type";
 import { useCalendar } from "@/feature/CalendarContext";
+import { cartApi } from "@/feature/cart/api/api";
 import {
   formattedGetDate,
   formattedRequestDate,
@@ -38,10 +39,8 @@ export const ReservationType = ({
   });
   const handleDayUseTime = (selectCheckTime) => {
     setSelectCheckTiem(selectCheckTime);
-    console.log(selectCheckTime);
   };
 
-  console.log(selectTime);
   useEffect(() => {
     let endDate = "";
     if (reservationType === "DAY_USE") {
@@ -58,15 +57,60 @@ export const ReservationType = ({
     }));
   }, [selectTime]);
 
-  const params = encodeURIComponent(JSON.stringify([reservationParam]));
+  // 장바구니 추가 api 호출
+  const [
+    addCart,
+    {
+      isLoading: isAddCartLoading,
+      isSuccess: isAddCartSuccess,
+      isError: isAddCartError,
+      data: addCartData,
+    },
+  ] = cartApi.useAddCartMutation();
+
   const onClickCart = () => {
-    console.log("장바구니");
-    router.push(`/yanolza/cart?data=${params}`);
+    selectTimeCheck();
+    addCart({
+      requestAddToCart: {
+        roomId: roomDetail.roomId,
+        startDate: formattedRequestDate(checkInDate),
+        endDate: formattedRequestDate(checkOutDate),
+        startTime: roomDetail.checkIn,
+        endTime: roomDetail.checkOut,
+        reservationType: reservationType,
+      },
+    });
   };
 
+  if (isAddCartLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isAddCartError) {
+    alert(addCartData?.message);
+    // return <div>Error</div>;
+  }
+
+  if (isAddCartSuccess && addCartData) {
+    alert(addCartData.message);
+  }
+
+  const params = encodeURIComponent(JSON.stringify([reservationParam]));
   const onClickReservation = () => {
-    console.log("예약하기");
+    selectTimeCheck();
     router.push(`/reservation?data=${params}`);
+  };
+
+  const selectTimeCheck = () => {
+    // 시간 입력 안되어있으면 예약 및 장바구니 버튼 막기
+    if (
+      reservationType === "DAY_USE" &&
+      selectTime.selectCheckInTime === "" &&
+      selectTime.selectCheckOutTime === ""
+    ) {
+      alert("이용시간을 선택해주세요.");
+      return;
+    }
   };
 
   return (

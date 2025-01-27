@@ -26,6 +26,7 @@ export default function Reservation() {
 
   const [paymentType, setPaymentType] = useState("");
   const [totaltTerms, setTotalTerms] = useState(false);
+  const [totalPrice, setTotalPrice] = useState(0);
   const [isPayment, setIsPayment] = useState(false);
 
   const [productRadio, setProductRadio] = useState({});
@@ -182,6 +183,7 @@ export default function Reservation() {
                       setVehicleRadio={() =>
                         handleRadioChange(item.roomId, "vehicleRadio")
                       }
+                      setTotalPrice={setTotalPrice}
                     />
                     {index < requestReservation.length - 1 && (
                       <hr className="my-[20px] w-[320px]" />
@@ -198,7 +200,7 @@ export default function Reservation() {
             <hr className="m-[-20px] my-[20px] w-[360px] border-t-[6px]"></hr>
             <CouponAndPoint />
             <hr className="m-[-20px] my-[20px] w-[360px] border-t-[6px]"></hr>
-            <DiscountAndPaymentInfo />
+            <DiscountAndPaymentInfo totalPrice={totalPrice} />
             <hr className="m-[-20px] my-[20px] w-[360px] border-t-[6px]"></hr>
             <PaymentSelect setPaymentType={setPaymentType} />
             <RequiredTerms
@@ -223,6 +225,7 @@ const ProductList = ({
   setWalkRadio,
   vehicleRadio,
   setVehicleRadio,
+  setTotalPrice,
 }) => {
   const [roomInfo, setRoomInfo] = useState<roomInfoForReserve>();
 
@@ -234,7 +237,6 @@ const ProductList = ({
     setVehicleRadio((prev) => !prev);
   };
 
-  // 객실 조회 세팅
   const {
     data: roomData,
     isLoading: isRoomLoading,
@@ -251,13 +253,11 @@ const ProductList = ({
   useEffect(() => {
     if (roomData) {
       setRoomInfo(roomData.data);
+      setTotalPrice((prev) => prev + roomData.data.price);
     }
-  }, [roomData]);
+  }, [roomData, setTotalPrice]);
 
-  const { hours, minutes } = calculateTimeDifference(
-    data.startTime,
-    data.endTime
-  );
+  const { hours } = calculateTimeDifference(data.startTime, data.endTime);
 
   if (isRoomLoading) {
     return <div>Loading...</div>;
@@ -291,11 +291,6 @@ const ProductList = ({
               {data.startDate} ({getDayOfWeekForString(data.startDate)})
             </span>
             <span className="text-[14px]">{data.startTime}</span>
-            {/* {data.reservationType === "STAY" ? (
-              <span>{data.startTime}</span>
-            ) : (
-              <span>{selectTime.selectCheckInTime}</span>
-            )} */}
           </div>
           <div className="flex items-center">
             <div className="flex items-center rounded-[12px] bg-[#E5E5E5] px-[12px] py-[4px]">
@@ -310,11 +305,6 @@ const ProductList = ({
               {data.endDate} ({getDayOfWeekForString(data.endDate)})
             </span>
             <span className="text-[14px]">{data.endTime}</span>
-            {/* {data.reservationType === "STAY" ? (
-              <span>{data.endTime}</span>
-            ) : (
-              <span>{selectTime.selectCheckOutTime}</span>
-            )} */}
           </div>
         </div>
         <div className="flex items-center justify-between">
@@ -366,7 +356,7 @@ const ProductList = ({
         </div>
         <div className="flex items-end justify-between">
           <span className="text-[12px]">결제금액</span>
-          <span className="mr-[-20px] font-bold">{roomInfo?.price}</span>
+          <span className="mr-[-20px] font-bold">{roomInfo?.price}원</span>
         </div>
       </div>
     </div>
@@ -418,7 +408,7 @@ const CouponAndPoint = ({}) => {
         <div className="flex items-center gap-[7px]">
           <span className="text-[14px]">포인트</span>
           <span className="text-[10px] font-bold text-[#999999]">
-            1,200P 사용가능
+            0P 사용가능
           </span>
         </div>
         <div className="flex items-center gap-[7px]">
@@ -437,26 +427,26 @@ const CouponAndPoint = ({}) => {
   );
 };
 
-const DiscountAndPaymentInfo = () => {
+const DiscountAndPaymentInfo = ({ totalPrice }) => {
   return (
     <div>
       <TitleText title={"할인 및 결제 정보"} />
       <div className="mt-[15px] flex flex-col">
         <div className="mb-[20px] flex justify-between tracking-[-0.8px]">
           <span className="text-[14px]">결제 금액</span>
-          <span className="text-[14px] font-bold">234,000원</span>
+          <span className="text-[14px] font-bold">{totalPrice}원</span>
         </div>
       </div>
       <div className="flex justify-between tracking-[-0.8px]">
         <span className="text-[14px]">할인 금액</span>
-        <span className="text-[14px] font-bold">-9,000원</span>
+        <span className="text-[14px] font-bold">0원</span>
       </div>
       <div>
         <hr className="my-[15px]"></hr>
       </div>
       <div className="flex justify-between tracking-[-0.8px]">
         <span className="text-[14px]">총 결제금액</span>
-        <span className="text-[14px] font-bold">225,000원</span>
+        <span className="text-[14px] font-bold">{totalPrice}원</span>
       </div>
     </div>
   );
