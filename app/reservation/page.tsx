@@ -211,6 +211,7 @@ export default function Reservation() {
             <PaymentButton
               handlePayment={handleReserve}
               isPayment={isPayment}
+              totalPrice={totalPrice}
             />
           </>
         )}
@@ -641,7 +642,7 @@ const Notification = () => {
   );
 };
 
-const PaymentButton = ({ handlePayment, isPayment }) => {
+const PaymentButton = ({ handlePayment, isPayment, totalPrice }) => {
   return (
     <div>
       <button
@@ -650,7 +651,7 @@ const PaymentButton = ({ handlePayment, isPayment }) => {
         disabled={!isPayment}
       >
         <span className="font-bold tracking-[-0.5px] text-white">
-          225,000원 결제하기
+          {totalPrice}원 결제하기
         </span>
       </button>
     </div>

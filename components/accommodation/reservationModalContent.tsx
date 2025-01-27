@@ -98,7 +98,6 @@ export const ReservationType = ({
   const params = encodeURIComponent(JSON.stringify([reservationParam]));
   const onClickReservation = () => {
     selectTimeCheck();
-    router.push(`/reservation?data=${params}`);
   };
 
   const selectTimeCheck = () => {
@@ -111,6 +110,7 @@ export const ReservationType = ({
       alert("이용시간을 선택해주세요.");
       return;
     }
+    router.push(`/reservation?data=${params}`);
   };
 
   return (
