@@ -22,10 +22,9 @@ import { useCalendar } from "@/feature/CalendarContext";
 import { AccommodationRoomList } from "@/components/accommodation/accommodationRoomList";
 import { accommodationApi } from "@/feature/accommodation/api/api";
 import { SlideImage } from "@/feature/accommodation/type/accommodation.type";
+
 import { useRouter } from "next/navigation";
 import ReviewList from "@/app/accommodation/[accommodationId]/review/ReviewListComponent";
-import { useRouter } from "next/navigation";
-
 // interface ImgComponent {
 //   imageUrl: string;
 // }
