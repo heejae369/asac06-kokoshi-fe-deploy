@@ -118,7 +118,7 @@ export default function AccommodationDetail({
 
   if (isAccommodationError || isImagesError) {
     alert("잘못된 접근입니다.");
-    router.push("/");
+    router.push("/yanolza/main");
   }
 
   return (
@@ -193,7 +193,7 @@ export default function AccommodationDetail({
               <div className="mt-[2px] flex items-center">
                 <span className="text-[10px] text-[#7F7F7F]">
                   {/* {dummy.distance} */}
-                  TEST DISTANCE - 보류
+                  {/* TEST DISTANCE - 보류 */}
                 </span>
               </div>
             </div>
