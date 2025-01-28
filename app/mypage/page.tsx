@@ -5,7 +5,8 @@ import styles from "@/styles/Mypage.module.css";
 import Footer from "@/components/Footer";
 import DEFAULT_PROFILE_IMAGE from "@/assets/img/default-profile.png";
 import { useRouter } from "next/navigation";
-import JwtTokenHandler from "@/feature/JwtTokenHandler";
+// import JwtTokenHandler from "@/feature/JwtTokenHandler";
+import { authFetch, useLoginGuard } from "@/lib/utils";
 
 interface UserData {
   userPoint: number | null;
@@ -16,7 +17,9 @@ interface UserData {
 // const DEFAULT_PROFILE_IMAGE = "@/asse/default-profile.png";
 
 const Mypage = () => {
-  JwtTokenHandler();
+  // JwtTokenHandler();
+  useLoginGuard();
+
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
   const [selectedImage, setSelectedImage] = useState<File | null>(null); // 선택한 이미지
@@ -36,7 +39,7 @@ const Mypage = () => {
   React.useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(
+        const response = await authFetch(
           `http://localhost:8080/users/api/userdata?userEmail=${userEmail}`,
           {
             cache: "no-store",
