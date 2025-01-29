@@ -6,9 +6,9 @@ import {
   UseRoomInfoForReserveArg,
   UseRoomInfoForReserveRes,
 } from "@/feature/reservation/type/reservation.type";
-import { api } from "@/lib/api";
+import { authApi } from "@/lib/api";
 
-export const reservationApi = api.injectEndpoints({
+export const reservationApi = authApi.injectEndpoints({
   endpoints: (builder) => ({
     reservation: builder.mutation<
       UseReservationMutationRes,
