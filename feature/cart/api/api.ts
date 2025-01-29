@@ -2,9 +2,9 @@ import {
   UseAddToCartMutationArg,
   UseAddToCartMutationRes,
 } from "@/feature/cart/type/cart.type";
-import { api } from "@/lib/api";
+import { authApi } from "@/lib/api";
 
-export const cartApi = api.injectEndpoints({
+export const cartApi = authApi.injectEndpoints({
   endpoints: (builder) => ({
     addCart: builder.mutation<UseAddToCartMutationRes, UseAddToCartMutationArg>(
       {
