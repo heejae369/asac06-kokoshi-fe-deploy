@@ -112,7 +112,7 @@ export default function CalendarPage2({ setOnCalendar }) {
       </div>
       <div className="">
         <button
-          className="fixed bottom-0 mb-[17px] h-[50px] w-[320px] rounded-[5px] bg-[#8728FF]"
+          className="mb-[17px] mt-[50px] h-[50px] w-[320px] rounded-[5px] bg-[#8728FF]"
           onClick={() => setOnCalendar(false)}
         >
           <span className="text-[16px] tracking-[-0.8px] text-white">

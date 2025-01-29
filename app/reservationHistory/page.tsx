@@ -1,19 +1,84 @@
 "use client";
-import React from "react";
-import { ChevronLeft } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import MainHeaders from "@/components/MainHeaders";
 import Footer from "@/components/Footer";
+import { reservationApi } from "@/feature/reservation/api/api";
+import {
+  reservationByDate,
+  reservationList,
+} from "@/feature/reservation/type/reservation.type";
+import Image from "next/image";
+import { getDayOfWeekForString } from "@/feature/DateFormat";
 
 const ReservationHistory = () => {
-  const router = useRouter();
+  // const cateGoryList = [
+  //   "ALL",
+  //   "HOTEL",
+  //   "MOTEL",
+  //   "PENSION",
+  //   "POOL_VILLA",
+  //   "CAMPING",
+  //   "GUESTHOUSE",
+  //   "RESORT",
+  // ];
+  const cateGoryList = [
+    "전체",
+    "호텔",
+    "모텔",
+    "펜션",
+    "풀빌라",
+    "캠핑",
+    "게스트하우스",
+    "리조트",
+  ];
+  const today = new Date().toISOString().split("T")[0];
 
-  const handleReviewWrite = (reservationNumber) => {
-    // 세션 스토리지에 예약번호 저장
-    sessionStorage.setItem("reservationNumber", reservationNumber);
-    // 리뷰 작성 페이지로 이동
-    router.push("/reviewWrite");
+  const dateRanges = ["최근 1개월", "최근 3개월", "최근 6개월"];
+  const dateRangeValues = [1, 3, 6];
+
+  const [category, setCategory] = useState("전체");
+  const [startDate, setStartDate] = useState(today);
+  const [reservationList, setReservationList] = useState<reservationByDate[]>(
+    []
+  );
+  // const [endDate, setEndDate] = useState();
+
+  // 카테고리 onchange
+  const handleChangeCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setCategory(e.target.value);
   };
+
+  // 날짜 옵션 onchange
+  const handleChangeDate = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const dateOption = Number(e.target.value);
+    const date = carcDate(dateOption);
+    const newDate = date.toISOString().split("T")[0];
+    setStartDate(newDate);
+  };
+
+  const { isLoading, isSuccess, data } = reservationApi.useReservationListQuery(
+    { requestReservationHistory: { startDate, category } }
+  );
+
+  // useState 로 category, startDate, endDate 세팅 시, 목록 조회
+  useEffect(() => {
+    if (isSuccess && data) {
+      setReservationList(data.data);
+    }
+  }, [category, data, isSuccess, startDate]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  const carcDate = (dateOption: number) => {
+    const tempDate = new Date();
+    tempDate.setMonth(tempDate.getMonth() - dateOption);
+
+    return tempDate;
+  };
+
   return (
     <div className="flex h-auto w-full justify-center bg-gray-100">
       <div className="w-[360px] bg-white px-5 font-sans">
@@ -26,111 +91,55 @@ const ReservationHistory = () => {
 
         {/* Filter Section */}
         <div className="flex gap-2 p-4">
-          <select className="flex-1 p-2 border rounded-md text-gray-600">
-            <option>카테고리 전체</option>
+          <select
+            className="flex-1 p-2 border rounded-md text-gray-600"
+            onChange={handleChangeCategory}
+          >
+            {cateGoryList.map((category, index) => (
+              // eslint-disable-next-line react/jsx-key
+              <option key={index} value={category}>
+                {cateGoryList[index]}
+              </option>
+            ))}
           </select>
-          <select className="flex-1 p-2 border rounded-md text-gray-600">
-            <option>최근 6개월</option>
+          <select
+            className="flex-1 p-2 border rounded-md text-gray-600"
+            onChange={handleChangeDate}
+          >
+            {dateRangeValues.map((dateRange, index) => (
+              // eslint-disable-next-line react/jsx-key
+              <option key={index} value={dateRange}>
+                {dateRanges[index]}
+              </option>
+            ))}
           </select>
         </div>
 
         {/* Reservations List */}
-        <div className="px-4 space-y-4">
-          {/* First Reservation */}
-          <div className="border rounded-lg overflow-hidden">
-            <div className="flex justify-between p-4 border-b">
-              <div className="text-lg font-medium">2025.01.01 (월)</div>
-              <button className="text-blue-500">상세보기 &gt;</button>
-            </div>
-
-            <div className="p-4">
-              <div className="text-gray-500 text-sm mb-2">
-                숙소 예약번호 25010300583400004
-              </div>
-              {/* <div className="text-gray-500 inline-block px-2 py-1 bg-gray-100 rounded-md text-sm mb-2">
-              이용완료
-            </div> */}
-              <h3 className="text-lg font-medium mb-2">test 1</h3>
-
-              <div className="flex gap-4 mb-4">
-                <img
-                  src="/api/placeholder/100/100"
-                  alt="Room"
-                  className="w-24 h-24 rounded-md object-cover"
-                />
-                <div className="flex-1">
-                  <div className="font-medium mb-1">
-                    Deluxe(랜덤배정 / 주차불가)
-                  </div>
-                  <div className="text-gray-600 mb-2">도보방문</div>
-                  <div className="text-sm text-gray-500">
-                    2025.01.02 (목) ~ 2025.01.03 (금) | 1박
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    체크인 21:00 | 체크아웃 13:00
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    기준 2명 / 최대 2명
-                  </div>
+        <div className="space-y-4">
+          {reservationList.length === 0 ? (
+            <div>조회된 예약 내역이 없습니다.</div>
+          ) : (
+            reservationList.map((reservationDateGroup, index) => (
+              <div key={index}>
+                <div className="mb-[16px] mt-[26px]">
+                  <span className="text-base font-bold">
+                    {reservationDateGroup.reservatedDate} (
+                    {getDayOfWeekForString(reservationDateGroup.reservatedDate)}
+                    )
+                  </span>
                 </div>
+                {reservationDateGroup.reservationList.map(
+                  (reservationGroupList, index) => (
+                    <ReservationRoomList
+                      reservationGroupList={reservationGroupList}
+                      key={index}
+                    />
+                  )
+                )}
               </div>
-
-              <button
-                onClick={() => handleReviewWrite("25010300583400004")}
-                className="w-full py-2 text-center border rounded-md text-gray-600"
-              >
-                후기 작성하기 가기
-              </button>
-            </div>
-          </div>
-
-          {/* Second Reservation */}
-          <div className="border rounded-lg overflow-hidden">
-            <div className="flex justify-between p-4 border-b">
-              <div className="text-lg font-medium">2024.09.13 (금)</div>
-              <button className="text-blue-500">상세보기 &gt;</button>
-            </div>
-
-            <div className="p-4">
-              <div className="text-gray-500 text-sm mb-2">
-                숙소 예약번호 24091319463400062
-              </div>
-              {/* <div className="text-gray-500 inline-block px-2 py-1 bg-gray-100 rounded-md text-sm mb-2">
-              이용완료
-            </div> */}
-              <h3 className="text-lg font-medium mb-2">test 2</h3>
-
-              <div className="flex gap-4 mb-4">
-                <img
-                  src="/api/placeholder/100/100"
-                  alt="Room"
-                  className="w-24 h-24 rounded-md object-cover"
-                />
-                <div className="flex-1">
-                  <div className="font-medium mb-1">
-                    일반실 -안.심.클.린(4번출구도보2분+넷플릭스가능+안심소독)
-                  </div>
-                  <div className="text-gray-600 mb-2">도보방문</div>
-                  <div className="text-sm text-gray-500">
-                    2024.09.13 (금) | 3시간
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    체크인 20:00 | 체크아웃 23:00
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    기준 2명 / 최대 2명
-                  </div>
-                </div>
-              </div>
-
-              <button
-                onClick={() => handleReviewWrite("25010300583400004")}
-                className="w-full py-2 text-center border rounded-md text-gray-600"
-              >
-                후기 작성 기간 만료
-              </button>
-            </div>
-          </div>
+            ))
+          )}
           <Footer />
         </div>
       </div>
@@ -139,3 +148,87 @@ const ReservationHistory = () => {
 };
 
 export default ReservationHistory;
+
+const ReservationRoomList = ({
+  reservationGroupList,
+}: {
+  reservationGroupList: reservationList;
+}) => {
+  const router = useRouter();
+
+  const handleReviewWrite = (reservationRoomId) => {
+    const params = encodeURIComponent(JSON.stringify(reservationRoomId));
+    router.push(`/reviewWrite?data=${params}`);
+  };
+
+  return (
+    <>
+      <div className="flex flex-col pb-4">
+        <div className="flex">
+          <div>
+            <Image
+              src={"/hotel1.png"}
+              width={100}
+              height={100}
+              alt="productImage"
+            ></Image>
+          </div>
+          <div className="ml-[9px]">
+            <div className="tracking-[-0.5px]">
+              <div className="flex items-center">
+                <div className="h-[18px] rounded-[9px] border border-[#8728FF] px-[9px] py-[2px] text-[10px] text-[#8728FF]">
+                  {reservationGroupList.category}
+                </div>
+              </div>
+              <div className="mb-[3px] mt-[2px] flex items-center">
+                <span className="text-[14px] font-bold">
+                  {reservationGroupList.accommodationName}
+                </span>
+              </div>
+              <div className="mb-px flex h-[19px] items-center">
+                <span className="text-[12px] font-bold">
+                  {`${reservationGroupList.startDate} (${getDayOfWeekForString(reservationGroupList.startDate)})
+                  ~ ${reservationGroupList.endDate} (${getDayOfWeekForString(reservationGroupList.endDate)})`}
+                </span>
+              </div>
+              <div className="flex h-[19px] items-center">
+                <span className="text-[12px] font-bold text-[#7F7F7F]">{`${reservationGroupList.roomName} (기준 ${reservationGroupList.capacity}명/최대 ${reservationGroupList.maxCapacity}명)`}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="mt-[17px] flex h-[45px] items-center justify-between rounded-[7px] bg-[#E5E5E5]/40 px-[16px] text-[12px] font-bold">
+          <span className="text-[#333333]">이용시간</span>
+          <div className="mr-[16px] flex gap-[20px]">
+            <div className="flex gap-[5px]">
+              <span className="text-[#7F7F7F]">체크인</span>
+              <span className="text-[#4C4C4C]">
+                {reservationGroupList.startTime}
+              </span>
+            </div>
+            <div className="flex gap-[5px]">
+              <span className="text-[#7F7F7F]">체크아웃</span>
+              <span className="text-[#4C4C4C]">
+                {reservationGroupList.endTime}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="mt-[13px] flex items-center justify-between">
+          <span className="pl-4 text-[12px] font-bold">결제 금액</span>
+          <span className="mr-[3px] font-bold">{`${reservationGroupList.price}원`}</span>
+        </div>
+        {new Date(reservationGroupList.endDate) < new Date() && (
+          <button
+            onClick={() =>
+              handleReviewWrite(reservationGroupList.reservationRoomId)
+            }
+            className="w-full py-2 text-center border rounded-md text-gray-600"
+          >
+            후기 작성하기 가기
+          </button>
+        )}
+      </div>
+    </>
+  );
+};

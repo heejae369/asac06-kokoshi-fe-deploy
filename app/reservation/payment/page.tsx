@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import {
   calculateDaysDifference,
-  formattedYearToDayNotDayOfWeek,
+  getDayOfWeekForString,
 } from "@/feature/DateFormat";
 import { useEffect, useState } from "react";
 import { PaymentFetch } from "@/feature/payment/PaymentFetch";
@@ -24,11 +24,14 @@ export default function ReservationPayment() {
     router.push("/yanolza/main");
   };
 
+  // 예약번호, 결제번호
+
   useEffect(() => {
     const paymentFetch = async () => {
       if (reservationNumber != null) {
         console.log(reservationNumber);
         const response = await PaymentFetch({ reservationNumber });
+        console.log("response : ", response);
         setPaymentResponse(response);
       }
     };
@@ -36,39 +39,12 @@ export default function ReservationPayment() {
   }, []);
 
   useEffect(() => {
-    console.log(paymentResponse);
+    // paymentResponse가 유효할 때만 처리
+    if (paymentResponse) {
+      console.log("Payment response updated:", paymentResponse);
+    }
   }, [paymentResponse]);
 
-  const startDate = {
-    year: "2023",
-    month: "06",
-    day: "14",
-  };
-  const endDate = {
-    year: "2023",
-    month: "06",
-    day: "15",
-  };
-
-  const data = {
-    type: "호텔",
-    roomName: "김포 마리나베이 호텔",
-    startDate: startDate,
-    endDate: endDate,
-    roomType: "디럭스 트윈",
-    capacity: 2,
-    maxCapacity: 3,
-    checkIn: "16:00",
-    checkOut: "12:00",
-    price: 75000,
-  };
-
-  const payment = {
-    type: "카카오페이",
-    date: "2023-06-12 10:57 AM",
-    state: "결제 완료",
-    orderId: "어쩌고저쩌고",
-  };
   return (
     <>
       <div className="flex h-screen w-full justify-center bg-gray-100 font-sans">
@@ -77,11 +53,11 @@ export default function ReservationPayment() {
           <div className="mb-[16px] mt-[26px]">
             <span className="text-[14px] font-bold">상품 정보</span>
           </div>
-          {paymentResponse?.paymentRooms.map((reservationRoom, index) => {
+          {paymentResponse?.paymentProducts.map((reservationRoom, index) => {
             return (
               <div key={reservationRoom.roomName}>
                 <ReservationRoomList reservationRoom={reservationRoom} />
-                {index !== paymentResponse.paymentRooms.length - 1 && (
+                {index !== paymentResponse.paymentProducts.length - 1 && (
                   <hr className="my-[18px]" />
                 )}
               </div>
@@ -97,7 +73,7 @@ export default function ReservationPayment() {
                 <div className="flex gap-[30px]">
                   <span>결제 수단</span>
                   <span className="text-[#666666]">
-                    {paymentResponse.accommodationCategory}
+                    {paymentResponse.paymentMethod}
                   </span>
                 </div>
                 <div className="flex gap-[30px]">
@@ -144,7 +120,7 @@ const ReservationRoomList = ({ reservationRoom }) => {
         <div className="flex">
           <div>
             <Image
-              src={"/hotel1.png"}
+              src={reservationRoom.roomImage}
               width={100}
               height={100}
               alt="productImage"
@@ -164,11 +140,13 @@ const ReservationRoomList = ({ reservationRoom }) => {
               </div>
               <div className="mb-px flex h-[19px] items-center">
                 <span className="text-[12px] font-bold">
-                  {`${formattedYearToDayNotDayOfWeek(reservationRoom.reservationRoomStartDate, reservationRoom.reservationRoomEndDate)}, ${calculateDaysDifference(reservationRoom.reservationRoomStartDate, reservationRoom.reservationRoomEndDate)}박`}
+                  {`${reservationRoom.reservationRoomStartDate} ${getDayOfWeekForString(reservationRoom.reservationRoomStartDate)}
+                  ~ ${reservationRoom.reservationRoomEndDate} ${getDayOfWeekForString(reservationRoom.reservationRoomEndDate)}
+                  , ${calculateDaysDifference(reservationRoom.reservationRoomStartDate, reservationRoom.reservationRoomEndDate)}박`}
                 </span>
               </div>
               <div className="flex h-[19px] items-center">
-                <span className="text-[12px] font-bold text-[#7F7F7F]">{`${reservationRoom.roomName} (기준 ${reservationRoom.roomCapacity}/최대 ${reservationRoom.roomMaxCapacity})`}</span>
+                <span className="text-[12px] font-bold text-[#7F7F7F]">{`${reservationRoom.roomName} (기준 ${reservationRoom.reservationRoomCapacity}명/최대 ${reservationRoom.reservationRoomMaxCapacity}명)`}</span>
               </div>
             </div>
           </div>

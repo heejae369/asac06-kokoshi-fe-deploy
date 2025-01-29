@@ -7,7 +7,7 @@ export const PaymentFetch = async ({
 }): Promise<PaymentResponseDto | null> => {
   try {
     const response = await fetch(
-      `http://localhost:8080/api/payment?reservationNumber=${reservationNumber}`,
+      `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/payment?reservationNumber=${reservationNumber}`,
       {
         method: "GET",
         headers: {

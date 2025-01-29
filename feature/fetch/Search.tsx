@@ -25,7 +25,7 @@ export const getSearchResult = async (
   );
   try {
     const response = await fetch(
-      `http://localhost:8080/api/accommodation/searchResult/${searchKeyword}?adultNumber=${adultNumber}&checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&accommodationCategory=${filterApply.accommodationCategory}&minPrice=${filterApply.priceRange[0]}&maxPrice=${filterApply.priceRange[1]}&keyword=${filterApply.keyword}`,
+      `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/accommodation/searchResult/${searchKeyword}?adultNumber=${adultNumber}&checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&accommodationCategory=${filterApply.accommodationCategory}&minPrice=${filterApply.priceRange[0]}&maxPrice=${filterApply.priceRange[1]}&keyword=${filterApply.keyword}`,
       {
         method: "GET",
         headers: {
@@ -44,12 +44,15 @@ export const getSearchResult = async (
 
 export const getTopKeywords = async () => {
   try {
-    const response = await fetch("http://localhost:8080/api/search", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/search`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     const data = await response.json();
 

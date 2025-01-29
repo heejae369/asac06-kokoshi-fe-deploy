@@ -1,11 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { requestPwResetEmail } from "@/feature/users/types/users.type";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { pwResetApi } from "@/feature/users/api/api";
+import { userApi } from "@/feature/users/api/api";
+import { useRouter } from "next/navigation";
 
 export default function PasswordPage() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -17,11 +18,11 @@ export default function PasswordPage() {
   const email = watch("email");
 
   const onClickBack = () => {
-    console.log("history back");
+    router.push("login");
   };
 
   const [requestPwResetEmail, { isLoading, isSuccess, data }] =
-    pwResetApi.usePasswordResetEmailMutation();
+    userApi.usePasswordResetEmailMutation();
   const onSubmit: SubmitHandler<requestPwResetEmail> = (data) => {
     requestPwResetEmail({ requestPwResetEmail: data });
   };
@@ -44,10 +45,10 @@ export default function PasswordPage() {
         <b>이메일 주소</b>를 입력해 주세요.
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Input
+        <input
           id="name"
           type="text"
-          className="my-1 h-12 bg-[#F4F4F4] text-sm"
+          className="my-1 h-12 w-full bg-[#F4F4F4] p-4 text-sm"
           placeholder="이름"
           maxLength={20}
           {...register("name", {
@@ -59,10 +60,10 @@ export default function PasswordPage() {
           })}
         />
         {errors.name && <span className="text-sm">{errors.name.message}</span>}
-        <Input
+        <input
           id="email"
           type="text"
-          className="my-1 h-12 bg-[#F4F4F4] text-sm"
+          className="my-1 h-12 w-full bg-[#F4F4F4] p-4 text-sm"
           placeholder="이메일"
           maxLength={20}
           {...register("email", {

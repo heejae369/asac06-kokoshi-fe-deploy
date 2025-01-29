@@ -37,20 +37,20 @@ export interface Slice<T> {
   content: T[];
   pageable: {
     sort: {
-      sorted: true;
-      unsorted: false;
-      empty: false;
+      sorted: boolean;
+      unsorted: boolean;
+      empty: boolean;
     };
     pageNumber: number;
     pageSize: number;
     offset: number;
-    paged: true;
-    unpaged: false;
+    paged: boolean;
+    unpaged: boolean;
   };
   number: number;
   size: number;
   numberOfElements: number;
-  first: true;
-  last: false;
-  empty: false;
+  first: boolean;
+  last: boolean;
+  empty: boolean;
 }

@@ -4,57 +4,61 @@ import MainHeaders from "@/components/MainHeaders";
 import { KakaoPayReady } from "@/feature/fetch/KakaoPayFetch";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import blackBackIcon from "@/assets/blckBackIcon.png";
+import { reservationApi } from "@/feature/reservation/api/api";
+import {
+  requestReservation,
+  roomInfoForReserve,
+} from "@/feature/reservation/type/reservation.type";
+import { userApi } from "@/feature/users/api/api";
+import {
+  calculateDaysDifference,
+  calculateTimeDifference,
+  getDayOfWeekForString,
+} from "@/feature/DateFormat";
 
 export default function Reservation() {
-  const data = [
-    {
-      id: 1,
-      image: "/hotel1.png",
-      accommodationCategory: "호텔",
-      name: "서울 호텔",
-      roomName: "디럭스 트윈",
-      roomMin: "기준 2명",
-      roomMax: "최대 2명",
-      checkInDate: "2023.06.14(화)",
-      checkOutDate: "2023.06.14(수)",
-      checkInTIme: "16:00",
-      checkOutTime: "12:00",
-      price: "50,000원",
-      quantity: 1,
-    },
-    {
-      id: 2,
-      image: "/hotel1.png",
-      accommodationCategory: "호텔",
-      name: "서울 호텔",
-      roomName: "디럭스 트윈",
-      roomMin: "기준 2명",
-      roomMax: "최대 2명",
-      checkInDate: "2023.06.14(화)",
-      checkOutDate: "2023.06.14(수)",
-      checkInTIme: "16:00",
-      checkOutTime: "12:00",
-      price: "50,000원",
-      quantity: 1,
-    },
-  ];
-  const user = { userName: "유성환", userPhoneNumber: "010-2295-2483" };
+  const [name, setName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+
   const [onReservationPerson, setOnReservationPerson] = useState(false);
-  const [name, setName] = useState(user.userName);
-  const [phoneNumber, setPhoneNumber] = useState(user.userPhoneNumber);
+
   const [paymentType, setPaymentType] = useState("");
   const [totaltTerms, setTotalTerms] = useState(false);
+  const [totalPrice, setTotalPrice] = useState(0);
   const [isPayment, setIsPayment] = useState(false);
 
-  const [productRadio, setProductRadio] = useState(
-    data.reduce((acc, item) => {
-      acc[item.id] = { walkRadio: false, vehicleRadio: false };
-      return acc;
-    }, {})
-  );
+  const [productRadio, setProductRadio] = useState({});
+
+  const [requestReservation, setRequestReservation] = useState<
+    requestReservation[]
+  >([]);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const queryString: string = searchParams.get("data");
+  const params = decodeURIComponent(queryString);
+  const userEmail: string = localStorage.getItem("userEmail");
+
+  const {
+    data: userData,
+    isLoading: isUserLoading,
+    isError: isUserError,
+  } = userApi.useUserInfoQuery({
+    requestUserEmail: { userEmail: userEmail },
+  });
+
+  const [reservation, { isLoading, isSuccess, data }] =
+    reservationApi.useReservationMutation();
+  const handleReserve = async () => {
+    await reservation({
+      requestReservations: {
+        reservationRequestList: requestReservation,
+        reserveUser: name,
+        reserveUserPhone: phoneNumber,
+      },
+    });
+  };
 
   const handleRadioChange = (id, type) => {
     setProductRadio((prev) => {
@@ -73,6 +77,29 @@ export default function Reservation() {
   };
 
   useEffect(() => {
+    if (userData) {
+      setName(userData.data.name);
+      setPhoneNumber(userData.data.phone);
+    }
+  }, [userData]);
+
+  useEffect(() => {
+    try {
+      const reservationData: requestReservation[] = JSON.parse(params);
+      setRequestReservation(reservationData);
+      setProductRadio(
+        reservationData.reduce((acc, item) => {
+          acc[item.roomId] = { walkRadio: false, vehicleRadio: false };
+          return acc;
+        }, {})
+      );
+    } catch {
+      alert("잘못된 접근입니다.");
+      router.push("/");
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
     if (
       Object.values(productRadio).every(
         (radio) => radio.walkRadio || radio.vehicleRadio
@@ -88,14 +115,18 @@ export default function Reservation() {
     }
   }, [name, phoneNumber, totaltTerms, paymentType, productRadio]);
 
-  const handlePayment = async () => {
-    if (isPayment) {
+  if (isLoading || isUserLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isUserError) {
+    return <div>Error</div>;
+  }
+
+  if (isSuccess && data) {
+    const kakaoReady = async () => {
       const requestBody = {
-        quantity: data.reduce((sum, item) => sum + item.quantity, 0),
-        totalAmount: 200000,
-        userId: 1,
-        roomId: 1,
-        // reservationNumber: "1234",
+        reservationNumber: data.data,
       };
       console.log(paymentType);
       if (paymentType === "kakaoPay") {
@@ -107,8 +138,9 @@ export default function Reservation() {
           console.error("결제 요청 실패", response);
         }
       } else alert("준비중입니다.");
-    }
-  };
+    };
+    kakaoReady();
+  }
 
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100 font-sans">
@@ -138,21 +170,22 @@ export default function Reservation() {
         ) : (
           <>
             <div className="mt-[15px] tracking-[-0.8px]">
-              {data?.length > 0 &&
-                data.map((item, index) => (
-                  <div key={item.id}>
+              {requestReservation?.length > 0 &&
+                requestReservation.map((item, index) => (
+                  <div key={index}>
                     <ProductList
                       data={item}
-                      walkRadio={productRadio[item.id]?.walkRadio}
+                      walkRadio={productRadio[item.roomId]?.walkRadio}
                       setWalkRadio={() =>
-                        handleRadioChange(item.id, "walkRadio")
+                        handleRadioChange(item.roomId, "walkRadio")
                       }
-                      vehicleRadio={productRadio[item.id]?.vehicleRadio}
+                      vehicleRadio={productRadio[item.roomId]?.vehicleRadio}
                       setVehicleRadio={() =>
-                        handleRadioChange(item.id, "vehicleRadio")
+                        handleRadioChange(item.roomId, "vehicleRadio")
                       }
+                      setTotalPrice={setTotalPrice}
                     />
-                    {index < data.length - 1 && (
+                    {index < requestReservation.length - 1 && (
                       <hr className="my-[20px] w-[320px]" />
                     )}
                   </div>
@@ -167,7 +200,7 @@ export default function Reservation() {
             <hr className="m-[-20px] my-[20px] w-[360px] border-t-[6px]"></hr>
             <CouponAndPoint />
             <hr className="m-[-20px] my-[20px] w-[360px] border-t-[6px]"></hr>
-            <DiscountAndPaymentInfo />
+            <DiscountAndPaymentInfo totalPrice={totalPrice} />
             <hr className="m-[-20px] my-[20px] w-[360px] border-t-[6px]"></hr>
             <PaymentSelect setPaymentType={setPaymentType} />
             <RequiredTerms
@@ -176,8 +209,9 @@ export default function Reservation() {
             />
             <Notification />
             <PaymentButton
-              handlePayment={handlePayment}
+              handlePayment={handleReserve}
               isPayment={isPayment}
+              totalPrice={totalPrice}
             />
           </>
         )}
@@ -192,7 +226,10 @@ const ProductList = ({
   setWalkRadio,
   vehicleRadio,
   setVehicleRadio,
+  setTotalPrice,
 }) => {
+  const [roomInfo, setRoomInfo] = useState<roomInfoForReserve>();
+
   const handleWalkRadio = () => {
     setWalkRadio((prev) => !prev);
   };
@@ -201,42 +238,74 @@ const ProductList = ({
     setVehicleRadio((prev) => !prev);
   };
 
-  // 몇박인지 계산해야함.
-  const howManyNights = "1박";
+  const {
+    data: roomData,
+    isLoading: isRoomLoading,
+    isError: isRoomError,
+  } = reservationApi.useRoomInfoForReserveQuery({
+    requestRoomInfoForReserve: {
+      roomId: data.roomId,
+      startDate: data.startDate,
+      endDate: data.endDate,
+      reservationType: data.reservationType,
+    },
+  });
+
+  useEffect(() => {
+    if (roomData) {
+      setRoomInfo(roomData.data);
+      setTotalPrice((prev) => prev + roomData.data.price);
+    }
+  }, [roomData, setTotalPrice]);
+
+  const { hours } = calculateTimeDifference(data.startTime, data.endTime);
+
+  if (isRoomLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isRoomError) {
+    return <div>Error</div>;
+  }
 
   return (
     <div className="mt-[10px]">
       <div className="flex items-center">
         <div className="h-[18px] rounded-[9px] border border-[#8728FF] px-[9px] py-[2px] text-[10px] text-[#8728FF]">
-          {data.accommodationCategory}
+          {roomInfo?.category}
         </div>
       </div>
       <div className="mt-[3px] flex font-bold">
-        <span className="text-[14px]">{data.name}</span>
+        <span className="text-[14px]">{roomInfo?.accommodationName}</span>
       </div>
       <div className="mb-[30px] mt-[2px] flex items-center">
         <span className="text-[12px] font-[600] text-[#4C4C4C]">
-          {data.roomName} {`(${data.roomMin}/${data.roomMax})`}
+          {roomInfo?.roomName}{" "}
+          {`( 기준 ${roomInfo?.capacity} / 최대 ${roomInfo?.maxCapacity} )`}
         </span>
       </div>
       <div className="flex flex-col gap-[30px] px-[20px] tracking-[-0.4px]">
         <div className="flex justify-between font-bold">
           <div className="flex flex-col">
             <span className="text-[12px] text-[#999999]">체크인</span>
-            <span className="text-[14px]">{data.checkInDate}</span>
-            <span className="text-[14px]">{data.checkInTIme}</span>
+            <span className="text-[14px]">
+              {data.startDate} ({getDayOfWeekForString(data.startDate)})
+            </span>
+            <span className="text-[14px]">{data.startTime}</span>
           </div>
           <div className="flex items-center">
             <div className="flex items-center rounded-[12px] bg-[#E5E5E5] px-[12px] py-[4px]">
               <span className="text-[12px] text-[#333333]">
-                {howManyNights}
+                {`${data.reservationType == "DAY_USE" ? `${hours}시간` : `${calculateDaysDifference(data.startDate, data.endDate)}박`}`}
               </span>
             </div>
           </div>
           <div className="flex flex-col">
             <span className="text-[12px] text-[#999999]">체크아웃</span>
-            <span className="text-[14px]">{data.checkOutDate}</span>
-            <span className="text-[14px]">{data.checkOutTime}</span>
+            <span className="text-[14px]">
+              {data.endDate} ({getDayOfWeekForString(data.endDate)})
+            </span>
+            <span className="text-[14px]">{data.endTime}</span>
           </div>
         </div>
         <div className="flex items-center justify-between">
@@ -288,7 +357,7 @@ const ProductList = ({
         </div>
         <div className="flex items-end justify-between">
           <span className="text-[12px]">결제금액</span>
-          <span className="mr-[-20px] font-bold">{data.price}</span>
+          <span className="mr-[-20px] font-bold">{roomInfo?.price}원</span>
         </div>
       </div>
     </div>
@@ -340,7 +409,7 @@ const CouponAndPoint = ({}) => {
         <div className="flex items-center gap-[7px]">
           <span className="text-[14px]">포인트</span>
           <span className="text-[10px] font-bold text-[#999999]">
-            1,200P 사용가능
+            0P 사용가능
           </span>
         </div>
         <div className="flex items-center gap-[7px]">
@@ -359,26 +428,26 @@ const CouponAndPoint = ({}) => {
   );
 };
 
-const DiscountAndPaymentInfo = () => {
+const DiscountAndPaymentInfo = ({ totalPrice }) => {
   return (
     <div>
       <TitleText title={"할인 및 결제 정보"} />
       <div className="mt-[15px] flex flex-col">
         <div className="mb-[20px] flex justify-between tracking-[-0.8px]">
           <span className="text-[14px]">결제 금액</span>
-          <span className="text-[14px] font-bold">234,000원</span>
+          <span className="text-[14px] font-bold">{totalPrice}원</span>
         </div>
       </div>
       <div className="flex justify-between tracking-[-0.8px]">
         <span className="text-[14px]">할인 금액</span>
-        <span className="text-[14px] font-bold">-9,000원</span>
+        <span className="text-[14px] font-bold">0원</span>
       </div>
       <div>
         <hr className="my-[15px]"></hr>
       </div>
       <div className="flex justify-between tracking-[-0.8px]">
         <span className="text-[14px]">총 결제금액</span>
-        <span className="text-[14px] font-bold">225,000원</span>
+        <span className="text-[14px] font-bold">{totalPrice}원</span>
       </div>
     </div>
   );
@@ -573,7 +642,7 @@ const Notification = () => {
   );
 };
 
-const PaymentButton = ({ handlePayment, isPayment }) => {
+const PaymentButton = ({ handlePayment, isPayment, totalPrice }) => {
   return (
     <div>
       <button
@@ -582,7 +651,7 @@ const PaymentButton = ({ handlePayment, isPayment }) => {
         disabled={!isPayment}
       >
         <span className="font-bold tracking-[-0.5px] text-white">
-          225,000원 결제하기
+          {totalPrice}원 결제하기
         </span>
       </button>
     </div>

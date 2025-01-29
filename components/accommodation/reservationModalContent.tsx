@@ -2,8 +2,16 @@ import { DragSlideTimeButton } from "@/components/DragSlideButton";
 import { Button } from "@/components/ui/button";
 import { Room } from "@/feature/accommodation/type/accommodation.type";
 import { useCalendar } from "@/feature/CalendarContext";
+import { cartApi } from "@/feature/cart/api/api";
+import {
+  formattedGetDate,
+  formattedRequestDate,
+  getDiffDays,
+} from "@/feature/DateFormat";
+import { requestReservation } from "@/feature/reservation/type/reservation.type";
 import Image from "next/image";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export const ReservationType = ({
   roomDetail,
@@ -12,12 +20,97 @@ export const ReservationType = ({
   roomDetail: Room;
   reservationType: string;
 }) => {
+  const router = useRouter();
   const { adultNumber, checkInDate, checkOutDate, dayOfWeek } = useCalendar();
 
-  const [selectTime, setSelectCheckTiem] = useState();
+  const [reservationParam, setReservationParam] = useState<requestReservation>({
+    roomId: roomDetail.roomId,
+    startDate: formattedRequestDate(checkInDate),
+    endDate: formattedRequestDate(checkOutDate),
+    capacity: adultNumber,
+    startTime: roomDetail.checkIn,
+    endTime: roomDetail.checkOut,
+    reservationType: reservationType,
+  });
+
+  const [selectTime, setSelectCheckTiem] = useState({
+    selectCheckInTime: "",
+    selectCheckOutTime: "",
+  });
   const handleDayUseTime = (selectCheckTime) => {
     setSelectCheckTiem(selectCheckTime);
-    console.log(selectCheckTime);
+  };
+
+  useEffect(() => {
+    let endDate = "";
+    if (reservationType === "DAY_USE") {
+      endDate = formattedRequestDate(checkInDate);
+    } else {
+      endDate = formattedRequestDate(checkOutDate);
+    }
+
+    setReservationParam((prevState) => ({
+      ...prevState,
+      startTime: selectTime.selectCheckInTime,
+      endTime: selectTime.selectCheckOutTime,
+      endDate: endDate,
+    }));
+  }, [selectTime]);
+
+  // 장바구니 추가 api 호출
+  const [
+    addCart,
+    {
+      isLoading: isAddCartLoading,
+      isSuccess: isAddCartSuccess,
+      isError: isAddCartError,
+      data: addCartData,
+    },
+  ] = cartApi.useAddCartMutation();
+
+  const onClickCart = () => {
+    selectTimeCheck();
+    addCart({
+      requestAddToCart: {
+        roomId: roomDetail.roomId,
+        startDate: formattedRequestDate(checkInDate),
+        endDate: formattedRequestDate(checkOutDate),
+        startTime: roomDetail.checkIn,
+        endTime: roomDetail.checkOut,
+        reservationType: reservationType,
+      },
+    });
+  };
+
+  if (isAddCartLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isAddCartError) {
+    alert(addCartData?.message);
+    // return <div>Error</div>;
+  }
+
+  if (isAddCartSuccess && addCartData) {
+    alert(addCartData.message);
+  }
+
+  const params = encodeURIComponent(JSON.stringify([reservationParam]));
+  const onClickReservation = () => {
+    selectTimeCheck();
+  };
+
+  const selectTimeCheck = () => {
+    // 시간 입력 안되어있으면 예약 및 장바구니 버튼 막기
+    if (
+      reservationType === "DAY_USE" &&
+      selectTime.selectCheckInTime === "" &&
+      selectTime.selectCheckOutTime === ""
+    ) {
+      alert("이용시간을 선택해주세요.");
+      return;
+    }
+    router.push(`/reservation?data=${params}`);
   };
 
   return (
@@ -31,23 +124,27 @@ export const ReservationType = ({
             <div className="text-center">
               <span className="text-[#999999]">체크인</span>
               <br />
-              <span>2023.06.05(수)</span>
+              <span>{formattedGetDate(checkInDate)}</span>
               <br />
-              {!selectTime ? (
+              {reservationType === "STAY" ? (
+                <span>{roomDetail.checkIn}</span>
+              ) : !selectTime ? (
                 <span>선택 전</span>
               ) : (
                 <span>{selectTime.selectCheckInTime}</span>
               )}
             </div>
             <div className="rounded-2xl bg-[#CCCCCC] px-[6px] py-[2px] text-[10px] text-[#666666]">
-              {`${reservationType == "DAY_USE" ? `${roomDetail.dayUseInfo?.dayUseTime}시간` : "(1박)"}`}
+              {`${reservationType == "DAY_USE" ? `${roomDetail.dayUseInfo?.dayUseTime}시간` : `${getDiffDays(checkInDate, checkOutDate)}박`}`}
             </div>
             <div className="text-center">
               <span className="text-[#999999]">체크아웃</span>
               <br />
-              <span>2023.06.06(목)</span>
+              <span>{formattedGetDate(checkOutDate)}</span>
               <br />
-              {!selectTime ? (
+              {reservationType === "STAY" ? (
+                <span>{roomDetail.checkOut}</span>
+              ) : !selectTime ? (
                 <span>선택 전</span>
               ) : (
                 <span>{selectTime.selectCheckOutTime}</span>
@@ -74,15 +171,22 @@ export const ReservationType = ({
         {/* 숙박 몇박인지, 대실 몇시간인지 계산하는 로직 추가해야 함. */}
         <div>
           <span className="font-bold">{`${reservationType == "DAY_USE" ? `대실 ` : "숙박 "}`}</span>
-          <span className="font-normal">{`${reservationType == "DAY_USE" ? `(최대 ${roomDetail.dayUseInfo?.dayUseTime}시간)` : "(1박)"}`}</span>
+          <span className="font-normal">{`${reservationType == "DAY_USE" ? `(최대 ${roomDetail.dayUseInfo?.dayUseTime}시간)` : `${getDiffDays(checkInDate, checkOutDate)}박`}`}</span>
         </div>
         <span className="font-bold">{`${reservationType == "DAY_USE" ? roomDetail.dayUseInfo?.dayUseMinPrice : roomDetail.minPrice}`}</span>
       </div>
       <div className="flex justify-between">
-        <Button className="w-[155px] rounded-lg border border-[#8728FF] bg-white px-8 text-[#8728FF] hover:bg-purple-50">
+        <Button
+          onClick={onClickCart}
+          className="w-[155px] rounded-lg border border-[#8728FF] bg-white px-8 text-[#8728FF] hover:bg-purple-50"
+        >
           장바구니 담기
         </Button>
-        <Button className="w-[155px] px-8" variant={"point"}>
+        <Button
+          onClick={onClickReservation}
+          className="w-[155px] px-8"
+          variant={"point"}
+        >
           예약하기
         </Button>
       </div>

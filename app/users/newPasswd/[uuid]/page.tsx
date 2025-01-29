@@ -6,7 +6,7 @@ import passwordShow from "@/assets/icon/ic_pw_see.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { pwResetApi } from "@/feature/users/api/api";
+import { userApi } from "@/feature/users/api/api";
 import { requestPwReset } from "@/feature/users/types/users.type";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -32,7 +32,7 @@ export default function PasswordPage({ params }: { params: { uuid: string } }) {
   };
 
   const [requestPwReset, { isLoading, isSuccess, data }] =
-    pwResetApi.usePasswordResetMutation();
+    userApi.usePasswordResetMutation();
   const onSubmit: SubmitHandler<requestPwReset> = (data) => {
     requestPwReset({
       requestPwReset: { uuid: params.uuid, password: data.password },

@@ -8,11 +8,15 @@ import passwordShow from "@/assets/icon/ic_pw_see.png";
 import or from "@/assets/or.png";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import LoginAxios from "@/feature/LoginAxios";
+// import { useDispatch } from "react-redux";
+import {
+  IsLoginContext,
+  useIsLoginState,
+} from "@/feature/context/IsLoginContext";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -21,13 +25,27 @@ export default function LoginPage() {
   const [hidePw, setHidePw] = useState("password");
   // 유효성 확인 문구 표시 여부
   const [showValidation, setShowValidation] = useState(false);
-
   // 등록된 회원인지 확인(true = 등록된 회원)
   const [signUp, setSignUp] = useState(false);
   // 비밀번호 일치 여부 확인(true = 비밀번호 일치)
   const [samePassword, setSamePassword] = useState(false);
 
+  // const dispatch = useDispatch();
   const router = useRouter();
+
+  const { setIsLogin } = useContext(IsLoginContext);
+  const isLogin = useIsLoginState();
+
+  // if (isLogin) {
+  //   console.log("isLogin : ", isLogin);
+  //   router.push("/yanolza/main");
+  // }
+  useEffect(() => {
+    if (isLogin) {
+      // router.replace("/yanolza/main");
+      window.location.href = "/yanolza/main";
+    }
+  }, [isLogin, router]);
 
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100">
@@ -38,30 +56,44 @@ export default function LoginPage() {
         </div>
         <div className="mt-9 flex flex-col gap-[5px]">
           {/* 이메일 입력창 */}
-          <Input
+          <input
             value={email}
             onChange={(e) => {
               let emailValue = e.target.value;
               emailValue = emailValue.replace(/\n/g, "");
               setEmail(emailValue.slice(0, 20));
             }}
-            className="rounded-sm bg-[#F4F4F4]"
+            className="h-12 rounded bg-[#F4F4F4] p-4"
             type="email"
             placeholder="이메일"
           />
           {/* 비밀번호 입력창 */}
           <div className="relative">
-            <Input
+            <input
               value={pw}
               onChange={(e) => {
                 let pwValue = e.target.value;
                 pwValue = pwValue.replace(/\n/g, "");
                 setPw(pwValue.slice(0, 20));
               }}
-              className="rounded-sm bg-[#F4F4F4]"
+              className="h-12 w-full rounded bg-[#F4F4F4] p-4"
               type={hidePw}
               placeholder="비밀번호"
               autoComplete="new-password"
+              onKeyUp={(e) => {
+                if (e.keyCode == 13) {
+                  LoginAxios({
+                    setShowValidation,
+                    setSignUp,
+                    setSamePassword,
+                    email,
+                    pw,
+                    router,
+                    setIsLogin,
+                    // dispatch,
+                  });
+                }
+              }}
             />
             {/* 비밀번호 표시하기 버튼 */}
             {hidePw == "password" && (
@@ -105,6 +137,8 @@ export default function LoginPage() {
               email,
               pw,
               router,
+              setIsLogin,
+              // dispatch,
             })
           }
         >

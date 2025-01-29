@@ -1,3 +1,5 @@
+import { start } from "repl";
+
 export default function NowTomorrowDate() {
   const week = ["일", "월", "화", "수", "목", "금", "토"];
 
@@ -77,8 +79,6 @@ export const dayUseTimeFormat = (
   end: string,
   interval: number
 ) => {
-  console.log("start : ", start);
-  console.log("end : ", end);
   const startDate = new Date(`2025-01-10T${start}:00`); // 시작 시간
   const endDate = new Date(`2025-01-10T${end}:00`); // 종료 시간
   const times: string[] = [];
@@ -89,7 +89,6 @@ export const dayUseTimeFormat = (
     currentTime = new Date(currentTime.getTime() + interval * 60000); // 간격 추가
   }
 
-  console.log("times : ", times);
   return times;
 };
 
@@ -138,4 +137,22 @@ const getDayOfWeek = (year, month, day) => {
   const date = new Date(year, month - 1, day); // month는 0부터 시작
   const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
   return dayNames[date.getDay()];
+};
+
+export const formattedGetDate = (date) => {
+  return `${date.year}.${date.month}.${date.day}(${date.dayOfWeek})`;
+};
+
+export const getDiffDays = (startDate, endDate) => {
+  const start = new Date(formattedRequestDate(startDate));
+  const end = new Date(formattedRequestDate(endDate));
+  const diffTime = end.getTime() - start.getTime();
+  const diffDays = diffTime / (1000 * 60 * 60 * 24);
+  return diffDays;
+};
+
+export const getDayOfWeekForString = (dateString: string): string => {
+  const days = ["일", "월", "화", "수", "목", "금", "토"];
+  const date = new Date(dateString);
+  return days[date.getDay()];
 };

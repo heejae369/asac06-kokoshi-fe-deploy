@@ -1,6 +1,9 @@
+import { ReservationNumber } from "@/feature/reservation/type/reservation.type";
+
 interface KakaoPayRequestBody {
-  quantity: number;
-  totalAmount: number;
+  // quantity: number;
+  // totalAmount: number;
+  reservationNumber: ReservationNumber;
 }
 
 export const KakaoPayReady = async ({
@@ -9,13 +12,16 @@ export const KakaoPayReady = async ({
   requestBody: KakaoPayRequestBody;
 }): Promise<PaymentResponse | undefined> => {
   try {
-    const response = await fetch(`http://localhost:8080/api/kakaoPay/ready`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/kakaoPay/ready`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Network response was not ok");

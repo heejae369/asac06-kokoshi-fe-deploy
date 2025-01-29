@@ -4,6 +4,7 @@ import userReducer from "./slice/userSlice";
 import modalReducer from "./slice/modalSlice";
 import calendarReducer from "./slice/calendarSlice";
 import cartReducer from "./slice/cartSlice";
+// import loginResucer from "./slice/loginSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     calendar: calendarReducer,
     modal: modalReducer,
     cart: cartReducer,
+    // login: loginResucer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware),
