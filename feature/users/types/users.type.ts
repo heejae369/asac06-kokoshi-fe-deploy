@@ -20,13 +20,13 @@ export interface requestPwReset {
   password: string;
 }
 
-export interface requestUserEmail {
-  userEmail: string;
-}
+// export interface requestUserEmail {
+//   userEmail: string;
+// }
 
-export interface UsePhoneRequestArg {
-  requestUserEmail: requestUserEmail;
-}
+// export interface UsePhoneRequestArg {
+//   requestUserEmail: requestUserEmail;
+// }
 
 export interface UserPhoneInfo {
   phone: string;
