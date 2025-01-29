@@ -1,11 +1,11 @@
-import { api } from "@/lib/api";
+import { api, authApi } from "@/lib/api";
 import {
   UsePasswordResetEmailMutationArg,
   UsePasswordResetEmailMutationRes,
   UsePasswordResetMutationRes,
   UsePasswordResetMutationArg,
   UsePhoneRequestRes,
-  UsePhoneRequestArg,
+  // UsePhoneRequestArg,
 } from "@/feature/users/types/users.type";
 // import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query";
 
@@ -36,12 +36,15 @@ export const userApi = api.injectEndpoints({
         };
       },
     }),
+  }),
+});
 
-    userInfo: builder.query<UsePhoneRequestRes, UsePhoneRequestArg>({
-      query: ({ requestUserEmail }) => {
+export const userAuthApi = authApi.injectEndpoints({
+  endpoints: (builder) => ({
+    userInfo: builder.query<UsePhoneRequestRes, void>({
+      query: () => {
         return {
           url: "/users/api/userPhone",
-          params: requestUserEmail,
           method: "GET",
         };
       },

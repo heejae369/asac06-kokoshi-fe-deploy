@@ -11,7 +11,7 @@ import {
   requestReservation,
   roomInfoForReserve,
 } from "@/feature/reservation/type/reservation.type";
-import { userApi } from "@/feature/users/api/api";
+import { userAuthApi } from "@/feature/users/api/api";
 import {
   calculateDaysDifference,
   calculateTimeDifference,
@@ -38,15 +38,13 @@ export default function Reservation() {
   const searchParams = useSearchParams();
   const queryString: string = searchParams.get("data");
   const params = decodeURIComponent(queryString);
-  const userEmail: string = localStorage.getItem("userEmail");
+  // const userEmail: string = localStorage.getItem("userEmail");
 
   const {
     data: userData,
     isLoading: isUserLoading,
     isError: isUserError,
-  } = userApi.useUserInfoQuery({
-    requestUserEmail: { userEmail: userEmail },
-  });
+  } = userAuthApi.useUserInfoQuery();
 
   const [reservation, { isLoading, isSuccess, data }] =
     reservationApi.useReservationMutation();

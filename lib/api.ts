@@ -16,6 +16,7 @@ const baseQuery = fetchBaseQuery({
  * and to ensure that the file injecting the endpoints is loaded
  */
 export const api = createApi({
+  reducerPath: "api",
   baseQuery,
   /**
    * Tag types must be defined in the original API definition
@@ -88,6 +89,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
 // -----------------------------------------------
 
 export const authApi = createApi({
+  reducerPath: "authApi",
   baseQuery: baseQueryWithReauth,
   endpoints: () => ({}),
 });

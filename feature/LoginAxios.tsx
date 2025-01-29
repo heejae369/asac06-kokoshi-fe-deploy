@@ -34,14 +34,15 @@ export default async function LoginPostApi({
         }
       )
       .then((response) => {
-        console.log("response : ", response);
         // if (response.data.status === true) {
         if (response.status === 200) {
           localStorage.setItem(
             "accessToken",
             response.headers["authorization"]
           );
-          localStorage.setItem("userEmail", response.data);
+          localStorage.setItem("userEmail", response.data.userEmail);
+
+          //cartItemCount 이 값을 context 에 넣으면 됩니다.
 
           // 로그인 상태 변경
           setIsLogin(true);
