@@ -11,7 +11,7 @@ export function cn(...inputs: ClassValue[]) {
 export async function defaultAuthGetFetch(url) {
   const option = {
     headers: {
-      "Content-Type": "application.json",
+      "Content-Type": "application/json",
       Authorization: localStorage.getItem("accessToken"),
     },
     credentials: "include",
@@ -53,7 +53,7 @@ async function actualFetch(url, option) {
       return retryResponse;
     } else {
       localStorage.clear();
-      window.location.href = "/login";
+      window.location.href = "/users/login";
     }
   }
 
@@ -70,7 +70,7 @@ async function actualFetch(url, option) {
 //   const option = {
 //     method: 'GET',
 //     headers: {
-//       'Content-Type': 'application.json',
+//       'Content-Type': 'application/json',
 //       Authorization: localStorage.getItem('accessToken'),
 //     },
 //     credentials: 'include',
