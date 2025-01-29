@@ -186,6 +186,9 @@ export default function MapComponent() {
       );
     });
   };
+  useEffect(() => {
+    setSelectedAccommodation(null); // 상태 초기화
+  }, []);
 
   // 내 위치로 이동 버튼 클릭 시 실행
   const moveToMyLocation = () => {
@@ -200,9 +203,6 @@ export default function MapComponent() {
   const moveReservation = (id) => {
     router.push(`/accommodation/${id}`);
   };
-  useEffect(() => {
-    setSelectedAccommodation(null); // 상태 초기화
-  }, []);
 
   return (
     <>
@@ -212,7 +212,7 @@ export default function MapComponent() {
 
       {/* 내 위치로 이동 버튼 */}
       <button
-        className="absolute bottom-16 left-4 p-3 bg-white rounded-full shadow-md"
+        className="absolute bottom-16 left-4 p-3 bg-white rounded-full shadow-md z-50"
         onClick={moveToMyLocation}
       >
         <span role="img" aria-label="location">
