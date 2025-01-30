@@ -103,7 +103,7 @@ export default function EditProfile() {
         <MainHeaders title="내 정보 수정" backIcon />
         <div className="relative inline-block">
           <Image
-            className="mt-10"
+            className="mt-10 w-17 h-17 rounded-full object-cover"
             src={userProfile || "/default_profile.png"}
             alt=""
             width={68}
