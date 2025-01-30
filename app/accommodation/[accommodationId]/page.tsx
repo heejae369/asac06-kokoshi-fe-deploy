@@ -86,7 +86,7 @@ export default function AccommodationDetail({
       setAccommodationCategory(accommodationDetail.accommodationCategory);
       setName(accommodationDetail.name);
       setTotalReview(accommodationDetail.totalReview);
-      setRating(accommodationDetail.rating);
+      setRating(accommodationDetail.rating ?? 0);
     }
   }, [accommodationData]);
 
