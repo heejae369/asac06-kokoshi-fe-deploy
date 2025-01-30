@@ -122,7 +122,7 @@ export default function Map() {
   const fetchAccommodations = async (map: any) => {
     try {
       const response = await fetch(
-        "http://localhost:8080/api/accommodation/map"
+        `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/accommodation/map`
       ); // 백엔드 API 호출
       if (!response.ok) {
         throw new Error("숙소 데이터를 가져오는데 실패했습니다.");
