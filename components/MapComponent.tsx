@@ -232,7 +232,15 @@ export default function MapComponent() {
         </span>
       </button>
 
-      <div id="map" className="z-0 w-[360px] flex-1 ml-[-20px]"></div>
+      <div
+        id="map"
+        className="z-0 w-[360px] flex-1 ml-[-20px]"
+        style={{
+          height: "100vh", // 높이 명시적 지정
+          WebkitTransform: "translate3d(0,0,0)", // iOS 렌더링 이슈 해결
+          transform: "translate3d(0,0,0)", // iOS 렌더링 이슈 해결
+        }}
+      />
       {selectedAccommodation && (
         <div
           className="absolute bottom-20 left-1/2 transform -translate-x-1/2 w-[90%] max-w-sm bg-white p-4 rounded-lg shadow-lg"
