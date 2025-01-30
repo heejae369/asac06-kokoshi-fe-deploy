@@ -33,3 +33,12 @@ export interface UserPhoneInfo {
   name: string;
 }
 export type UsePhoneRequestRes = ApiResponse<UserPhoneInfo>;
+
+export interface UserEditInfo {
+  userName: string;
+  phone: string;
+  nickName: string;
+  userBirth: string;
+  profilePath: string;
+}
+export type UseUserEditInfoRes = ApiResponse<UserEditInfo>;

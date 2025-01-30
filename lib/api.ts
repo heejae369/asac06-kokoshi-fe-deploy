@@ -31,6 +31,7 @@ export const api = createApi({
 
 //---------------------------------------------------------------------------
 
+// 추후 Mutex 제거후 다시 확인
 const mutex = new Mutex();
 
 const baseAuthQuery = fetchBaseQuery({

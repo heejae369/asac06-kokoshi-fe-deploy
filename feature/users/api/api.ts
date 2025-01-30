@@ -5,8 +5,10 @@ import {
   UsePasswordResetMutationRes,
   UsePasswordResetMutationArg,
   UsePhoneRequestRes,
+  UseUserEditInfoRes,
   // UsePhoneRequestArg,
 } from "@/feature/users/types/users.type";
+import { ApiResponse } from "@/feature/common/types/apiResponse";
 // import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query";
 
 export const userApi = api.injectEndpoints({
@@ -46,6 +48,37 @@ export const userAuthApi = authApi.injectEndpoints({
         return {
           url: "/users/api/userPhone",
           method: "GET",
+        };
+      },
+    }),
+
+    userEditInfo: builder.query<UseUserEditInfoRes, void>({
+      query: () => {
+        return {
+          url: "/users/api/userEditInfo",
+          method: "GET",
+        };
+      },
+    }),
+
+    // 추후 리덕스로 등록?
+    logout: builder.mutation<ApiResponse<void>, void>({
+      query: () => {
+        return {
+          url: "/logout",
+          method: "POST",
+          credentials: "include",
+        };
+      },
+    }),
+
+    // 추후 리덕스로 등록?
+    deleteUser: builder.mutation<ApiResponse<void>, void>({
+      query: () => {
+        return {
+          url: "/users/api/deleteUser",
+          method: "DELETE",
+          credentials: "include",
         };
       },
     }),

@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import { createContext, useState, useMemo, useContext, useEffect } from "react";
 
 // const userEmail = localStorage.getItem("userEmail");
@@ -36,16 +37,24 @@ export const IsLoginContext = createContext({
 });
 
 export function IsLoginProvider({ children }) {
-  // useMemo로 캐싱하지 않으면 value가 바뀔 때마다 state를 사용하는 모든 컴포넌트가 매번 리렌더링됨
   const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
+    // api 호출해서 refresh 토큰 상태 체크 로직 구현 --> BE Redis 먼저 적용 되어야 함.
+
+    // refresh 토큰 만료 체크,
+    // refresh 토큰이 만료 되었으면, 로그아웃처리
+    // 토큰이 refresh 토큰이 아직 유효한 경우, Cookie 시간 연장?
+    // 추후 고민후 적용
+
     // 클라이언트 사이드에서만 localStorage 체크
     const userEmail = localStorage.getItem("userEmail");
     const accessToken = localStorage.getItem("accessToken");
     setIsLogin(userEmail !== null && accessToken !== null);
+    // setIsLogin(userEmail !== null && accessToken !== null && refresh !== null);
   }, []);
 
+  // useMemo로 캐싱하지 않으면 value가 바뀔 때마다 state를 사용하는 모든 컴포넌트가 매번 리렌더링됨
   const value = useMemo(() => ({ isLogin, setIsLogin }), [isLogin]);
   return (
     <IsLoginContext.Provider value={value}>{children}</IsLoginContext.Provider>
