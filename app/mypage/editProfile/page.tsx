@@ -123,23 +123,45 @@ export default function EditProfile() {
         </div>
         <div className="mb-8 flex items-baseline">
           <p className="mt-5 text-xl font-bold">회원 정보</p>
-          <button className="ml-auto text-sm font-bold text-[#8728FF]">
+          <button
+            className="ml-auto text-sm font-bold text-[#8728FF]"
+            onClick={() => router.push("editProfile/edit")}
+          >
             수정
           </button>
         </div>
         <div className="my-4 flex">
           <p className="w-24 text-sm text-gray-500">이름</p>
-          <p className="text-sm font-semibold">{userEditInfo.userName}</p>
+          <p className="text-sm font-semibold">
+            {userEditInfo.userName
+              ? userEditInfo.userName[0] +
+                "*".repeat(userEditInfo.userName.length - 1)
+              : ""}
+          </p>
         </div>
         <div className="h-0.5 w-full bg-gray-100" />
         <div className="my-4 flex">
           <p className="w-24 text-sm text-gray-500">휴대폰 번호</p>
-          <p className="text-sm font-semibold">{userEditInfo.phone}</p>
+          <p className="text-sm font-semibold">
+            {userEditInfo.phone
+              ? userEditInfo.phone.slice(0, 9) +
+                "*".repeat(userEditInfo.phone.length - 9)
+              : ""}
+          </p>
         </div>
         <div className="h-0.5 w-full bg-gray-100" />
         <div className="my-4 flex">
           <p className="w-24 text-sm text-gray-500">생년월일</p>
-          <p className="text-sm font-semibold">{userEditInfo.userBirth}</p>
+          <p className="text-sm font-semibold">
+            {userEditInfo.userBirth
+              ? userEditInfo.userBirth
+                  .split("")
+                  .map((char, index) =>
+                    [2, 3, 5, 6, 8, 9].includes(index) ? "*" : char
+                  )
+                  .join("")
+              : ""}
+          </p>
         </div>
         <div className="h-0.5 w-full bg-gray-100" />
         <div className="my-4 flex">
