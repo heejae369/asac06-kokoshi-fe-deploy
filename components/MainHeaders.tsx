@@ -20,15 +20,15 @@ export default function MainHeaders({
   const router = useRouter();
   const { cartCount } = useCart();
 
-  const homeUrl = `${process.env.NEXT_PUBLIC_CLIENT_BASE_URL}/yanolza/main`;
-  const cartUrl = `${process.env.NEXT_PUBLIC_CLIENT_BASE_URL}/yanolza/cart`;
+  // const homeUrl = `${process.env.NEXT_PUBLIC_CLIENT_BASE_URL}/yanolza/main`;
+  // const cartUrl = `${process.env.NEXT_PUBLIC_CLIENT_BASE_URL}/yanolza/cart`;
 
   const handleBackIcon = () => {
     router.back();
   };
 
   const onClickCart = () => {
-    router.push(cartUrl);
+    router.push("/yanolza/cart");
   };
 
   return (
@@ -62,7 +62,10 @@ export default function MainHeaders({
           </button>
         )}
         {homeIcon && (
-          <button onClick={() => router.push(homeUrl)} className="size-[18px]">
+          <button
+            onClick={() => router.push("/yanolza/main")}
+            className="size-[18px]"
+          >
             <Image
               src={"/assets/icon/ic_market_home.png"}
               width={15}
