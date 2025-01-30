@@ -10,6 +10,7 @@ export default function FrequentlyAskedQuetions() {
     <div className="flex h-screen w-full justify-center bg-gray-100">
       <div className="w-[360px] bg-white px-5 font-sans">
         <MainHeaders title="자주 묻는 질문" backIcon />
+        <div className="my-6" />
         <Accordion.Root type="multiple" className="mb-4">
           {[
             {

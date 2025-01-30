@@ -5,7 +5,6 @@ import styles from "@/styles/Mypage.module.css";
 import Footer from "@/components/Footer";
 import DEFAULT_PROFILE_IMAGE from "@/assets/img/default-profile.png";
 import { useRouter } from "next/navigation";
-// import JwtTokenHandler from "@/feature/JwtTokenHandler";
 import { authFetch, useLoginGuard } from "@/lib/utils";
 
 interface UserData {
@@ -17,7 +16,6 @@ interface UserData {
 // const DEFAULT_PROFILE_IMAGE = "@/asse/default-profile.png";
 
 const Mypage = () => {
-  // JwtTokenHandler();
   useLoginGuard();
 
   const router = useRouter();
@@ -39,8 +37,8 @@ const Mypage = () => {
   React.useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await authFetch(
-          `http://localhost:8080/users/api/userdata?userEmail=${userEmail}`,
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/users/api/userdata?userEmail=${userEmail}`,
           {
             cache: "no-store",
           }
@@ -68,7 +66,7 @@ const Mypage = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/users/api/uploadProfile",
+        `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/users/api/uploadProfile`,
         {
           method: "POST",
           body: formData,
