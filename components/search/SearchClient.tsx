@@ -34,40 +34,17 @@ export default function SearchClient() {
   const searchParams = useSearchParams(); // useSearchParams는 클라이언트 측에서 안전하게 호출 가능
 
   // 기존 서치 코드
-//   useEffect(() => {
-//     if (searchParams) {
-//       const search = searchParams.get("search");
-//       if (search) {
-//         console.log("Search query parameter:", search);
-//         fetchData(search);
-//         addRecentSearches(search);
-//         setSearchText(search);
-//       }
-//     }
-//   }, [searchParams]);
-  
-// 성환님 카테고리 추가 부분  --  추후 적요
-  useEffect(() => {
-    const category = searchParams.get("category");
-    const search = searchParams.get("search");
-
-    if (search) {
-      setSearchText(search);
-    }
-
-    if (category) {
-      console.log("keyword 변경");
-      const categoryArray = category.split(",");
-      setFilterApply((prevState) => ({
-        ...prevState,
-        accommodationCategory: categoryArray,
-      }));
-    } else {
-      console.log("검색어 :", search);
-      fetchData(search);
-      addRecentSearches(search);
-
-  // 프리랜더링 문제
+  //   useEffect(() => {
+  //     if (searchParams) {
+  //       const search = searchParams.get("search");
+  //       if (search) {
+  //         console.log("Search query parameter:", search);
+  //         fetchData(search);
+  //         addRecentSearches(search);
+  //         setSearchText(search);
+  //       }
+  //     }
+  //   }, [searchParams]);
 
   const fetchData = async (text) => {
     console.log("숙소리스트 가져오기");
@@ -91,29 +68,52 @@ export default function SearchClient() {
     }
     // setSearchText(text);
   };
+  // 성환님 카테고리 추가 부분  --  추후 적요
+  useEffect(() => {
+    const category = searchParams.get("category");
+    const search = searchParams.get("search");
 
-  // 기존 코드 
-//   const fetchData = async (text) => {
-//     console.log("fetchData 실행");
-//     try {
-//       if (text) {
-//         const data = await getSearchResult(
-//           text,
-//           adultNumber,
-//           formattedRequestDate(checkInDate),
-//           formattedRequestDate(checkOutDate),
-//           filterApply
-//         );
-//         if (array !== "코코시 추천순" && data) {
-//           setSearchResultData(dataArray(data, array));
-//         } else setSearchResultData(data);
-//       } else {
-//         setSearchResultData([]);
-//       }
-//     } catch (error) {
-//       console.error("searchResult : ", error);
-//     }
-//   };
+    if (search) {
+      setSearchText(search);
+    }
+
+    if (category) {
+      console.log("keyword 변경");
+      const categoryArray = category.split(",");
+      setFilterApply((prevState) => ({
+        ...prevState,
+        accommodationCategory: categoryArray,
+      }));
+    } else {
+      console.log("검색어 :", search);
+      fetchData(search);
+      addRecentSearches(search);
+    }
+  }, []);
+  // 프리랜더링 문제
+
+  // 기존 코드
+  //   const fetchData = async (text) => {
+  //     console.log("fetchData 실행");
+  //     try {
+  //       if (text) {
+  //         const data = await getSearchResult(
+  //           text,
+  //           adultNumber,
+  //           formattedRequestDate(checkInDate),
+  //           formattedRequestDate(checkOutDate),
+  //           filterApply
+  //         );
+  //         if (array !== "코코시 추천순" && data) {
+  //           setSearchResultData(dataArray(data, array));
+  //         } else setSearchResultData(data);
+  //       } else {
+  //         setSearchResultData([]);
+  //       }
+  //     } catch (error) {
+  //       console.error("searchResult : ", error);
+  //     }
+  //   };
 
   useEffect(() => {
     if (searchText) {
