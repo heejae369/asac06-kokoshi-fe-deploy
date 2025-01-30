@@ -11,35 +11,48 @@ interface Region {
   url: string;
   img: string;
 }
-export default function SelectRegion() {
+export default function SelectRegion({ category }) {
   const router = useRouter();
+  const url = (region: string) => {
+    return `/search?search=${region}&category=${category}`;
+  };
   const regions: Region[] = [
     {
-      region: "서울/경인",
-      url: "/search?search=서울경인",
+      region: "서울",
+      url: url("서울"),
       img: hotel_seoul.src,
     },
     {
+      region: "경기",
+      url: url("경기"),
+      img: "/images/Gyeonggi-do.png",
+    },
+    {
+      region: "인천",
+      url: url("인천"),
+      img: "/images/Incheon.png",
+    },
+    {
       region: "충청",
-      url: "/search?search=충청",
+      url: url("충청"),
       img: hotel_chungcheong.src,
     },
     {
       region: "경상",
-      url: "/search?search=경상",
+      url: url("경상"),
       img: hotel_gyeungsang.src,
     },
     {
       region: "전라",
-      url: "/search?search=전라",
+      url: url("전라"),
       img: hotel_jeonla.src,
     },
     {
       region: "강원",
-      url: "/search?search=강원",
+      url: url("강원"),
       img: hotel_gangwon.src,
     },
-    { region: "제주", url: "/search?jeju", img: hotel_jeju.src },
+    { region: "제주", url: url("제주"), img: hotel_jeju.src },
   ];
   return (
     <>

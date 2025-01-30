@@ -14,6 +14,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useCart } from "@/feature/cart/CartCount";
 
 export const ReservationType = ({
   roomDetail,
@@ -25,6 +26,7 @@ export const ReservationType = ({
   const router = useRouter();
   const dispatch = useDispatch();
   const { adultNumber, checkInDate, checkOutDate, dayOfWeek } = useCalendar();
+  const { increaseCart } = useCart();
 
   const [reservationParam, setReservationParam] = useState<requestReservation>({
     roomId: 0,
@@ -83,6 +85,13 @@ export const ReservationType = ({
     },
   ] = cartApi.useAddCartMutation();
 
+  useEffect(() => {
+    if (isAddCartSuccess && addCartData) {
+      alert(addCartData.message);
+      increaseCart();
+    }
+  }, [isAddCartSuccess, addCartData]);
+
   const onClickCart = () => {
     selectTimeCheck("cart");
     addCart({
@@ -107,10 +116,11 @@ export const ReservationType = ({
     return;
   }
 
-  if (isAddCartSuccess && addCartData) {
-    alert(addCartData.message);
-    return;
-  }
+  // if (isAddCartSuccess && addCartData) {
+  //   alert(addCartData.message);
+  //   increaseCart();
+  //   return;
+  // }
 
   const params = encodeURIComponent(JSON.stringify([reservationParam]));
   const onClickReservation = () => {

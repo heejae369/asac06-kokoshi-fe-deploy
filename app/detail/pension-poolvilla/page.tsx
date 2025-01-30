@@ -17,13 +17,15 @@ export default function HotelCategory() {
 
         <EventBanner />
 
-        <SelectRegion />
+        <SelectRegion category={["펜션", "풀빌라"]} />
 
-        <h2 className="mt-2 font-bold">지금 핫한 숙소!</h2>
+        <h2 className="mt-2 font-bold">펜션/풀빌라 목록</h2>
+        <HotelCards category={"펜션"} />
+        {/* <h2 className="mt-2 font-bold">지금 핫한 숙소!</h2>
         <HotelCards />
 
         <h2 className="font-bold">예약이 빨리 마감되는 숙소!</h2>
-        <HotelCards />
+        <HotelCards /> */}
       </div>
     </div>
   );

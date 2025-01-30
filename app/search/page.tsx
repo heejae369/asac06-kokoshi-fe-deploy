@@ -16,30 +16,47 @@ import { useRouter, useSearchParams } from "next/navigation";
 export default function Search() {
   const { checkInDate, checkOutDate, adultNumber } = useCalendar();
 
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState<string>("");
   const [onCalendar, setOnCalendar] = useState(false);
   const [onFilter, setOnFilter] = useState(false);
   const [searchResultData, setSearchResultData] = useState([]);
   const [array, setArray] = useState("코코시 추천순");
-  const [filterApply, setFilterApply] = useState({
+  const [filterApply, setFilterApply] = useState<{
+    accommodationCategory: string[];
+    priceRange: number[];
+    keyword: string[];
+  }>({
     accommodationCategory: ["전체"],
     priceRange: [10000, 300000],
     keyword: [],
   });
   const router = useRouter();
-  const searchParams = useSearchParams(); // useSearchParams 훅 사용
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (searchParams) {
-      const search = searchParams.get("search"); // 'search' 쿼리 파라미터 값을 가져옴
-      console.log("Search query parameter:", search);
+    const category = searchParams.get("category");
+    const search = searchParams.get("search");
+
+    if (search) {
+      setSearchText(search);
+    }
+
+    if (category) {
+      console.log("keyword 변경");
+      const categoryArray = category.split(",");
+      setFilterApply((prevState) => ({
+        ...prevState,
+        accommodationCategory: categoryArray,
+      }));
+    } else {
+      console.log("검색어 :", search);
       fetchData(search);
       addRecentSearches(search);
     }
   }, [searchParams]);
 
   const fetchData = async (text) => {
-    console.log("fetchData 실행");
+    console.log("숙소리스트 가져오기");
     try {
       if (text) {
         const data = await getSearchResult(
@@ -58,8 +75,7 @@ export default function Search() {
     } catch (error) {
       console.error("searchResult : ", error);
     }
-
-    setSearchText(text);
+    // setSearchText(text);
   };
 
   useEffect(() => {
