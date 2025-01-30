@@ -11,6 +11,15 @@ export default function MapComponent() {
   const { checkInDate, checkOutDate, adultNumber } = useCalendar();
   const [text, setText] = useState(searchText || "");
   const router = useRouter();
+  // 숙소 정보 타입 정의
+  type Accommodation = {
+    id: number;
+    name: string;
+    address: string;
+    rating: number;
+    reviewCount: number;
+    img: string | null;
+  };
   const [userLocation, setUserLocation] = useState<{
     lat: number;
     lng: number;
@@ -26,7 +35,8 @@ export default function MapComponent() {
     }[]
   >([]);
 
-  const [selectedAccommodation, setSelectedAccommodation] = useState(null);
+  const [selectedAccommodation, setSelectedAccommodation] =
+    useState<Accommodation | null>(null);
   const [mapInstance, setMapInstance] = useState<any>(null); // 지도 객체 저장
 
   useEffect(() => {
@@ -168,8 +178,10 @@ export default function MapComponent() {
 
             // 마커 클릭 이벤트
             window.kakao.maps.event.addListener(marker, "click", () => {
+              setSelectedAccommodation((prev) =>
+                prev && prev.id === accommodation.id ? null : accommodation
+              );
               infowindow.open(map, marker); // 인포윈도우 열기
-              setSelectedAccommodation(accommodation);
               console.log(accommodation);
               // 클릭해도 지도 중심과 확대 수준 유지
               if (userLocation) {
