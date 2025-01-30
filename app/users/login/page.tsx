@@ -42,8 +42,7 @@ export default function LoginPage() {
   // }
   useEffect(() => {
     if (isLogin) {
-      // router.replace("/yanolza/main");
-      window.location.href = "/yanolza/main";
+      router.replace("/yanolza/main");
     }
   }, [isLogin, router]);
 

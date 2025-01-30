@@ -5,8 +5,8 @@ import styles from "@/styles/Mypage.module.css";
 import Footer from "@/components/Footer";
 import DEFAULT_PROFILE_IMAGE from "@/assets/img/default-profile.png";
 import { useRouter } from "next/navigation";
-// import JwtTokenHandler from "@/feature/JwtTokenHandler";
 import { authFetch, useLoginGuard } from "@/lib/utils";
+import { ImageUploadModal } from "@/components/myPage/ImageUploadModal";
 
 interface UserData {
   userPoint: number | null;
@@ -17,12 +17,12 @@ interface UserData {
 // const DEFAULT_PROFILE_IMAGE = "@/asse/default-profile.png";
 
 const Mypage = () => {
-  // JwtTokenHandler();
   useLoginGuard();
 
   const router = useRouter();
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
-  const [selectedImage, setSelectedImage] = useState<File | null>(null); // 선택한 이미지
+  const [isUserProfileImgModalOpen, setUserProfileImgModalOpen] =
+    useState(false);
+  const [userProfile, setUserProfile] = useState<string>("");
   const [userData, setUserData] = useState<UserData>({
     userPoint: null,
     coupons: null,
@@ -39,8 +39,8 @@ const Mypage = () => {
   React.useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await authFetch(
-          `http://localhost:8080/users/api/userdata?userEmail=${userEmail}`,
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/users/api/userdata?userEmail=${userEmail}`,
           {
             cache: "no-store",
           }
@@ -48,6 +48,7 @@ const Mypage = () => {
         if (!response.ok) throw new Error("Failed to fetch user data");
         const data: UserData = await response.json();
         setUserData(data);
+        setUserProfile(data.user_profile_path);
       } catch (error) {
         console.error(error);
       }
@@ -55,55 +56,8 @@ const Mypage = () => {
     fetchUserData();
   }, []);
 
-  // 프로필 이미지 변경 핸들러
-  const handleImageUpload = async () => {
-    if (!selectedImage) {
-      alert("이미지를 선택해주세요.");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", selectedImage);
-    formData.append("email", userEmail || "");
-
-    try {
-      const response = await fetch(
-        "http://localhost:8080/users/api/uploadProfile",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      if (!response.ok) {
-        const errorMessage = await response.text(); // 서버에서 반환하는 에러 메시지
-        console.error("Server Error:", errorMessage);
-        throw new Error("Failed to upload profile image");
-      }
-
-      const updatedData = await response.json();
-      console.log("Updated data:", updatedData); // 서버 응답 확인
-
-      if (!updatedData.user_profile_path) {
-        throw new Error("Missing user_profile_path in server response");
-      }
-
-      // 업데이트된 사용자 데이터 반영
-      setUserData((prev) =>
-        prev
-          ? { ...prev, user_profile_path: updatedData.user_profile_path }
-          : prev
-      );
-      alert("프로필 이미지가 변경되었습니다.");
-      setIsModalOpen(false); // 모달 닫기
-    } catch (error) {
-      console.error(error);
-      alert("프로필 이미지 변경에 실패했습니다.");
-    }
-  };
-
   // 기본 이미지 설정
-  const profileImage = userData?.user_profile_path || DEFAULT_PROFILE_IMAGE;
+  const profileImage = userProfile || DEFAULT_PROFILE_IMAGE;
 
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100">
@@ -119,7 +73,7 @@ const Mypage = () => {
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
-              onClick={() => setIsModalOpen(true)} // 모달 열기
+              onClick={() => setUserProfileImgModalOpen(true)} // 모달 열기
             ></button>
             <div className={styles.greeting}>
               <p>안녕하세요!</p>
@@ -128,7 +82,7 @@ const Mypage = () => {
               </p>
             </div>
           </div>
-          <a href="#" className={styles.editProfile}>
+          <a href="/mypage/editProfile" className={styles.editProfile}>
             내 정보 수정 &gt;
           </a>
         </header>
@@ -151,31 +105,35 @@ const Mypage = () => {
         </div>
 
         {/* 모달 */}
-        {isModalOpen && (
-          <div className={styles.modal}>
-            <div className={styles.modalContent}>
-              <h3>프로필 사진 변경</h3>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => setSelectedImage(e.target.files?.[0] || null)}
-              />
-              <div className={styles.modalActions}>
-                <button
-                  onClick={handleImageUpload}
-                  className={styles.saveButton}
-                >
-                  변경
-                </button>
-                <button
-                  onClick={() => setIsModalOpen(false)}
-                  className={styles.cancelButton}
-                >
-                  취소
-                </button>
-              </div>
-            </div>
-          </div>
+        {isUserProfileImgModalOpen && (
+          <ImageUploadModal
+            setUserProfile={setUserProfile}
+            setUserProfileImgModalOpen={setUserProfileImgModalOpen}
+          />
+          // <div className={styles.modal}>
+          //   <div className={styles.modalContent}>
+          //     <h3>프로필 사진 변경</h3>
+          //     <input
+          //       type="file"
+          //       accept="image/*"
+          //       onChange={(e) => setSelectedImage(e.target.files?.[0] || null)}
+          //     />
+          //     <div className={styles.modalActions}>
+          //       <button
+          //         onClick={handleImageUpload}
+          //         className={styles.saveButton}
+          //       >
+          //         변경
+          //       </button>
+          //       <button
+          //         onClick={() => setIsModalOpen(false)}
+          //         className={styles.cancelButton}
+          //       >
+          //         취소
+          //       </button>
+          //     </div>
+          //   </div>
+          // </div>
         )}
 
         {/* 리스트 메뉴 */}

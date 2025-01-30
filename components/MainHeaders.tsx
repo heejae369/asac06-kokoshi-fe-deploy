@@ -1,8 +1,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
 import blackBackIcon from "@/assets/blckBackIcon.png";
-import { RootState } from "@/lib/store";
+import { useCart } from "@/feature/cart/CartCount";
 
 interface HeadersProps {
   title: string;
@@ -19,16 +18,17 @@ export default function MainHeaders({
   homeIcon = false,
 }: HeadersProps) {
   const router = useRouter();
-  const cartCount = useSelector((state: RootState) => state.cart.cartCount);
+  const { cartCount } = useCart();
 
   const homeUrl = `${process.env.NEXT_PUBLIC_CLIENT_BASE_URL}/yanolza/main`;
+  const cartUrl = `${process.env.NEXT_PUBLIC_CLIENT_BASE_URL}/yanolza/cart`;
 
   const handleBackIcon = () => {
     router.back();
   };
 
   const onClickCart = () => {
-    console.log("cart click");
+    router.push(cartUrl);
   };
 
   return (

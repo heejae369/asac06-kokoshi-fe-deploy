@@ -60,6 +60,7 @@ export default function SearchFilter({
         게스트하우스: checkedItems["전체"],
         리조트: checkedItems["전체"],
       };
+      console.log(newState);
       setCheckedItems(newState);
     } else {
       const newState = {
@@ -85,13 +86,18 @@ export default function SearchFilter({
   // 필터 적용 시 체크된 항목들만 부모에게 전달
   const handleApplyFilter = async () => {
     const selectedCategories = Object.keys(checkedItems).filter(
-      (key) => checkedItems[key] && key !== "전체"
+      (key) => checkedItems[key]
     );
+    // const selectedCategories = Object.keys(checkedItems).filter(
+    //   (key) => checkedItems[key] && key !== "전체"
+    // );
     setFilterApply({
       accommodationCategory: selectedCategories,
       priceRange: slideRange,
       keyword: checkedKeywords,
     });
+
+    setOnFilter(false);
   };
 
   const checkKeyword = (keyword) => {
@@ -167,6 +173,7 @@ export default function SearchFilter({
               className={"size-[18px]"}
               size="18px"
               checked={checkedItems[filter]}
+              onChange={() => handleChecked(filter)}
             />
             <span className="ml-[6px]">{filter}</span>
           </button>
@@ -195,7 +202,7 @@ export default function SearchFilter({
         <span>{slideRange[1] / 10000}만원</span>
       </div>
       <button
-        className="fixed bottom-0 mb-[16px] h-[48px] w-[320px] rounded-[7px] bg-[#8728FF] text-[16px] tracking-[-0.5px] text-white"
+        className="mb-[16px] mt-[70px] h-[48px] w-[320px] rounded-[7px] bg-[#8728FF] text-[16px] tracking-[-0.5px] text-white"
         onClick={handleApplyFilter}
       >
         필터 적용하기

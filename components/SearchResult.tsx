@@ -222,7 +222,7 @@ const SearchProductList = ({ dummy, handlePageRouter }) => {
             </span>
           </div>
         </div>
-      </div>
+      </button>
     </>
   );
 };

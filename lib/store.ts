@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { api } from "./api";
+import { api, authApi } from "./api";
 import userReducer from "./slice/userSlice";
 import modalReducer from "./slice/modalSlice";
 import calendarReducer from "./slice/calendarSlice";
@@ -9,6 +9,7 @@ import cartReducer from "./slice/cartSlice";
 export const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
+    [authApi.reducerPath]: authApi.reducer,
     user: userReducer,
     calendar: calendarReducer,
     modal: modalReducer,
@@ -16,7 +17,7 @@ export const store = configureStore({
     // login: loginResucer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(api.middleware),
+    getDefaultMiddleware().concat(api.middleware, authApi.middleware),
   devTools: {
     name: "sample todo app",
   },

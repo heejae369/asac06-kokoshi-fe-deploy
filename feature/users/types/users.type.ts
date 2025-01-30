@@ -20,16 +20,25 @@ export interface requestPwReset {
   password: string;
 }
 
-export interface requestUserEmail {
-  userEmail: string;
-}
+// export interface requestUserEmail {
+//   userEmail: string;
+// }
 
-export interface UsePhoneRequestArg {
-  requestUserEmail: requestUserEmail;
-}
+// export interface UsePhoneRequestArg {
+//   requestUserEmail: requestUserEmail;
+// }
 
 export interface UserPhoneInfo {
   phone: string;
   name: string;
 }
 export type UsePhoneRequestRes = ApiResponse<UserPhoneInfo>;
+
+export interface UserEditInfo {
+  userName: string;
+  phone: string;
+  nickName: string;
+  userBirth: string;
+  profilePath: string;
+}
+export type UseUserEditInfoRes = ApiResponse<UserEditInfo>;

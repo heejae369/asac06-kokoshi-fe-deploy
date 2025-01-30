@@ -24,21 +24,23 @@ const IconButtons: React.FC = () => {
     { id: 2, name: "호텔", icon: hotel.src, path: "hotel" },
     {
       id: 3,
-      name: "펜션/풀빌라",
+      name: "풀빌라",
       icon: pention.src,
       path: "pension-poolvilla",
     },
     { id: 4, name: "캠핑", icon: camping.src, path: "camping" },
     { id: 5, name: "게스트하우스", icon: guestHouse.src, path: "guesthouse" },
-    { id: 6, name: "레저/티켓", icon: leisure.src, path: "leisure-ticket" },
-    { id: 7, name: "해외숙소", icon: global.src, path: "global" },
-    { id: 8, name: "항공", icon: airTicket.src, path: "air-ticket" },
+    { id: 6, name: "펜션", icon: leisure.src, path: "leisure-ticket" },
+    { id: 7, name: "레저", icon: global.src, path: "global" },
+    { id: 8, name: "티켓", icon: airTicket.src, path: "air-ticket" },
+    // { id: 7, name: "해외숙소", icon: global.src, path: "global" },
+    // { id: 8, name: "항공", icon: airTicket.src, path: "air-ticket" },
   ];
   const router = useRouter();
   // 버튼 클릭 시 /detail/hotelDetail/{path}로 라우팅
-  const handleNextClick = (path: string) => {
-    const url = `/detail/${path}`;
-    router.push(url, path);
+  const handleNextClick = (name: string) => {
+    const url = `/category?category=${name}`;
+    router.push(url);
   };
 
   return (
@@ -47,7 +49,7 @@ const IconButtons: React.FC = () => {
         <div key={item.id} className={styles.iconButton}>
           <button
             className={styles.circle}
-            onClick={() => handleNextClick(item.path)}
+            onClick={() => handleNextClick(item.name)}
           >
             <img src={item.icon} alt={item.name} className={styles.icon} />
           </button>

@@ -8,10 +8,11 @@ import Header from "@/components/BackAndTitleAndButton";
 import Modal from "@/components/ui/public/modal";
 import { useRouter } from "next/navigation";
 import MainHeaders from "@/components/MainHeaders";
-import { useCart } from "@/feature/cart/CartCount";
 
 interface CartItemData {
   id: number;
+  cartId: number;
+  thumbnail: string;
   type: string;
   name: string;
   reservationStart: string; // 예약 시작 날짜 (백엔드 Date 형식)
@@ -23,10 +24,13 @@ interface CartItemData {
   specialPrice?: number; // 숫자 형식의 특가 금액
   stock: number; // 재고 수량
   price: number; // 가격
+  reservationType: string;
   isChecked: boolean; // 체크 여부
 }
 
 export default function CartPage() {
+  console.log("CartPage 렌더링 시작"); // 페이지 렌더링 여부 확인
+
   const [cartId, setCartId] = useState<number | null>(null); // 카트 ID 저장
   const [cartItems, setCartItems] = useState<CartItemData[]>([]); // 초기 데이터 비움
   const [loading, setLoading] = useState<boolean>(true); // 로딩 상태
@@ -35,9 +39,8 @@ export default function CartPage() {
   const [selectedItemIds, setSelectedItemIds] = useState<number[]>([]); // 선택된 아이템 ID
 
   const router = useRouter();
-  const { decreaseCart } = useCart();
 
-  const userId = 1; // 세션이나 로컬스토리에 저장된 유저의 구분값
+  const userId = 2; // 세션이나 로컬스토리에 저장된 유저의 구분값
 
   // Spring에서 데이터 가져오기
   useEffect(() => {
@@ -75,9 +78,10 @@ export default function CartPage() {
               maxCapacity: item.maxCapacity,
               checkIn: item.checkIn,
               checkOut: item.checkOut,
-              specialPrice: item.specialPrice,
+              // specialPrice: item.specialPrice,
               stock: item.stock,
               price: item.price,
+              reservationType: item.reservationType,
               isChecked: item.checked,
             })
           );
@@ -86,7 +90,7 @@ export default function CartPage() {
           setLoading(false);
         }
       } catch (error: any) {
-        setError("데이터를 불러오는 중 오류가 발생했습니다.");
+        setError("데이터를 불러오는 중 오류가 발생했습니다.", error);
         setLoading(false);
       }
     };
@@ -103,6 +107,10 @@ export default function CartPage() {
         item.id === id ? { ...item, isChecked: !item.isChecked } : item
       )
     );
+    setSelectedItemIds((prev) =>
+      prev.includes(id) ? prev.filter((itemId) => itemId !== id) : [...prev, id]
+    );
+    console.log("선택된 아이템 IDs:", selectedItemIds);
   };
 
   const isAllChecked = cartItems.every((item) => item.isChecked);
@@ -117,6 +125,8 @@ export default function CartPage() {
     const idsToDelete = cartItems
       .filter((item) => item.isChecked)
       .map((item) => item.id);
+
+    console.log(idsToDelete.toString);
     setSelectedItemIds(idsToDelete);
     setIsModalOpen(true); // 모달 열기
   };
@@ -146,8 +156,6 @@ export default function CartPage() {
       setCartItems((prev) =>
         prev.filter((item) => !selectedItemIds.includes(item.id))
       );
-      // 장바구니 개수 감소
-      decreaseCart();
       setIsModalOpen(false); // 모달 닫기
     } catch (error) {
       console.error("삭제 중 오류 발생:", error);
@@ -156,6 +164,51 @@ export default function CartPage() {
 
   const cancelDelete = () => {
     setIsModalOpen(false); // 모달 닫기
+  };
+
+  // 예약하기 페이지로 선택된 카트 아이템 넘기는 함수
+  const handleNavigateToReservation = () => {
+    console.log("[예약하기 버튼 클릭] - handleNavigateToReservation 실행");
+    // 선택된 아이템 필터링
+    const selectedItems = cartItems.filter((item) => item.isChecked);
+
+    // 선택된 아이템 ID를 상태로 업데이트
+    const selectedIds = selectedItems.map((item) => item.id);
+    setSelectedItemIds(selectedIds);
+    console.log("선택된 아이템:", selectedItems);
+    console.log("선택된 아이템 IDs:", selectedItemIds);
+
+    if (selectedItems.length === 0) {
+      alert("선택된 아이템이 없습니다.");
+      return;
+    }
+
+    // 선택된 아이템 데이터 가공
+    const formattedData = selectedItems.map((item) => ({
+      // 여기서 삭제안하면 카트 아이템도 넘겨야함
+      // 논의
+      roomId: item.id, // 방 id  // 백엔드에서 구현후 수정요함
+      cartItems: cartId /*|| undefined // */, // 카트 아이템 아이디로 바꿔야한다
+      // roomId :
+      startDate: item.reservationStart,
+      endDate: item.reservationEnd,
+      capacity: item.capacity,
+      startTime: item.checkIn.substring(0, 5),
+      endTime: item.checkOut.substring(0, 5),
+      reservationType: item.reservationType, // 예약 타입 예시
+    }));
+
+    // 데이터를 쿼리스트링으로 변환
+    const params = encodeURIComponent(JSON.stringify(formattedData));
+    // cartId?2 params~
+    // reservation 페이지로 이동
+    router.push(`/reservation?data=${params}`);
+  };
+
+  const getDayOfWeek = (dateString: string): string => {
+    const days = ["일", "월", "화", "수", "목", "금", "토"];
+    const date = new Date(dateString);
+    return days[date.getDay()];
   };
 
   const totalAmount = cartItems
@@ -167,22 +220,6 @@ export default function CartPage() {
     .reduce((sum, item) => sum + (item.specialPrice || 0), 0);
 
   const expectedAmount = totalAmount - totalDiscount;
-
-  const handleReserve = () => {
-    const reservedItems = cartItems.filter((item) => item.isChecked); // 선택된 아이템만
-    if (reservedItems.length === 0) {
-      alert("예약할 아이템을 선택해주세요.");
-      return;
-    }
-    const reservedItemsString = encodeURIComponent(
-      JSON.stringify(reservedItems)
-    );
-
-    // 페이지 이동 시 쿼리 문자열에 데이터 포함
-    //router.push(`/reservation?reservedItems=${reservedItemsString}`);
-
-    // router.push("/users/signup/gender");
-  };
 
   const title = "장바구니";
 
@@ -249,7 +286,10 @@ export default function CartPage() {
               </span>
             </div>
           </div>
-          <CustomButton isActive={totalAmount > 0} onClick={handleReserve}>
+          <CustomButton
+            isActive={totalAmount > 0}
+            onClick={handleNavigateToReservation /*handleReserve*/}
+          >
             예약하기
           </CustomButton>
         </div>

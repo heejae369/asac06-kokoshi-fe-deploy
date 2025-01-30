@@ -18,8 +18,6 @@ export default function SearchComponenet({
 }) {
   const [text, setText] = useState(searchText || "");
 
-  const { checkInDate, checkOutDate, adultNumber } = useCalendar();
-
   const router = useRouter();
 
   const handleClear = () => {
@@ -48,6 +46,12 @@ export default function SearchComponenet({
 }
 
 const SearchInput = ({ handleSearch, setText, text, handleClear }) => {
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearch(text); // Enter 키가 눌리면 검색 실행
+    }
+  };
+
   return (
     <>
       <div className="mt-[12px]">
@@ -66,6 +70,7 @@ const SearchInput = ({ handleSearch, setText, text, handleClear }) => {
             type="text"
             value={text}
             onChange={(e) => setText(e.target.value)}
+            onKeyDown={handleKeyDown}
             className="ml-[7px] h-full w-[250px] border-none bg-transparent text-[13px] font-medium tracking-[-0.8px] outline-none"
             placeholder="어떤 숙소를 찾으시나요?"
           />

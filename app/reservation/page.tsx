@@ -11,7 +11,7 @@ import {
   requestReservation,
   roomInfoForReserve,
 } from "@/feature/reservation/type/reservation.type";
-import { userApi } from "@/feature/users/api/api";
+import { userAuthApi } from "@/feature/users/api/api";
 import {
   calculateDaysDifference,
   calculateTimeDifference,
@@ -31,22 +31,34 @@ export default function Reservation() {
 
   const [productRadio, setProductRadio] = useState({});
 
+  // 이메일 설정 위한 상태
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const [requestReservation, setRequestReservation] = useState<
     requestReservation[]
   >([]);
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const queryString: string = searchParams.get("data");
-  const params = decodeURIComponent(queryString);
-  const userEmail: string = localStorage.getItem("userEmail");
+
+  //프리랜더링 문제
+  // const searchParams = useSearchParams();
+  // const queryString: string = searchParams.get("data");
+  // const params = decodeURIComponent(queryString);
+
+  //localStorage 여기서 사용시 프리랜더링 오류
+  // const userEmail: string = localStorage.getItem("userEmail");
+
+  // useEffext로 클라이언트 측에서 안전하게 처리
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("userEmail");
+    if (storedEmail) {
+      setUserEmail(storedEmail);
+    }
+  }, []);
 
   const {
     data: userData,
     isLoading: isUserLoading,
     isError: isUserError,
-  } = userApi.useUserInfoQuery({
-    requestUserEmail: { userEmail: userEmail },
-  });
+  } = userAuthApi.useUserInfoQuery();
 
   const [reservation, { isLoading, isSuccess, data }] =
     reservationApi.useReservationMutation();
@@ -84,20 +96,25 @@ export default function Reservation() {
   }, [userData]);
 
   useEffect(() => {
-    try {
-      const reservationData: requestReservation[] = JSON.parse(params);
-      setRequestReservation(reservationData);
-      setProductRadio(
-        reservationData.reduce((acc, item) => {
-          acc[item.roomId] = { walkRadio: false, vehicleRadio: false };
-          return acc;
-        }, {})
-      );
-    } catch {
-      alert("잘못된 접근입니다.");
-      router.push("/");
+    const queryString = new URLSearchParams(window.location.search).get("data");
+    if (queryString) {
+      try {
+        const decodedParams = decodeURIComponent(queryString);
+        const reservationData: requestReservation[] = JSON.parse(decodedParams);
+        setRequestReservation(reservationData);
+        setProductRadio(
+          reservationData.reduce((acc, item) => {
+            acc[item.roomId] = { walkRadio: false, vehicleRadio: false };
+            return acc;
+          }, {})
+        );
+      } catch (error) {
+        console.error("잘못된 접근입니다", error);
+        alert("잘못된 접근입니다.");
+        router.push("/");
+      }
     }
-  }, [searchParams]);
+  }, [router]); // router이 변경될 때 실행
 
   useEffect(() => {
     if (
