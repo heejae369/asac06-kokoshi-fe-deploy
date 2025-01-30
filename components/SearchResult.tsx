@@ -135,7 +135,6 @@ export default function SearchResult({
     </>
   );
 }
-
 const SearchProductList = ({ dummy, handlePageRouter }) => {
   if (!dummy) {
     return null; // 데이터가 없으면 아무것도 렌더링하지 않음
@@ -185,7 +184,6 @@ const SearchProductList = ({ dummy, handlePageRouter }) => {
         <div className="size-[110px]">
           <Image
             src={dummy.thumbnail}
-            // src={"/hotel1.png"}
             alt="productList"
             width={110}
             height={110}
@@ -222,7 +220,100 @@ const SearchProductList = ({ dummy, handlePageRouter }) => {
             </span>
           </div>
         </div>
-      </button>
+      </div>{" "}
+      {/* ✅ 닫는 `</button>` 태그를 `</div>`로 변경 */}
     </>
   );
 };
+
+// 성환님 코드
+// const SearchProductList = ({ dummy, handlePageRouter }) => {
+//   if (!dummy) {
+//     return null; // 데이터가 없으면 아무것도 렌더링하지 않음
+//   }
+
+//   // 별점 계산 함수
+//   const renderStars = (rating: number) => {
+//     const roundedRating = Math.round(rating); // 반올림된 별의 개수
+//     const fullStars = roundedRating; // 채워진 별의 개수 (반올림 후)
+//     const emptyStars = 5 - fullStars; // 빈 별의 개수
+
+//     const stars = [];
+//     for (let i = 0; i < fullStars; i++) {
+//       stars.push(
+//         <Image
+//           key={`full-${i}`}
+//           src={starFull}
+//           alt="full star"
+//           width={12}
+//           height={12}
+//         />
+//       ); // 채워진 별
+//     }
+
+//     for (let i = 0; i < emptyStars; i++) {
+//       stars.push(
+//         <Image
+//           key={`empty-${i}`}
+//           src={starEmpty}
+//           alt="empty star"
+//           width={12}
+//           height={12}
+//         />
+//       ); // 빈 별
+//     }
+
+//     return stars; // 별 이미지 배열을 반환
+//   };
+
+//   return (
+//     <>
+//       <div
+//         className="flex h-[133px] rounded-[10px] p-[11px] shadow-[0px_4px_11px_4px_rgba(121,121,121,0.1)]"
+//         role="button"
+//         onClick={() => handlePageRouter(dummy.accommodationId)}
+//       >
+//         <div className="size-[110px]">
+//           <Image
+//             src={dummy.thumbnail}
+//             // src={"/hotel1.png"}
+//             alt="productList"
+//             width={110}
+//             height={110}
+//             className="size-[110px]"
+//           />
+//         </div>
+//         <div className="ml-[10px] flex grow flex-col tracking-[-0.5px]">
+//           <div className="flex items-center">
+//             <div className="h-[18px] rounded-[9px] border border-[#8728FF] px-[9px] py-[2px] text-[10px] text-[#8728FF]">
+//               {dummy.accommodationCategory}
+//             </div>
+//           </div>
+//           <div className="mt-[3px] flex font-bold">
+//             <span className="text-[14px]">{dummy.name}</span>
+//           </div>
+//           <div className="mt-px flex items-center">
+//             <span className="text-[14px] ">{dummy.rating}</span>
+//             <span className="ml-[5px] flex gap-[2px] text-[14px]">
+//               {renderStars(dummy.rating)}
+//             </span>
+//             <span className="ml-[6px] text-[12px] text-[#999999]">
+//               {`(${dummy.reviewCount.toLocaleString()})`}
+//             </span>
+//           </div>
+//           <div className="mt-[2px] flex items-center">
+//             <span className="text-[10px] text-[#7F7F7F] h-[16px]">
+//               {/* 공덕역 3분 */}
+//               {/* {dummy.distance} */}
+//             </span>
+//           </div>
+//           <div className="mr-[5px] mt-[8px] flex items-center justify-end">
+//             <span className="text-[16px] font-bold">
+//               {dummy.price.toLocaleString()}
+//             </span>
+//           </div>
+//         </div>
+//       </div>
+//     </>
+//   );
+// };
