@@ -20,7 +20,10 @@ export async function defaultAuthGetFetch(url) {
 }
 
 export async function authFetch(url, option) {
-  //
+  option.headers = {
+    "Content-Type": "application/json",
+    Authorization: localStorage.getItem("accessToken"),
+  };
   return actualFetch(url, option);
 }
 
