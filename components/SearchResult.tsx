@@ -177,21 +177,20 @@ const SearchProductList = ({ dummy, handlePageRouter }) => {
 
   return (
     <>
-      <button
+      <div
         className="flex h-[133px] rounded-[10px] p-[11px] shadow-[0px_4px_11px_4px_rgba(121,121,121,0.1)]"
+        role="button"
         onClick={() => handlePageRouter(dummy.accommodationId)}
       >
         <div className="size-[110px]">
-          {dummy.thumbnail ? (
-            <Image
-              src={dummy.thumbnail}
-              // src={"/hotel1.png"}
-              alt="productList"
-              width={110}
-              height={110}
-              className="size-[110px]"
-            />
-          ) : null}
+          <Image
+            src={dummy.thumbnail}
+            // src={"/hotel1.png"}
+            alt="productList"
+            width={110}
+            height={110}
+            className="size-[110px]"
+          />
         </div>
         <div className="ml-[10px] flex grow flex-col tracking-[-0.5px]">
           <div className="flex items-center">

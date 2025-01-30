@@ -1,19 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
-import searchIcon from "@/assets/searchIcon.png";
-import calendarIcon from "@/assets/calendarIcon.png";
-import personnelIcon from "@/assets/personnelIcon.png";
-import Footer from "@/components/Footer";
-import { Router } from "lucide-react";
-import { formattedMonthToDay } from "@/feature/DateFormat";
 import { useCalendar } from "@/feature/CalendarContext";
-import CalendarPage2 from "@/components/CalendarPage2";
-import SearchComponenet from "@/components/SearchComponent";
 import MapSearchComponent from "@/components/MapSearchComponent";
-import inputClearIcon from "@/assets/inputClearIcon.png";
-import MapCaleder from "@/components/map/Mapcalender";
 
 export default function Map() {
   const [searchText, setSearchText] = useState("지역, 숙소 검색");
@@ -193,17 +182,6 @@ export default function Map() {
         }
       );
     });
-  };
-
-  // 내 위치로 이동 버튼 클릭 시 실행
-  const moveToMyLocation = () => {
-    if (userLocation && mapInstance) {
-      const { lat, lng } = userLocation;
-      const moveLatLng = new window.kakao.maps.LatLng(lat, lng);
-      mapInstance.setCenter(moveLatLng); // 지도 중심을 내 위치로 설정
-    } else {
-      alert("현재 위치 정보를 가져오는 중입니다. 잠시 후 다시 시도해주세요.");
-    }
   };
 
   return (
