@@ -62,6 +62,7 @@ export interface reservationList {
   reservationType: string;
   price: number;
   reservationNumber: string;
+  reservationRoomId: string;
   category: string;
   accommodationName: string;
   roomName: string;

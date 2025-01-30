@@ -17,7 +17,7 @@ export default function HotelCategory() {
 
         <EventBanner />
 
-        <SelectRegion />
+        <SelectRegion keyword={"호텔"} />
 
         <h2 className="mt-2 font-bold">지금 핫한 숙소!</h2>
         <HotelCards />

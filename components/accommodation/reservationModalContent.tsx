@@ -9,9 +9,12 @@ import {
   getDiffDays,
 } from "@/feature/DateFormat";
 import { requestReservation } from "@/feature/reservation/type/reservation.type";
+import { closeModal } from "@/lib/slice/modalSlice";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useCart } from "@/feature/cart/CartCount";
 
 export const ReservationType = ({
   roomDetail,
@@ -21,15 +24,17 @@ export const ReservationType = ({
   reservationType: string;
 }) => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { adultNumber, checkInDate, checkOutDate, dayOfWeek } = useCalendar();
+  const { increaseCart } = useCart();
 
   const [reservationParam, setReservationParam] = useState<requestReservation>({
-    roomId: roomDetail.roomId,
-    startDate: formattedRequestDate(checkInDate),
-    endDate: formattedRequestDate(checkOutDate),
-    capacity: adultNumber,
-    startTime: roomDetail.checkIn,
-    endTime: roomDetail.checkOut,
+    roomId: 0,
+    startDate: "",
+    endDate: "",
+    capacity: 0,
+    startTime: "",
+    endTime: "",
     reservationType: reservationType,
   });
 
@@ -40,6 +45,18 @@ export const ReservationType = ({
   const handleDayUseTime = (selectCheckTime) => {
     setSelectCheckTiem(selectCheckTime);
   };
+
+  useEffect(() => {
+    setReservationParam({
+      roomId: roomDetail.roomId,
+      startDate: formattedRequestDate(checkInDate),
+      endDate: formattedRequestDate(checkOutDate),
+      capacity: adultNumber,
+      startTime: roomDetail.checkIn,
+      endTime: roomDetail.checkOut,
+      reservationType: reservationType,
+    });
+  }, []);
 
   useEffect(() => {
     let endDate = "";
@@ -68,8 +85,15 @@ export const ReservationType = ({
     },
   ] = cartApi.useAddCartMutation();
 
+  useEffect(() => {
+    if (isAddCartSuccess && addCartData) {
+      alert(addCartData.message);
+      increaseCart();
+    }
+  }, [isAddCartSuccess, addCartData]);
+
   const onClickCart = () => {
-    selectTimeCheck();
+    selectTimeCheck("cart");
     addCart({
       requestAddToCart: {
         roomId: roomDetail.roomId,
@@ -80,6 +104,7 @@ export const ReservationType = ({
         reservationType: reservationType,
       },
     });
+    dispatch(closeModal());
   };
 
   if (isAddCartLoading) {
@@ -88,20 +113,22 @@ export const ReservationType = ({
 
   if (isAddCartError) {
     alert(addCartData?.message);
-    // return <div>Error</div>;
+    return;
   }
 
-  if (isAddCartSuccess && addCartData) {
-    alert(addCartData.message);
-  }
+  // if (isAddCartSuccess && addCartData) {
+  //   alert(addCartData.message);
+  //   increaseCart();
+  //   return;
+  // }
 
   const params = encodeURIComponent(JSON.stringify([reservationParam]));
   const onClickReservation = () => {
-    selectTimeCheck();
-    router.push(`/reservation?data=${params}`);
+    selectTimeCheck("reservation");
+    dispatch(closeModal());
   };
 
-  const selectTimeCheck = () => {
+  const selectTimeCheck = (type: string) => {
     // 시간 입력 안되어있으면 예약 및 장바구니 버튼 막기
     if (
       reservationType === "DAY_USE" &&
@@ -111,6 +138,7 @@ export const ReservationType = ({
       alert("이용시간을 선택해주세요.");
       return;
     }
+    if (type === "reservation") router.push(`/reservation?data=${params}`);
   };
 
   return (

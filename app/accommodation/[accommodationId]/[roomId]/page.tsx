@@ -29,6 +29,7 @@ import {
 } from "@/feature/accommodation/type/accommodation.type";
 import { accommodationApi } from "@/feature/accommodation/api/api";
 import { ReservationType } from "@/components/accommodation/reservationModalContent";
+import MainHeaders from "@/components/MainHeaders";
 
 export default function RoomDetail({
   params,
@@ -138,7 +139,7 @@ export default function RoomDetail({
       ) : (
         <div className="flex w-[360px] flex-col bg-white tracking-[-0.5px]">
           {/* 헤더 영역 (뒤로가기 | 타이틀 | 장바구니) */}
-          <div className="flex flex-row  justify-between px-5 pt-[57px]">
+          {/* <div className="flex flex-row  justify-between px-5 pt-[57px]">
             <button onClick={onClickBack}>
               <img src="/ic_back.png" alt="뒤로가기" />
             </button>
@@ -151,6 +152,9 @@ export default function RoomDetail({
               </div>
               <img src="/ic_productdetail_market.png" alt="장바구니" />
             </button>
+          </div> */}
+          <div className="px-5">
+            <MainHeaders title={"객실상세"} backIcon={true} cartIcon={true} />
           </div>
           {/* 숙소 이미지 영역 */}
           <div className="mb-[13px] mt-[12px]">
@@ -237,11 +241,11 @@ export default function RoomDetail({
                     <span className="mt-[3px] flex items-center text-sm font-bold">
                       대실
                     </span>
-                    <div className="flex h-[16px] items-center bg-[#8728FF] bg-opacity-20 px-[4px]">
+                    {/* <div className="flex h-[16px] items-center bg-[#8728FF] bg-opacity-20 px-[4px]">
                       <span className="text-[10px] font-bold text-[#8728FF]">
                         선착순 3,000원 특가
                       </span>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="flex justify-between">
                     <div className="flex flex-col pt-2">
@@ -284,11 +288,11 @@ export default function RoomDetail({
                     <span className="mt-[3px] flex items-center text-sm font-bold">
                       숙박
                     </span>
-                    <div className="flex h-[16px] items-center bg-[#8728FF] bg-opacity-20 px-[4px]">
+                    {/* <div className="flex h-[16px] items-center bg-[#8728FF] bg-opacity-20 px-[4px]">
                       <span className="text-[10px] font-bold text-[#8728FF]">
                         선착순 3,000원 특가
                       </span>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="flex justify-between">
                     <div className="flex flex-col pt-2">

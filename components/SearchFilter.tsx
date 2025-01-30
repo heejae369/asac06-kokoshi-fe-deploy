@@ -60,6 +60,7 @@ export default function SearchFilter({
         게스트하우스: checkedItems["전체"],
         리조트: checkedItems["전체"],
       };
+      console.log(newState);
       setCheckedItems(newState);
     } else {
       const newState = {
@@ -85,8 +86,11 @@ export default function SearchFilter({
   // 필터 적용 시 체크된 항목들만 부모에게 전달
   const handleApplyFilter = async () => {
     const selectedCategories = Object.keys(checkedItems).filter(
-      (key) => checkedItems[key] && key !== "전체"
+      (key) => checkedItems[key]
     );
+    // const selectedCategories = Object.keys(checkedItems).filter(
+    //   (key) => checkedItems[key] && key !== "전체"
+    // );
     setFilterApply({
       accommodationCategory: selectedCategories,
       priceRange: slideRange,

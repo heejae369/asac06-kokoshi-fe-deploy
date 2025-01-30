@@ -1,6 +1,7 @@
 export interface paymentProducts {
   roomImage: string;
   roomName: string;
+  accommodationName: string;
   reservationRoomPrice: number;
   reservationRoomStartTime: string;
   reservationRoomEndTime: string;

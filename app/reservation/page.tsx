@@ -11,7 +11,7 @@ import {
   requestReservation,
   roomInfoForReserve,
 } from "@/feature/reservation/type/reservation.type";
-import { userApi } from "@/feature/users/api/api";
+import { userAuthApi } from "@/feature/users/api/api";
 import {
   calculateDaysDifference,
   calculateTimeDifference,
@@ -38,15 +38,13 @@ export default function Reservation() {
   const searchParams = useSearchParams();
   const queryString: string = searchParams.get("data");
   const params = decodeURIComponent(queryString);
-  const userEmail: string = localStorage.getItem("userEmail");
+  // const userEmail: string = localStorage.getItem("userEmail");
 
   const {
     data: userData,
     isLoading: isUserLoading,
     isError: isUserError,
-  } = userApi.useUserInfoQuery({
-    requestUserEmail: { userEmail: userEmail },
-  });
+  } = userAuthApi.useUserInfoQuery();
 
   const [reservation, { isLoading, isSuccess, data }] =
     reservationApi.useReservationMutation();
@@ -211,6 +209,7 @@ export default function Reservation() {
             <PaymentButton
               handlePayment={handleReserve}
               isPayment={isPayment}
+              totalPrice={totalPrice}
             />
           </>
         )}
@@ -641,7 +640,7 @@ const Notification = () => {
   );
 };
 
-const PaymentButton = ({ handlePayment, isPayment }) => {
+const PaymentButton = ({ handlePayment, isPayment, totalPrice }) => {
   return (
     <div>
       <button
@@ -650,7 +649,7 @@ const PaymentButton = ({ handlePayment, isPayment }) => {
         disabled={!isPayment}
       >
         <span className="font-bold tracking-[-0.5px] text-white">
-          225,000원 결제하기
+          {totalPrice}원 결제하기
         </span>
       </button>
     </div>

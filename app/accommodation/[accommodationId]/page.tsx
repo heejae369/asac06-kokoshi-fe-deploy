@@ -23,6 +23,7 @@ import { useCalendar } from "@/feature/CalendarContext";
 import { AccommodationRoomList } from "@/components/accommodation/accommodationRoomList";
 import { accommodationApi } from "@/feature/accommodation/api/api";
 import { SlideImage } from "@/feature/accommodation/type/accommodation.type";
+import { useRouter } from "next/navigation";
 
 // interface ImgComponent {
 //   imageUrl: string;
@@ -49,6 +50,7 @@ export default function AccommodationDetail({
 
   // const [imageIndex, setImageIndex] = useState<number>(0);
   // const [slideIndex, setSlideIndex] = useState<number>(0);
+  const router = useRouter();
 
   const onClickBack = () => {
     console.log("history back");
@@ -115,7 +117,8 @@ export default function AccommodationDetail({
   }
 
   if (isAccommodationError || isImagesError) {
-    return <div>Error</div>;
+    alert("잘못된 접근입니다.");
+    router.push("/yanolza/main");
   }
 
   return (
@@ -190,7 +193,7 @@ export default function AccommodationDetail({
               <div className="mt-[2px] flex items-center">
                 <span className="text-[10px] text-[#7F7F7F]">
                   {/* {dummy.distance} */}
-                  TEST DISTANCE - 보류
+                  {/* TEST DISTANCE - 보류 */}
                 </span>
               </div>
             </div>

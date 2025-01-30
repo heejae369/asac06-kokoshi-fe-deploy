@@ -9,9 +9,14 @@ import or from "@/assets/or.png";
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import LoginAxios from "@/feature/LoginAxios";
+// import { useDispatch } from "react-redux";
+import {
+  IsLoginContext,
+  useIsLoginState,
+} from "@/feature/context/IsLoginContext";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -20,13 +25,27 @@ export default function LoginPage() {
   const [hidePw, setHidePw] = useState("password");
   // 유효성 확인 문구 표시 여부
   const [showValidation, setShowValidation] = useState(false);
-
   // 등록된 회원인지 확인(true = 등록된 회원)
   const [signUp, setSignUp] = useState(false);
   // 비밀번호 일치 여부 확인(true = 비밀번호 일치)
   const [samePassword, setSamePassword] = useState(false);
 
+  // const dispatch = useDispatch();
   const router = useRouter();
+
+  const { setIsLogin } = useContext(IsLoginContext);
+  const isLogin = useIsLoginState();
+
+  // if (isLogin) {
+  //   console.log("isLogin : ", isLogin);
+  //   router.push("/yanolza/main");
+  // }
+  useEffect(() => {
+    if (isLogin) {
+      // router.replace("/yanolza/main");
+      window.location.href = "/yanolza/main";
+    }
+  }, [isLogin, router]);
 
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100">
@@ -70,6 +89,8 @@ export default function LoginPage() {
                     email,
                     pw,
                     router,
+                    setIsLogin,
+                    // dispatch,
                   });
                 }
               }}
@@ -116,6 +137,8 @@ export default function LoginPage() {
               email,
               pw,
               router,
+              setIsLogin,
+              // dispatch,
             })
           }
         >

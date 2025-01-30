@@ -1,3 +1,4 @@
+import exp from "constants";
 import { start } from "repl";
 
 export default function NowTomorrowDate() {
@@ -155,4 +156,13 @@ export const getDayOfWeekForString = (dateString: string): string => {
   const days = ["일", "월", "화", "수", "목", "금", "토"];
   const date = new Date(dateString);
   return days[date.getDay()];
+};
+
+export const getNewDate = (date: string) => {
+  const newDate = new Date(date);
+  const year = newDate.getFullYear(); // 년도
+  const month = newDate.getMonth() + 1; // 월 (0부터 시작하므로 1을 더함)
+  const day = newDate.getDate(); // 일
+
+  return { year, month, day };
 };

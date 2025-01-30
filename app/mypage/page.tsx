@@ -5,7 +5,7 @@ import styles from "@/styles/Mypage.module.css";
 import Footer from "@/components/Footer";
 import DEFAULT_PROFILE_IMAGE from "@/assets/img/default-profile.png";
 import { useRouter } from "next/navigation";
-import JwtTokenHandler from "@/feature/JwtTokenHandler";
+import { authFetch, useLoginGuard } from "@/lib/utils";
 
 interface UserData {
   userPoint: number | null;
@@ -16,7 +16,8 @@ interface UserData {
 // const DEFAULT_PROFILE_IMAGE = "@/asse/default-profile.png";
 
 const Mypage = () => {
-  JwtTokenHandler();
+  useLoginGuard();
+
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
   const [selectedImage, setSelectedImage] = useState<File | null>(null); // 선택한 이미지
@@ -37,7 +38,7 @@ const Mypage = () => {
     const fetchUserData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/users/api/userdata?userEmail=${userEmail}`,
+          `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/users/api/userdata?userEmail=${userEmail}`,
           {
             cache: "no-store",
           }
@@ -65,7 +66,7 @@ const Mypage = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/users/api/uploadProfile",
+        `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/users/api/uploadProfile`,
         {
           method: "POST",
           body: formData,
@@ -125,7 +126,7 @@ const Mypage = () => {
               </p>
             </div>
           </div>
-          <a href="#" className={styles.editProfile}>
+          <a href="/mypage/editProfile" className={styles.editProfile}>
             내 정보 수정 &gt;
           </a>
         </header>

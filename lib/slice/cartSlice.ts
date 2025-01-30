@@ -1,10 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface ModalState {
+// cartSlice.ts
+interface CartState {
   cartCount: number;
 }
 
-const initialState: ModalState = {
+// 카트 값 처음에 받아와야 할 거 같은데
+const initialState: CartState = {
   cartCount: 0,
 };
 
@@ -12,8 +14,15 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    setCartCount(state, action: PayloadAction<number>) {
-      state.cartCount = action.payload;
+    setCartCount: (
+      state,
+      action: PayloadAction<number | ((prevCount: number) => number)>
+    ) => {
+      if (typeof action.payload === "function") {
+        state.cartCount = action.payload(state.cartCount);
+      } else {
+        state.cartCount = action.payload;
+      }
     },
   },
 });

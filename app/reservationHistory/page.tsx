@@ -117,24 +117,29 @@ const ReservationHistory = () => {
 
         {/* Reservations List */}
         <div className="space-y-4">
-          {reservationList.map((reservationDateGroup, index) => (
-            <div key={index}>
-              <div className="mb-[16px] mt-[26px]">
-                <span className="text-base font-bold">
-                  {reservationDateGroup.reservatedDate} (
-                  {getDayOfWeekForString(reservationDateGroup.reservatedDate)})
-                </span>
+          {reservationList.length === 0 ? (
+            <div>조회된 예약 내역이 없습니다.</div>
+          ) : (
+            reservationList.map((reservationDateGroup, index) => (
+              <div key={index}>
+                <div className="mb-[16px] mt-[26px]">
+                  <span className="text-base font-bold">
+                    {reservationDateGroup.reservatedDate} (
+                    {getDayOfWeekForString(reservationDateGroup.reservatedDate)}
+                    )
+                  </span>
+                </div>
+                {reservationDateGroup.reservationList.map(
+                  (reservationGroupList, index) => (
+                    <ReservationRoomList
+                      reservationGroupList={reservationGroupList}
+                      key={index}
+                    />
+                  )
+                )}
               </div>
-              {reservationDateGroup.reservationList.map(
-                (reservationGroupList, index) => (
-                  <ReservationRoomList
-                    reservationGroupList={reservationGroupList}
-                    key={index}
-                  />
-                )
-              )}
-            </div>
-          ))}
+            ))
+          )}
           <Footer />
         </div>
       </div>
@@ -151,16 +156,14 @@ const ReservationRoomList = ({
 }) => {
   const router = useRouter();
 
-  const handleReviewWrite = (reservationNumber) => {
-    // 세션 스토리지에 예약번호 저장
-    sessionStorage.setItem("reservationNumber", reservationNumber);
-    // 리뷰 작성 페이지로 이동
-    router.push("/reviewWrite");
+  const handleReviewWrite = (reservationRoomId) => {
+    const params = encodeURIComponent(JSON.stringify(reservationRoomId));
+    router.push(`/reviewWrite?data=${params}`);
   };
 
   return (
     <>
-      <div className="flex flex-col">
+      <div className="flex flex-col pb-4">
         <div className="flex">
           <div>
             <Image
@@ -215,13 +218,16 @@ const ReservationRoomList = ({
           <span className="pl-4 text-[12px] font-bold">결제 금액</span>
           <span className="mr-[3px] font-bold">{`${reservationGroupList.price}원`}</span>
         </div>
-
-        <button
-          onClick={() => handleReviewWrite("25010300583400004")}
-          className="w-full py-2 text-center border rounded-md text-gray-600"
-        >
-          후기 작성하기 가기
-        </button>
+        {new Date(reservationGroupList.endDate) < new Date() && (
+          <button
+            onClick={() =>
+              handleReviewWrite(reservationGroupList.reservationRoomId)
+            }
+            className="w-full py-2 text-center border rounded-md text-gray-600"
+          >
+            후기 작성하기 가기
+          </button>
+        )}
       </div>
     </>
   );

@@ -5,7 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import {
   calculateDaysDifference,
-  getDayOfWeekForString,
+  formattedYearToDayNotDayOfWeek,
+  getNewDate,
 } from "@/feature/DateFormat";
 import { useEffect, useState } from "react";
 import { PaymentFetch } from "@/feature/payment/PaymentFetch";
@@ -48,7 +49,6 @@ export default function ReservationPayment() {
   return (
     <>
       <div className="flex h-screen w-full justify-center bg-gray-100 font-sans">
-<<<<<<< Updated upstream
         <div className="relative flex h-full w-[360px] flex-col bg-white px-[20px]">
           <MainHeaders title={"결제 완료"} backIcon={true} />
           <div className="mb-[16px] mt-[26px]">
@@ -65,36 +65,7 @@ export default function ReservationPayment() {
             );
           })}
           <hr className="mb-[17px] ml-[-20px] mt-[14px] w-[360px] border-[3.5px]"></hr>
-          <div className="flex flex-col gap-[17px] text-[14px] tracking-[-1px]">
-            <div>
-              <span className="font-bold">결제 정보</span>
-            </div>
-            {paymentResponse && (
-              <>
-                <div className="flex gap-[30px]">
-                  <span>결제 수단</span>
-                  <span className="text-[#666666]">
-                    {paymentResponse.paymentMethod}
-                  </span>
-=======
-        <div className="relative flex h-full w-[360px] flex-col justify-between bg-white px-[20px]">
           <div>
-            <MainHeaders title={"결제 완료"} backIcon={true} />
-            <div className="mb-[16px] mt-[26px]">
-              <span className="text-[14px] font-bold">상품 정보</span>
-            </div>
-            {paymentResponse?.paymentRooms.map((reservationRoom, index) => {
-              return (
-                <div key={reservationRoom.roomName}>
-                  <ReservationRoomList reservationRoom={reservationRoom} />
-                  {index !== paymentResponse.paymentRooms.length - 1 && (
-                    <hr className="my-[18px]" />
-                  )}
->>>>>>> Stashed changes
-                </div>
-              );
-            })}
-            <hr className="mb-[17px] ml-[-20px] mt-[14px] w-[360px] border-[3.5px]"></hr>
             <div className="flex flex-col gap-[17px] text-[14px] tracking-[-1px]">
               <div>
                 <span className="font-bold">결제 정보</span>
@@ -104,7 +75,7 @@ export default function ReservationPayment() {
                   <div className="flex gap-[30px]">
                     <span>결제 수단</span>
                     <span className="text-[#666666]">
-                      {paymentResponse.accommodationCategory}
+                      {paymentResponse.paymentMethod}
                     </span>
                   </div>
                   <div className="flex gap-[30px]">
@@ -116,7 +87,9 @@ export default function ReservationPayment() {
                   <div className="flex gap-[30px]">
                     <span>주문 상태</span>
                     <span className="text-[#666666]">
-                      {paymentResponse.paymentStatus}
+                      {paymentResponse.paymentStatus === "RESERVED"
+                        ? "결제 완료"
+                        : "결제 실패"}
                     </span>
                   </div>
                   <div className="flex gap-[30px]">
@@ -129,9 +102,9 @@ export default function ReservationPayment() {
               )}
             </div>
           </div>
-          <div>
+          <div className="mt-[30px] pb-[20px]">
             <button
-              className="mb-[20px] h-[50px] w-[320px] rounded-[5px] bg-[#8728FF]"
+              className="h-[50px] w-[320px] rounded-[5px] bg-[#8728FF]"
               onClick={handleHome}
             >
               <span className="font-bold tracking-[-0.5px] text-white">
@@ -146,6 +119,7 @@ export default function ReservationPayment() {
 }
 
 const ReservationRoomList = ({ reservationRoom }) => {
+  console.log(reservationRoom);
   return (
     <>
       <div className="flex flex-col">
@@ -156,25 +130,32 @@ const ReservationRoomList = ({ reservationRoom }) => {
               width={100}
               height={100}
               alt="productImage"
+              className="size-[100px]"
             ></Image>
           </div>
           <div className="ml-[9px]">
             <div className="tracking-[-0.5px]">
               <div className="flex items-center">
-                <div className="h-[18px] rounded-[9px] border border-[#8728FF] px-[9px] py-[2px] text-[10px] text-[#8728FF]">
+                <div className="h-[20px] rounded-[9px] border border-[#8728FF] px-[9px] py-[2px] text-[10px] text-[#8728FF]">
                   {reservationRoom.accommodationCategory}
                 </div>
               </div>
-              <div className="mb-[3px] mt-[2px] flex items-center">
+              <div className="my-[3px] flex items-center">
                 <span className="text-[14px] font-bold">
                   {reservationRoom.accommodationName}
                 </span>
               </div>
               <div className="mb-px flex h-[19px] items-center">
                 <span className="text-[12px] font-bold">
-                  {`${reservationRoom.reservationRoomStartDate} ${getDayOfWeekForString(reservationRoom.reservationRoomStartDate)}
-                  ~ ${reservationRoom.reservationRoomEndDate} ${getDayOfWeekForString(reservationRoom.reservationRoomEndDate)}
-                  , ${calculateDaysDifference(reservationRoom.reservationRoomStartDate, reservationRoom.reservationRoomEndDate)}박`}
+                  {`${formattedYearToDayNotDayOfWeek(
+                    getNewDate(reservationRoom.reservationRoomStartDate),
+                    getNewDate(reservationRoom.reservationRoomEndDate)
+                  )}
+                  , ${calculateDaysDifference(
+                    reservationRoom.reservationRoomStartDate,
+                    reservationRoom.reservationRoomEndDate
+                  )}
+                  박`}
                 </span>
               </div>
               <div className="flex h-[19px] items-center">
@@ -202,7 +183,7 @@ const ReservationRoomList = ({ reservationRoom }) => {
         </div>
         <div className="mt-[13px] flex items-center justify-between">
           <span className="pl-4 text-[12px] font-bold">결제 금액</span>
-          <span className="mr-[3px] font-bold">{`${reservationRoom.reservationRoomPrice}원`}</span>
+          <span className="mr-[3px] font-bold">{`${reservationRoom.reservationRoomPrice.toLocaleString()}원`}</span>
         </div>
       </div>
     </>

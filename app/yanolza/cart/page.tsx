@@ -8,6 +8,7 @@ import Header from "@/components/BackAndTitleAndButton";
 import Modal from "@/components/ui/public/modal";
 import { useRouter } from "next/navigation";
 import MainHeaders from "@/components/MainHeaders";
+import { useCart } from "@/feature/cart/CartCount";
 
 interface CartItemData {
   id: number;
@@ -34,6 +35,7 @@ export default function CartPage() {
   const [selectedItemIds, setSelectedItemIds] = useState<number[]>([]); // 선택된 아이템 ID
 
   const router = useRouter();
+  const { decreaseCart } = useCart();
 
   const userId = 1; // 세션이나 로컬스토리에 저장된 유저의 구분값
 
@@ -144,6 +146,8 @@ export default function CartPage() {
       setCartItems((prev) =>
         prev.filter((item) => !selectedItemIds.includes(item.id))
       );
+      // 장바구니 개수 감소
+      decreaseCart();
       setIsModalOpen(false); // 모달 닫기
     } catch (error) {
       console.error("삭제 중 오류 발생:", error);
