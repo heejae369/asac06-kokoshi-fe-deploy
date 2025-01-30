@@ -126,7 +126,7 @@ const Mypage = () => {
               </p>
             </div>
           </div>
-          <a href="#" className={styles.editProfile}>
+          <a href="/mypage/editProfile" className={styles.editProfile}>
             내 정보 수정 &gt;
           </a>
         </header>
