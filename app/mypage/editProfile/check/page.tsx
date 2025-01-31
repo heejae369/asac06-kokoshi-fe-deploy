@@ -5,6 +5,7 @@ import MainHeaders from "@/components/MainHeaders";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import EditProfilePostApi from "@/feature/EditProfilePostAPi";
 
 export default function EditNameAndPhoneNumber() {
   const router = useRouter();
@@ -69,12 +70,12 @@ export default function EditNameAndPhoneNumber() {
           className="mb-20 h-12 w-full rounded text-[1rem] disabled:bg-gray-400"
           variant={"point"}
           disabled={name == "" || phone == ""}
-          onClick={() => {
+          onClick={async () => {
             setShowValidation(true);
-            if (validation) {
+            if (await EditProfilePostApi({ name, phone })) {
               setValidation(true);
-              router.push("#");
-            }
+              router.push("edit");
+            } else setValidation(false);
           }}
         >
           확인
