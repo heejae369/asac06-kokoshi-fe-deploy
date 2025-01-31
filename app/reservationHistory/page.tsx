@@ -116,7 +116,7 @@ const ReservationHistory = () => {
         </div>
 
         {/* Reservations List */}
-        <div className="pb-[60px] space-y-4">
+        <div className="pd-[160px] space-y-4">
           {reservationList.length === 0 ? (
             <div>조회된 예약 내역이 없습니다.</div>
           ) : (
