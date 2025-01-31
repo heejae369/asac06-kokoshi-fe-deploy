@@ -1,5 +1,6 @@
 // import { login } from "@/lib/slice/loginSlice";
 import axios from "axios";
+import { setCartCount } from "@/lib/slice/cartSlice";
 
 export default async function LoginPostApi({
   setShowValidation,
@@ -9,11 +10,12 @@ export default async function LoginPostApi({
   pw,
   router,
   setIsLogin,
-  // dispatch,
+  dispatch,
 }) {
   setShowValidation(false);
 
   const loginParam = new URLSearchParams();
+
   loginParam.append("userEmail", email);
   loginParam.append("userPassword", pw);
 
@@ -41,8 +43,10 @@ export default async function LoginPostApi({
             response.headers["authorization"]
           );
           localStorage.setItem("userEmail", response.data.userEmail);
+          localStorage.setItem("cartItemCount", response.data.cartItemCount);
 
           //cartItemCount 이 값을 context 에 넣으면 됩니다.
+          dispatch(setCartCount(response.data.cartItemCount));
 
           // 로그인 상태 변경
           setIsLogin(true);

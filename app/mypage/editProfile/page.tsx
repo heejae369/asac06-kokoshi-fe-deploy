@@ -125,7 +125,7 @@ export default function EditProfile() {
           <p className="mt-5 text-xl font-bold">회원 정보</p>
           <button
             className="ml-auto text-sm font-bold text-[#8728FF]"
-            onClick={() => router.push("editProfile/edit")}
+            onClick={() => router.push("editProfile/check")}
           >
             수정
           </button>

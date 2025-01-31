@@ -60,7 +60,7 @@ async function actualFetch(url, option) {
     }
   }
 
-  if (response.status === 400) {
+  if (response.status === 403) {
     localStorage.clear();
     window.location.href = "/users/login";
   }
@@ -71,12 +71,12 @@ async function actualFetch(url, option) {
 
 // const test = async () => {
 //   const option = {
-//     method: 'GET',
-//     headers: {
-//       'Content-Type': 'application/json',
-//       Authorization: localStorage.getItem('accessToken'),
-//     },
-//     credentials: 'include',
+// method: 'GET',
+// headers: {
+//   'Content-Type': 'application/json',
+//   Authorization: localStorage.getItem('accessToken'),
+// },
+// credentials: 'include',
 //   }
 //   // 아래 둘 선택하여 사용
 //   const response = await authFetch('http://localhost:8080/api/test', option) // 1 옵션까지 같이 명시해서 사용
