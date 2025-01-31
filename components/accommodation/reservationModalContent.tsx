@@ -38,12 +38,12 @@ export const ReservationType = ({
     reservationType: reservationType,
   });
 
-  const [selectTime, setSelectCheckTiem] = useState({
+  const [selectTime, setSelectCheckTime] = useState({
     selectCheckInTime: "",
     selectCheckOutTime: "",
   });
   const handleDayUseTime = (selectCheckTime) => {
-    setSelectCheckTiem(selectCheckTime);
+    setSelectCheckTime(selectCheckTime);
   };
 
   useEffect(() => {
@@ -62,16 +62,13 @@ export const ReservationType = ({
     let endDate = "";
     if (reservationType === "DAY_USE") {
       endDate = formattedRequestDate(checkInDate);
-    } else {
-      endDate = formattedRequestDate(checkOutDate);
+      setReservationParam((prevState) => ({
+        ...prevState,
+        startTime: selectTime.selectCheckInTime,
+        endTime: selectTime.selectCheckOutTime,
+        endDate: endDate,
+      }));
     }
-
-    setReservationParam((prevState) => ({
-      ...prevState,
-      startTime: selectTime.selectCheckInTime,
-      endTime: selectTime.selectCheckOutTime,
-      endDate: endDate,
-    }));
   }, [selectTime]);
 
   // 장바구니 추가 api 호출
@@ -107,6 +104,12 @@ export const ReservationType = ({
     dispatch(closeModal());
   };
 
+  useEffect(() => {
+    console.log("roomDetail.checkIn : ", roomDetail.checkIn);
+    console.log("roomDetail.checkout : ", roomDetail.checkOut);
+    console.log("reservationParam : ", reservationParam);
+  }, [reservationParam]);
+
   if (isAddCartLoading) {
     return <div>Loading...</div>;
   }
@@ -138,7 +141,9 @@ export const ReservationType = ({
       alert("이용시간을 선택해주세요.");
       return;
     }
-    if (type === "reservation") router.push(`/reservation?data=${params}`);
+    if (type === "reservation") {
+      router.push(`/reservation?data=${params}`);
+    }
   };
 
   return (
