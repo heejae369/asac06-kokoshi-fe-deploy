@@ -1,8 +1,7 @@
 import { ReservationNumber } from "@/feature/reservation/type/reservation.type";
+import { authFetch } from "@/lib/utils";
 
 interface KakaoPayRequestBody {
-  // quantity: number;
-  // totalAmount: number;
   reservationNumber: ReservationNumber;
 }
 
@@ -12,13 +11,15 @@ export const KakaoPayReady = async ({
   requestBody: KakaoPayRequestBody;
 }): Promise<PaymentResponse | undefined> => {
   try {
-    const response = await fetch(
+    const response = await authFetch(
       `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/kakaoPay/ready`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: localStorage.getItem("accessToken"),
         },
+        credentials: "include",
         body: JSON.stringify(requestBody),
       }
     );

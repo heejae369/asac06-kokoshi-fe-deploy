@@ -12,7 +12,7 @@ import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import LoginAxios from "@/feature/LoginAxios";
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   IsLoginContext,
   useIsLoginState,
@@ -30,7 +30,7 @@ export default function LoginPage() {
   // 비밀번호 일치 여부 확인(true = 비밀번호 일치)
   const [samePassword, setSamePassword] = useState(false);
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const router = useRouter();
 
   const { setIsLogin } = useContext(IsLoginContext);
@@ -42,7 +42,7 @@ export default function LoginPage() {
   // }
   useEffect(() => {
     if (isLogin) {
-      router.replace("/yanolza/main");
+      router.push("/yanolza/main");
     }
   }, [isLogin, router]);
 
@@ -89,7 +89,7 @@ export default function LoginPage() {
                     pw,
                     router,
                     setIsLogin,
-                    // dispatch,
+                    dispatch,
                   });
                 }
               }}
