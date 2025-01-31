@@ -17,7 +17,7 @@ interface UserData {
 // const DEFAULT_PROFILE_IMAGE = "@/asse/default-profile.png";
 
 const Mypage = () => {
-  useLoginGuard();
+  // useLoginGuard();
 
   const router = useRouter();
   const [isUserProfileImgModalOpen, setUserProfileImgModalOpen] =

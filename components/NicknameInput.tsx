@@ -5,7 +5,14 @@ import { useNickname } from "@/feature/useNickname";
 import BackAndTitle from "@/components/BackAndTitle";
 
 const NicknameInput = () => {
-  const { nickname, handleNicknameChange, handleNext, error } = useNickname();
+  const {
+    nickname,
+    handleNicknameChange,
+    handleNext,
+    error,
+    AlertComponent,
+    showAlertMessage,
+  } = useNickname();
 
   return (
     <div>
@@ -30,6 +37,9 @@ const NicknameInput = () => {
         <button className={styles.nextButton} onClick={handleNext}>
           다음
         </button>
+      </div>
+      <div>
+        <AlertComponent />
       </div>
     </div>
   );

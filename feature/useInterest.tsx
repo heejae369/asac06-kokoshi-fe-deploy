@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useCustomAlert } from "@/feature/useCustomAlert";
 
 const interests = [
   { id: 1, name: "호캉스", icon: "🏨" },
@@ -15,6 +16,7 @@ const interests = [
 export const useInterest = () => {
   const router = useRouter();
   const [selectedInterest, setSelectedInterest] = useState(["호캉스"]);
+  const { showAlertMessage, AlertComponent } = useCustomAlert();
 
   const handleSelect = (interest) => {
     if (selectedInterest.includes(interest)) {
@@ -33,7 +35,9 @@ export const useInterest = () => {
 
   const handleNext = () => {
     if (selectedInterest.length === 0) {
-      alert("관심사를 하나 이상 선택해주세요!");
+      // alert("관심사를 하나 이상 선택해주세요!");
+      // ;
+      showAlertMessage("관심사를 하나 이상 선택해주세요!");
       return;
     }
     console.log("선택된 관심사:", selectedInterest);
@@ -46,5 +50,7 @@ export const useInterest = () => {
     handleSelect,
     handleNext,
     handleBack,
+    AlertComponent,
+    showAlertMessage,
   };
 };

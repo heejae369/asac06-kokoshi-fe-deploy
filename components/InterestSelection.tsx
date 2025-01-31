@@ -2,10 +2,19 @@
 import styles from "@/styles/interestSelection.module.css";
 import { useInterest } from "@/feature/useInterest";
 import BackAndTitle from "@/components/BackAndTitle";
+import { useCustomAlert } from "@/feature/useCustomAlert";
 
 const InterestSelection = () => {
-  const { interests, selectedInterest, handleSelect, handleNext } =
-    useInterest();
+  const {
+    interests,
+    selectedInterest,
+    handleSelect,
+    handleNext,
+    showAlertMessage,
+    AlertComponent,
+  } = useInterest();
+  // const {  } = useCustomAlert();
+
   return (
     <div>
       <BackAndTitle
@@ -34,6 +43,9 @@ const InterestSelection = () => {
         <button className={styles.nextButton} onClick={handleNext}>
           다음
         </button>
+      </div>
+      <div>
+        <AlertComponent />
       </div>
     </div>
   );
