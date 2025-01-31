@@ -22,7 +22,7 @@ export default function HotelCards({ hotels }: HotelCardsProps) {
   const router = useRouter();
 
   return (
-    <div className="mt-4 flex h-auto w-full flex-wrap justify-center">
+    <div className="mt-4 flex w-full flex-wrap justify-center">
       {hotels.map((hotel, index) => (
         <button
           key={index}
@@ -52,14 +52,14 @@ export default function HotelCards({ hotels }: HotelCardsProps) {
               )}
             </div>
             <p className="text-xs text-gray-400">
-              {"(" + hotel.totalReview + ")"}
+              {"(" + hotel.totalReview.toLocaleString() + ")"}
             </p>
           </div>
           {/* <p className="-mb-1 w-full text-[10px] text-gray-500">
             {hotel.location}
           </p> */}
           <p className="mt-1 text-base font-bold">
-            {hotel.price.toLocaleString() + " 원"}
+            {hotel.price.toLocaleString() + "원"}
           </p>
         </button>
       ))}

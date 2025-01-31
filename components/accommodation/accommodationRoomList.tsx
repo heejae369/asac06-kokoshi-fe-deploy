@@ -126,7 +126,7 @@ export const AccommodationRoomList = ({
                     </div>
                   </div>
                   <span className="p-1 text-right text-base font-bold">
-                    {roomInfo.minPrice}원
+                    {roomInfo.minPrice.toLocaleString()}원
                   </span>
                 </div>
               ) : (
@@ -153,7 +153,8 @@ export const AccommodationRoomList = ({
                       </div>
                       <div className="pl-1">
                         <span className="p-1 text-right text-base font-bold">
-                          {roomInfo.dayUseInfo.dayUseMinPrice}원
+                          {roomInfo.dayUseInfo.dayUseMinPrice.toLocaleString()}
+                          원
                         </span>
                       </div>
                     </div>
@@ -166,7 +167,7 @@ export const AccommodationRoomList = ({
                       </div>
                       <div className="pl-1">
                         <span className="p-1 text-right text-base font-bold">
-                          {roomInfo.minPrice}원
+                          {roomInfo.minPrice.toLocaleString()}원
                         </span>
                       </div>
                     </div>

@@ -190,7 +190,7 @@ export default function AccommodationDetail({
                 </span>
                 <span className="ml-[6px] text-[12px] text-[#999999]">
                   {/* {`(${dummy.reviewCount.toLocaleString()})`} */}(
-                  {totalReview})
+                  {totalReview.toLocaleString()})
                 </span>
               </div>
               <div className="mt-[2px] flex items-center">

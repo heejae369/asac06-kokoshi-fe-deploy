@@ -82,13 +82,6 @@ export const ReservationType = ({
     },
   ] = cartApi.useAddCartMutation();
 
-  useEffect(() => {
-    if (isAddCartSuccess && addCartData) {
-      alert(addCartData.message);
-      increaseCart();
-    }
-  }, [isAddCartSuccess, addCartData]);
-
   const onClickCart = () => {
     selectTimeCheck("cart");
     addCart({
@@ -101,8 +94,15 @@ export const ReservationType = ({
         reservationType: reservationType,
       },
     });
-    dispatch(closeModal());
   };
+
+  useEffect(() => {
+    if (isAddCartSuccess && addCartData) {
+      increaseCart();
+      dispatch(closeModal());
+      alert(addCartData.message);
+    }
+  }, [isAddCartSuccess, addCartData]);
 
   if (isAddCartLoading) {
     return <div>Loading...</div>;
@@ -200,7 +200,7 @@ export const ReservationType = ({
           <span className="font-bold">{`${reservationType == "DAY_USE" ? `대실 ` : "숙박 "}`}</span>
           <span className="font-normal">{`${reservationType == "DAY_USE" ? `(최대 ${roomDetail.dayUseInfo?.dayUseTime}시간)` : `${getDiffDays(checkInDate, checkOutDate)}박`}`}</span>
         </div>
-        <span className="font-bold">{`${reservationType == "DAY_USE" ? roomDetail.dayUseInfo?.dayUseMinPrice : roomDetail.minPrice}`}</span>
+        <span className="font-bold">{`${reservationType == "DAY_USE" ? roomDetail.dayUseInfo?.dayUseMinPrice.toLocaleString() : roomDetail.minPrice.toLocaleString()}원`}</span>
       </div>
       <div className="flex justify-between">
         <Button

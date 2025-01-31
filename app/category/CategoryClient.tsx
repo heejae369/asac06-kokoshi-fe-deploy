@@ -64,23 +64,23 @@ export default function Category() {
 
   return (
     <>
-      <div className="flex h-auto w-full justify-center bg-gray-100">
-        <div className="mb-[60px] w-[360px] bg-white px-5">
+      <div className="flex h-screen w-full justify-center bg-gray-100">
+        <div className="h-full w-[360px] bg-white px-5">
           <div className="sticky top-0 z-10 -mx-5 flex w-[360px] items-center bg-white">
             <div className="w-full px-5">
               <MainHeaders title={category} backIcon={true} />
             </div>
           </div>
 
-          <div className="mt-[20px]">
+          <div className="mt-[5px]">
             <EventBanner />
           </div>
           <SelectRegion category={category} />
           {hotels && (
-            <>
+            <div className="pb-[60px]">
               <h2 className="mt-2 font-bold">{category} 목록</h2>
               <HotelCards hotels={hotels} />
-            </>
+            </div>
           )}
         </div>
       </div>

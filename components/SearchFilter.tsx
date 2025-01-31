@@ -145,8 +145,8 @@ export default function SearchFilter({
 
   return (
     <>
-      <div className="relative h-[82px] font-semibold">
-        <div className="mt-[59px] flex h-[24px] items-center">
+      <div className="relative font-semibold">
+        <div className="flex h-[50px] items-center">
           <button className="ml-[8px] h-[19px]" onClick={handleXIcon}>
             <Image src={xIcon} alt="xIcon" width={9} height={19} />
           </button>
@@ -232,7 +232,7 @@ const KeywordButton = ({ text, isActive, checkKeyword }) => {
 // 부제목 컴포넌트
 const FilterTitle = ({ title }) => {
   return (
-    <div className="mt-[28px]">
+    <div className="mt-[24px]">
       <span className="text-[16px] font-bold tracking-[-1px]">{title}</span>
     </div>
   );
