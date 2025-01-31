@@ -6,6 +6,8 @@ import {
   UsePasswordResetMutationArg,
   UsePhoneRequestRes,
   UseUserEditInfoRes,
+  UseUpdateUserMutationRes,
+  UseUpdateUserMutationArg,
   // UsePhoneRequestArg,
 } from "@/feature/users/types/users.type";
 import { ApiResponse } from "@/feature/common/types/apiResponse";
@@ -68,6 +70,19 @@ export const userAuthApi = authApi.injectEndpoints({
           url: "/logout",
           method: "POST",
           credentials: "include",
+        };
+      },
+    }),
+
+    updateUser: builder.mutation<
+      UseUpdateUserMutationRes,
+      UseUpdateUserMutationArg
+    >({
+      query: ({ requestUpdateUser }) => {
+        return {
+          url: "/users/api/edit",
+          body: requestUpdateUser,
+          method: "PUT",
         };
       },
     }),

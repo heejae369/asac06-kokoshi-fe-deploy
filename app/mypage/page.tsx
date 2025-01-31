@@ -30,17 +30,16 @@ const Mypage = () => {
     user_profile_path: null,
   }); // 사용자 데이터
 
-  const userEmail =
-    typeof window !== "undefined" ? localStorage.getItem("userEmail") : null;
-
+  // const userEmail =
+  //   typeof window !== "undefined" ? localStorage.getItem("userEmail") : null;
   // console.log(userEmail);
 
   // 데이터 서버에서 가져오기
   React.useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/users/api/userdata?userEmail=${userEmail}`,
+        const response = await authFetch(
+          `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/users/api/userdata`,
           {
             cache: "no-store",
           }

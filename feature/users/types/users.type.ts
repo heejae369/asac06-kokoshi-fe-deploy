@@ -42,3 +42,15 @@ export interface UserEditInfo {
   profilePath: string;
 }
 export type UseUserEditInfoRes = ApiResponse<UserEditInfo>;
+
+export interface requestUpdateUser {
+  userName: string;
+  phone: string;
+  userBirth: string;
+  nickName: string;
+}
+
+export interface UseUpdateUserMutationArg {
+  requestUpdateUser: requestUpdateUser;
+}
+export type UseUpdateUserMutationRes = ApiResponse<void>;
