@@ -1,7 +1,6 @@
 "use client";
 
 import onboadingIllust from "@/assets/img/img_onboading_illust.png";
-import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -31,12 +30,12 @@ export default function Home() {
             <br />
             코코시에서 다양한 숙소를 만나보세요.
           </p>
-          <Button
+          <button
             className="mt-20 h-[50px] w-[320px] rounded-sm bg-white text-[1rem] text-[#A55EFF] hover:bg-white"
             onClick={() => router.push("users/login")}
           >
             시작하기
-          </Button>
+          </button>
         </div>
       </div>
     </div>

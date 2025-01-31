@@ -7,7 +7,6 @@ import passwordHide from "@/assets/icon/ic_pw_hide.png";
 import passwordShow from "@/assets/icon/ic_pw_see.png";
 import or from "@/assets/or.png";
 
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -36,10 +35,8 @@ export default function LoginPage() {
   const { setIsLogin } = useContext(IsLoginContext);
   const isLogin = useIsLoginState();
 
-  // if (isLogin) {
-  //   console.log("isLogin : ", isLogin);
-  //   router.push("/yanolza/main");
-  // }
+  const isButtonValid = email.length > 0 && pw.length > 7;
+
   useEffect(() => {
     if (isLogin) {
       router.push("/yanolza/main");
@@ -124,10 +121,13 @@ export default function LoginPage() {
           )}
         </div>
         {/* 로그인 버튼 */}
-        <Button
-          className="h-[50px] w-full rounded-sm text-[1rem]"
-          variant={"point"}
-          disabled={email.length < 1 || pw.length < 8}
+        <button
+          className={`h-12 w-80 rounded ${
+            isButtonValid
+              ? "bg-[#8728ff] text-white"
+              : "bg-[#E9D8FF] text-[#8728ff]"
+          }`}
+          disabled={!isButtonValid}
           onClick={() =>
             LoginAxios({
               setShowValidation,
@@ -137,12 +137,12 @@ export default function LoginPage() {
               pw,
               router,
               setIsLogin,
-              // dispatch,
+              dispatch,
             })
           }
         >
           로그인
-        </Button>
+        </button>
         {/* 아이디 찾기 | 비밀번호 찾기 | 회원가입 */}
         <div className="flex justify-center gap-[10px] py-3 text-sm font-normal text-[#8728FF]">
           <Link href={"/users/findId"}>아이디 찾기</Link>
@@ -157,26 +157,26 @@ export default function LoginPage() {
         </div>
         <div className="flex justify-center gap-[10px]">
           {/* 소셜 로그인 버튼 - 네이버 */}
-          <Button
+          <button
             className="rounded-full bg-transparent p-0"
             onClick={() => router.push("#10")}
           >
             <img src={naverLogo.src} alt="naver social login" />
-          </Button>
+          </button>
           {/* 소셜 로그인 버튼 - 카카오 */}
-          <Button
+          <button
             className="rounded-full bg-transparent p-0"
             onClick={() => router.push("#08")}
           >
             <img src={kakaoLogo.src} alt="kakao social login" />
-          </Button>
+          </button>
           {/* 소셜 로그인 버튼 - 애플 */}
-          <Button
+          <button
             className="rounded-full bg-transparent p-0"
             onClick={() => router.push("#09")}
           >
             <img src={appleLogo.src} alt="apple social login" />
-          </Button>
+          </button>
         </div>
       </div>
     </div>
