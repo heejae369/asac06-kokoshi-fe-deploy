@@ -104,12 +104,6 @@ export const ReservationType = ({
     dispatch(closeModal());
   };
 
-  useEffect(() => {
-    console.log("roomDetail.checkIn : ", roomDetail.checkIn);
-    console.log("roomDetail.checkout : ", roomDetail.checkOut);
-    console.log("reservationParam : ", reservationParam);
-  }, [reservationParam]);
-
   if (isAddCartLoading) {
     return <div>Loading...</div>;
   }
