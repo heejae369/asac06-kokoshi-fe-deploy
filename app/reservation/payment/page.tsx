@@ -58,7 +58,7 @@ export default function ReservationPayment() {
       <div className="flex h-screen w-full justify-center bg-gray-100 font-sans">
         <div className="relative flex h-full w-[360px] flex-col bg-white px-[20px]">
           <MainHeaders title={"결제 완료"} backIcon={true} />
-          <div className="mb-[16px] mt-[26px]">
+          <div className="mb-[16px]">
             <span className="text-[14px] font-bold">상품 정보</span>
           </div>
           {paymentResponse?.paymentProducts.map((reservationRoom, index) => {

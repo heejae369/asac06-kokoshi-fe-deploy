@@ -267,7 +267,7 @@ export default function RoomDetail({
                         {roomDetail?.dayUseInfo?.dayUseAvailableQuantity}개 남음
                       </span>
                       <span className="px-1 pb-px text-right text-base font-bold">
-                        {roomDetail?.dayUseInfo?.dayUseMinPrice}
+                        {`${roomDetail?.dayUseInfo?.dayUseMinPrice.toLocaleString()}원`}
                       </span>
                     </div>
                   </div>
@@ -314,7 +314,7 @@ export default function RoomDetail({
                         {roomDetail?.availableQuantity}개 남음
                       </span>
                       <span className="px-1 pb-px text-right text-base font-bold">
-                        {roomDetail?.minPrice}
+                        {`${roomDetail?.minPrice.toLocaleString()}원`}
                       </span>
                     </div>
                   </div>
