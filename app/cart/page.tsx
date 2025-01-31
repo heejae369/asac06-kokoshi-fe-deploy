@@ -8,23 +8,26 @@ import Header from "@/components/BackAndTitleAndButton";
 import Modal from "@/components/ui/public/modal";
 import { useRouter } from "next/navigation";
 import MainHeaders from "@/components/MainHeaders";
+import { authFetch, authMethodFetch } from "@/lib/utils";
 
 interface CartItemData {
-  id: number;
+  roomId: number;
+  id: number; // cartItemId
+  capacity: number; // 기준 인원
+  reservationStart: string; // 예약 시작 날짜 (백엔드 Date 형식)
+  reservationEnd: string; // 예약 종료 날짜 (백엔드 Date 형식)
+  checkIn: string; // 체크인 시간
+  checkOut: string; // 체크아웃 시간
+  reservationType: string;
+
   cartId: number;
   thumbnail: string;
   type: string;
-  name: string;
-  reservationStart: string; // 예약 시작 날짜 (백엔드 Date 형식)
-  reservationEnd: string; // 예약 종료 날짜 (백엔드 Date 형식)
-  capacity: number; // 기준 인원
+  roomName: string;
   maxCapacity: number; // 최대 인원
-  checkIn: string; // 체크인 시간
-  checkOut: string; // 체크아웃 시간
   specialPrice?: number; // 숫자 형식의 특가 금액
   stock: number; // 재고 수량
   price: number; // 가격
-  reservationType: string;
   isChecked: boolean; // 체크 여부
 }
 
@@ -37,33 +40,59 @@ export default function CartPage() {
   const [error, setError] = useState<string | null>(null); // 에러 상태
   const [isModalOpen, setIsModalOpen] = useState(false); //모달 상태
   const [selectedItemIds, setSelectedItemIds] = useState<number[]>([]); // 선택된 아이템 ID
-
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const router = useRouter();
 
-  const userId = 2; // 세션이나 로컬스토리에 저장된 유저의 구분값
+  // const userId = 1; // 세션이나 로컬스토리에 저장된 유저의 구분값
+
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("userEmail");
+    if (storedEmail) {
+      setUserEmail(storedEmail);
+    }
+  }, []);
 
   // Spring에서 데이터 가져오기
   useEffect(() => {
     let isFlag = true;
     const fetchCartItems = async () => {
       try {
-        const requestData = {
-          userId: userId, // 요청 바디의 userId (필요하다면 제거 가능)
+        const option = {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("accessToken"),
+          },
+          credentials: "include",
         };
-
-        const response = await axios.post(
+        // const requestData = {
+        //   userId: userId, // 요청 바디의 userId (필요하다면 제거 가능)
+        //   userEmail: userEmail,
+        // };
+        const response = await authFetch(
           `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/cart/getCart`,
-          requestData,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              userId: userId.toString(), // 헤더에 userId 추가, 추후 JWT 활용
-            },
-          }
-        );
+          option
+        ); // 1 옵션까지 같이 명시해서 사용
+
+        // const response = await axios.post(
+        //   `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/cart/getCart`,
+        //   requestData,
+        //   {
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //       userId: userId.toString(), // 헤더에 userId 추가, 추후 JWT 활용
+        //     },
+        //   }
+        // );
 
         if (isFlag) {
-          const cartData = response.data;
+          const cartData = await response.json();
+          console.log("[getCart API]reponse.data is : ", cartData);
+          console.log(
+            "[getCart API]cartItemList.data is : ",
+            cartData.cartItemList
+          );
+
           const cartId = cartData.cartId;
           setCartId(cartId);
           const transformedCartItems = cartData.cartItemList.map(
@@ -71,6 +100,8 @@ export default function CartPage() {
               id: item.id,
               type: item.type,
               name: item.name,
+              // 백엔드에서 확인
+              roomId: item.roomId,
               roomName: item.roomName,
               reservationStart: item.reservationStart,
               reservationEnd: item.reservationEnd,
@@ -86,11 +117,12 @@ export default function CartPage() {
             })
           );
 
+          // 백엔드에서 보내는 데이터 및 받는 데이터 형식 맞춰야함
           setCartItems(transformedCartItems);
           setLoading(false);
         }
       } catch (error: any) {
-        setError("데이터를 불러오는 중 오류가 발생했습니다.", error);
+        // setError("데이터를 불러오는 중 오류가 발생했습니다.", error);
         setLoading(false);
       }
     };
@@ -131,27 +163,42 @@ export default function CartPage() {
     setIsModalOpen(true); // 모달 열기
   };
 
+  // const test = async () => {
+  //   const option = {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: localStorage.getItem('accessToken'),
+  //     },
+  //     credentials: 'include',
+  //   }
+  //   // 아래 둘 선택하여 사용
+  //   const response = await authFetch('http://localhost:8080/api/test', option) // 1 옵션까지 같이 명시해서 사용
+
+  //   const response = await defaultAuthGetFetch('http://localhost:8080/api/test') // 2 기본 get 요청시에 사용
+  //   console.log('test response : ', response)
+  // }
+
   const confirmDelete = async () => {
+    const option = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("accessToken"),
+      },
+      credentials: "include",
+      body: { selectedItemIds }, //cartId: cartId, cartItemId: id /*userId 삭제*/ },
+    };
+    // 카트아이디 없으면 패스
     if (!cartId) {
       console.error("Cart ID is not available");
       return;
     }
     try {
-      await Promise.all(
-        selectedItemIds.map((id) =>
-          axios.post(
-            `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/cart/deleteCartItem`,
-            { cartId: cartId, cartItemId: id, userId },
-            {
-              headers: {
-                "Content-Type": "application/json",
-                userId: userId.toString(),
-              },
-            }
-          )
-        )
+      authMethodFetch(
+        `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/cart/deleteCartItem`,
+        "DELETE",
+        option
       );
-
       // 삭제 후 로컬 상태 업데이트
       setCartItems((prev) =>
         prev.filter((item) => !selectedItemIds.includes(item.id))
@@ -187,9 +234,8 @@ export default function CartPage() {
     const formattedData = selectedItems.map((item) => ({
       // 여기서 삭제안하면 카트 아이템도 넘겨야함
       // 논의
-      roomId: item.id, // 방 id  // 백엔드에서 구현후 수정요함
-      cartItems: cartId /*|| undefined // */, // 카트 아이템 아이디로 바꿔야한다
-      // roomId :
+      roomId: item.roomId, // 방 id  // 백엔드에서 구현후 수정요함
+      cartItems: item.id /*|| undefined // */, // 카트 아이템 아이디로 바꿔야한다
       startDate: item.reservationStart,
       endDate: item.reservationEnd,
       capacity: item.capacity,
