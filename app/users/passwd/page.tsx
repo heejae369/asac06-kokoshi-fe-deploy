@@ -9,6 +9,7 @@ import { useCustomAlert } from "@/feature/useCustomAlert";
 export default function PasswordPage() {
   const { showAlertMessage, AlertComponent } = useCustomAlert();
   const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -23,20 +24,30 @@ export default function PasswordPage() {
     router.push("login");
   };
 
-  const [requestPwResetEmail, { isLoading, isSuccess, data }] =
+  // ✅ useMutation을 사용한 API 호출
+  const [requestPwResetEmail, { isLoading }] =
     userApi.usePasswordResetEmailMutation();
-  const onSubmit: SubmitHandler<requestPwResetEmail> = (data) => {
-    requestPwResetEmail({ requestPwResetEmail: data });
+
+  // ✅ 이메일 전송 요청 처리
+  const onSubmit: SubmitHandler<requestPwResetEmail> = async (data) => {
+    try {
+      // API 요청
+      const response = await requestPwResetEmail({
+        requestPwResetEmail: data,
+      }).unwrap();
+
+      // ✅ 성공 시 알림 표시
+      showAlertMessage(response.message || "이메일이 전송되었습니다.");
+    } catch (error: any) {
+      console.error("비밀번호 재설정 이메일 요청 실패:", error);
+
+      // ✅ 실패 시 에러 메시지 표시
+      showAlertMessage(error.data?.message || "이메일 전송에 실패했습니다.");
+    }
   };
 
-  if (isSuccess && data) {
-    showAlertMessage(data.message);
-  }
-
-  // 이름과 이메일이 모두 입력 되고, 이름이 한글로 입력 & 이메일이 pattern 에 일치하는 경우에만 버튼 활성화 처리.
   return (
     <>
-      <AlertComponent />
       <div className="flex w-full flex-col gap-2 px-5 pt-[57px]">
         <button onClick={onClickBack}>
           <img src="/ic_back.png" alt="뒤로가기" />
@@ -64,14 +75,14 @@ export default function PasswordPage() {
             })}
           />
           {errors.name && (
-            <span className="text-sm">{errors.name.message}</span>
+            <span className="text-sm text-red-500">{errors.name.message}</span>
           )}
           <input
             id="email"
             type="text"
             className="my-1 h-12 w-full bg-[#F4F4F4] p-4 text-sm"
             placeholder="이메일"
-            maxLength={20}
+            maxLength={50}
             {...register("email", {
               required: "이메일을 입력해주세요.",
               pattern: {
@@ -81,16 +92,17 @@ export default function PasswordPage() {
             })}
           />
           {errors.email && (
-            <span className="text-sm">{errors.email.message}</span>
+            <span className="text-sm text-red-500">{errors.email.message}</span>
           )}
           <Button
             className="my-4 h-12 w-full rounded text-[1rem] disabled:bg-gray-400"
             variant={"point"}
             type="submit"
-            disabled={isSubmitting || !name || !email}
+            disabled={isSubmitting || !name || !email || isLoading}
           >
-            이메일 전송
+            {isLoading ? "전송 중..." : "이메일 전송"}
           </Button>
+          <AlertComponent />
         </form>
       </div>
     </>

@@ -5,11 +5,13 @@ import { generateRandomNickname } from "@/feature/generateRandomNickname";
 import CustomFetch from "@/feature/CustomFetch";
 // import { postApiSendingTest } from "@/feature/PostApiSending";
 import { useRouter } from "next/navigation";
+import { useCustomAlert } from "@/feature/useCustomAlert";
 
 export const useNickname = () => {
   const [nickname, setNickname] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
+  const { showAlertMessage, AlertComponent } = useCustomAlert();
 
   // 닉네임 유효성 검사 함수
   const validateNickname = (value) => {
@@ -62,21 +64,23 @@ export const useNickname = () => {
   // 다음 버튼 클릭 핸들러
   const handleNext = () => {
     const { isValid, message } = validateNickname(nickname);
-    if (!isValid) return;
-
-    if (!nickname) {
+    // if (!isValid) return;
+    console.log(`닉네임11: ${nickname}`);
+    if (nickname.length < 1) {
       const randomNickname = generateRandomNickname(); // 랜덤 닉네임 생성
-      alert(
-        `닉네임이 입력되지 않아 랜덤 닉네임이 설정됩니다: ${randomNickname}`
-      );
       setNickname(randomNickname);
+      console.log(`닉네임: ${randomNickname}`);
+      showAlertMessage(
+        `닉네임이 입력되지 않아 랜덤 닉네임이 설정됩니다\n " ${randomNickname} "`
+      );
+      localStorage.setItem("userNickname", randomNickname);
+      setError("");
     } else {
-      console.log(`닉네임: ${nickname}`);
+      router.push("/users/signup/terms");
     }
     // 닉네임 유효성이 통과되면 로컬 스토리지에 저장
-    saveNicknameToLocalStorage(nickname);
-
-    router.push("/users/signup/terms");
+    // saveNicknameToLocalStorage(nickname);
+    //
   };
 
   return {
@@ -86,5 +90,7 @@ export const useNickname = () => {
     handleNext,
     saveNicknameToLocalStorage,
     handleBack,
+    showAlertMessage,
+    AlertComponent,
   };
 };

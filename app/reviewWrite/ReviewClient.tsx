@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import styles from "@/styles/ReviewWrite.module.css";
 import Footer from "@/components/Footer";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useCustomAlert } from "@/feature/useCustomAlert";
 
 const ReviewClient = () => {
   const router = useRouter();
@@ -16,7 +17,7 @@ const ReviewClient = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
   const [images, setImages] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false); // 업로드된 이미지 상태
-
+  const { showAlertMessage, AlertComponent } = useCustomAlert();
   // 별점 설정
   const handleRating = (value: number) => {
     setRating(value);
@@ -30,7 +31,8 @@ const ReviewClient = () => {
 
     // 최대 5개의 이미지 제한
     if (images.length + newImages.length > 5) {
-      alert("최대 5개의 이미지만 업로드할 수 있습니다.");
+      // alert("최대 5개의 이미지만 업로드할 수 있습니다.");
+      showAlertMessage("최대 5개의 이미지만 업로드할 수 있습니다.");
       return;
     }
 
@@ -47,7 +49,8 @@ const ReviewClient = () => {
   // 등록 버튼 클릭
   const handleSubmit = async () => {
     if (rating === 0 || reviewText.trim() === "") {
-      alert("별점과 후기를 모두 작성해주세요.");
+      // alert("별점과 후기를 모두 작성해주세요.");
+      showAlertMessage("별점과 후기를 모두 작성해주세요.");
       return;
     }
     try {
@@ -73,7 +76,8 @@ const ReviewClient = () => {
       );
       const result = await response.json();
       console.log("Success:", result);
-      alert("후기가 성공적으로 등록되었습니다!");
+      // alert("후기가 성공적으로 등록되었습니다!");
+      showAlertMessage("후기가 성공적으로 등록되었습니다!");
 
       router.push("/mypage");
       // 폼 초기화
@@ -161,7 +165,8 @@ const ReviewClient = () => {
               <button
                 className={styles.modalButton}
                 onClick={() => {
-                  alert("사진 찍기 기능이 호출되었습니다.");
+                  // alert("사진 찍기 기능이 호출되었습니다.");
+                  showAlertMessage("사진 찍기 기능이 호출되었습니다");
                   setIsModalOpen(false);
                 }}
               >
@@ -193,8 +198,11 @@ const ReviewClient = () => {
           등록하기
         </button>
       </div>
+      <div>
+        <AlertComponent />
+      </div>
     </div>
   );
 };
 
-export default Review;
+export default ReviewClient;
