@@ -56,7 +56,7 @@ export default function SelectRegion({ category }) {
   ];
   return (
     <>
-      <h2 className="mt-24 font-bold">지역 선택</h2>
+      <h2 className="mt-2 font-bold">지역 선택</h2>
       <div className="mt-4 flex h-auto w-full flex-wrap justify-center text-sm font-semibold">
         {regions.map((region, index) => (
           <button

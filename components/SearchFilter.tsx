@@ -23,6 +23,7 @@ export default function SearchFilter({
     "캠핑",
     "게스트하우스",
     "리조트",
+    "모텔",
   ];
 
   const keyword = [
@@ -43,6 +44,7 @@ export default function SearchFilter({
     캠핑: filterApply.accommodationCategory.includes("캠핑"),
     게스트하우스: filterApply.accommodationCategory.includes("게스트하우스"),
     리조트: filterApply.accommodationCategory.includes("리조트"),
+    모텔: filterApply.accommodationCategory.includes("모텔"),
   });
 
   const handleXIcon = () => {
@@ -59,6 +61,7 @@ export default function SearchFilter({
         캠핑: checkedItems["전체"],
         게스트하우스: checkedItems["전체"],
         리조트: checkedItems["전체"],
+        모텔: checkedItems["전체"],
       };
       console.log(newState);
       setCheckedItems(newState);
@@ -120,6 +123,7 @@ export default function SearchFilter({
       캠핑: false,
       게스트하우스: false,
       리조트: false,
+      모텔: false,
     });
   };
 
@@ -201,12 +205,14 @@ export default function SearchFilter({
         <span>{slideRange[0] / 10000}만원</span>
         <span>{slideRange[1] / 10000}만원</span>
       </div>
-      <button
-        className="mb-[16px] mt-[70px] h-[48px] w-[320px] rounded-[7px] bg-[#8728FF] text-[16px] tracking-[-0.5px] text-white"
-        onClick={handleApplyFilter}
-      >
-        필터 적용하기
-      </button>
+      <div className="mb-[16px] mt-[70px]">
+        <button
+          className="h-[50px] w-[320px] rounded-[7px] bg-[#8728FF] text-[16px] tracking-[-0.5px] text-white"
+          onClick={handleApplyFilter}
+        >
+          필터 적용하기
+        </button>
+      </div>
     </>
   );
 }

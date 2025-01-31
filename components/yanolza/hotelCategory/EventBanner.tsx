@@ -9,7 +9,7 @@ export default function EventBanner() {
   const router = useRouter();
   return (
     <>
-      <div className="absolute left-1/2 w-[360px] -translate-x-1/2">
+      <div className="ml-[-20px] w-[360px]">
         <Swiper
           modules={[Pagination, Autoplay]}
           spaceBetween={0} // 슬라이드 간 간격

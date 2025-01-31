@@ -14,6 +14,7 @@ import { ImageUploadModal } from "@/components/myPage/ImageUploadModal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useCustomAlert } from "@/feature/useCustomAlert";
 
 export default function EditProfile() {
   const {
@@ -27,6 +28,7 @@ export default function EditProfile() {
     useState(false);
   const [userEditInfo, setUserEditInfo] = useState<UserEditInfo>({});
   const [userProfile, setUserProfile] = useState<string>("");
+  const { showAlertMessage, AlertComponent } = useCustomAlert();
 
   const router = useRouter();
   const userName = watch("userName");
@@ -68,10 +70,11 @@ export default function EditProfile() {
 
   useEffect(() => {
     if (isUpdateUserSuccess && isUpdateUserData) {
-      alert(isUpdateUserData.message);
-      router.push("/yanolza/main");
+      showAlertMessage(isUpdateUserData.message, 3000, () => {
+        router.push("/mypage"); // 알림이 닫힌 후 페이지 이동
+      });
     }
-  }, [isUpdateUserData, isUpdateUserSuccess, router]);
+  }, [isUpdateUserData, isUpdateUserSuccess, router, showAlertMessage]);
 
   if (isUserError || isUpdateUserError) {
     return <div>Error</div>;
@@ -98,7 +101,7 @@ export default function EditProfile() {
   };
 
   const handleUserBirthChange = (e) => {
-    setValue("phone", formatBirthdate(e.target.value));
+    setValue("userBirth", formatBirthdate(e.target.value));
   };
 
   return (
@@ -218,6 +221,9 @@ export default function EditProfile() {
             setUserProfileImgModalOpen={setUserProfileImgModalOpen}
           />
         )}
+      </div>
+      <div>
+        <AlertComponent />
       </div>
     </div>
   );

@@ -43,7 +43,7 @@ export default async function LoginPostApi({
             response.headers["authorization"]
           );
           localStorage.setItem("userEmail", response.data.userEmail);
-          localStorage.setItem("cartItemCount", response.data.cartItemCount);
+          // localStorage.setItem("cartItemCount", response.data.cartItemCount);
 
           //cartItemCount 이 값을 context 에 넣으면 됩니다.
           dispatch(setCartCount(response.data.cartItemCount));
