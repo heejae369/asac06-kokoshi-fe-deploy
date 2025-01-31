@@ -104,13 +104,12 @@ export default function SearchResult({
                 "코코시 추천순",
                 "리뷰 많은 순",
                 "평점 높은 순",
-                "거리순",
                 "낮은 가격 순",
                 "높은 가격 순",
-              ].map((array) => (
+              ].map((array, index) => (
                 <button
                   key={array}
-                  className="flex items-center justify-between"
+                  className={`flex items-center justify-between ${index === 4 ? "mb-[20px]" : ""}`}
                   onClick={() => handleSelectedArray(array)}
                 >
                   <span
