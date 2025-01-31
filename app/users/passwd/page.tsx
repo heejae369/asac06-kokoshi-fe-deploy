@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { userApi } from "@/feature/users/api/api";
 import { useRouter } from "next/navigation";
 import { useCustomAlert } from "@/feature/useCustomAlert";
+import { useEffect } from "react";
 
 export default function PasswordPage() {
   const { showAlertMessage, AlertComponent } = useCustomAlert();
@@ -25,27 +26,28 @@ export default function PasswordPage() {
   };
 
   // ✅ useMutation을 사용한 API 호출
-  const [requestPwResetEmail, { isLoading }] =
+  const [requestPwResetEmail, { isSuccess, isLoading, isError, data }] =
     userApi.usePasswordResetEmailMutation();
 
   // ✅ 이메일 전송 요청 처리
   const onSubmit: SubmitHandler<requestPwResetEmail> = async (data) => {
-    try {
-      // API 요청
-      const response = await requestPwResetEmail({
-        requestPwResetEmail: data,
-      }).unwrap();
-
-      // ✅ 성공 시 알림 표시
-      showAlertMessage(response.message || "이메일이 전송되었습니다.");
-    } catch (error: any) {
-      console.error("비밀번호 재설정 이메일 요청 실패:", error);
-
-      // ✅ 실패 시 에러 메시지 표시
-      showAlertMessage(error.data?.message || "이메일 전송에 실패했습니다.");
-    }
+    // API 요청
+    await requestPwResetEmail({
+      requestPwResetEmail: data,
+    }).unwrap();
   };
 
+  useEffect(() => {
+    if (isSuccess && data) {
+      // ✅ 성공 시 알림 표시
+      showAlertMessage(data.message || "이메일이 전송되었습니다.");
+    }
+    if (isError) {
+      // ✅ 실패 시 에러 메시지 표시
+      showAlertMessage("이메일 전송에 실패했습니다.");
+    }
+  }, [isSuccess, data]);
+  // 이름과 이메일이 모두 입력 되고, 이름이 한글로 입력 & 이메일이 pattern 에 일치하는 경우에만 버튼 활성화 처리.
   return (
     <>
       <div className="flex w-full flex-col gap-2 px-5 pt-[57px]">
