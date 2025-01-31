@@ -7,18 +7,17 @@ export const useCustomAlert = () => {
   const [alertMessage, setAlertMessage] = useState("");
 
   // ✅ 알림 표시 함수 (기본 3초 후 자동 닫힘)
-  const showAlertMessage = (message) => {
-    if (showAlert) return; // ❌ 중복 실행 방지
-
+  const showAlertMessage = (message, duration = 3000, callback) => {
     setAlertMessage(message);
     setShowAlert(true);
 
-    // if (duration > 0) {
-    //   setTimeout(() => {
-    //     setShowAlert(false);
-    //     setAlertMessage("");
-    //   }, duration);
-    // }
+    if (duration > 0) {
+      setTimeout(() => {
+        setShowAlert(false);
+        setAlertMessage("");
+        if (callback) callback(); // 콜백 함수 실행
+      }, duration);
+    }
   };
 
   // ✅ 닫기 함수
@@ -38,7 +37,9 @@ export const useCustomAlert = () => {
 
         {/* 알림 박스 */}
         <div className="relative bg-white p-4 rounded-lg shadow-lg max-w-sm w-full mx-4">
-          <p className="mb-4 text-center whitespace-pre-line">{alertMessage}</p>
+          <p className="mb-4 text-center  whitespace-pre-line">
+            {alertMessage}
+          </p>
           {/* <button
             className="w-full py-2 bg-violet-800 text-black rounded hover:bg-violet-900"
             onClick={hideAlert}
