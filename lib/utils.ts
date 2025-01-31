@@ -60,7 +60,7 @@ async function actualFetch(url, option) {
     }
   }
 
-  if (response.status === 400) {
+  if (response.status === 403) {
     localStorage.clear();
     window.location.href = "/users/login";
   }
