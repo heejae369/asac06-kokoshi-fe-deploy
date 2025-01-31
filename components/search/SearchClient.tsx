@@ -34,17 +34,17 @@ export default function SearchClient() {
   const searchParams = useSearchParams(); // useSearchParams는 클라이언트 측에서 안전하게 호출 가능
 
   // 기존 서치 코드
-  //   useEffect(() => {
-  //     if (searchParams) {
-  //       const search = searchParams.get("search");
-  //       if (search) {
-  //         console.log("Search query parameter:", search);
-  //         fetchData(search);
-  //         addRecentSearches(search);
-  //         setSearchText(search);
-  //       }
-  //     }
-  //   }, [searchParams]);
+  useEffect(() => {
+    if (searchParams && !filterApply.accommodationCategory.includes("전체")) {
+      const search = searchParams.get("search");
+      if (search) {
+        console.log("Search query parameter:", search);
+        fetchData(search);
+        addRecentSearches(search);
+        setSearchText(search);
+      }
+    }
+  }, [searchParams]);
 
   const fetchData = async (text) => {
     console.log("숙소리스트 가져오기");

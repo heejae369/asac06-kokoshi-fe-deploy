@@ -12,7 +12,7 @@ export default function EditNameAndPhoneNumber() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [showValidation, setShowValidation] = useState(false);
-  const [validation, setValidation] = useState(false);
+  const [validation, setValidation] = useState(true);
 
   const handleInputChange = (e) => {
     let nameValue = e.target.value;
