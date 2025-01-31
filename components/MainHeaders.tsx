@@ -28,7 +28,7 @@ export default function MainHeaders({
   };
 
   const onClickCart = () => {
-    router.push("/yanolza/cart");
+    router.push("/cart");
   };
 
   return (
