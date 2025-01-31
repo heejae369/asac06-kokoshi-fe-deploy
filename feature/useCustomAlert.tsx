@@ -7,18 +7,17 @@ export const useCustomAlert = () => {
   const [alertMessage, setAlertMessage] = useState("");
 
   // ✅ 알림 표시 함수 (기본 3초 후 자동 닫힘)
-  const showAlertMessage = (message) => {
-    if (showAlert) return; // ❌ 중복 실행 방지
-
+  const showAlertMessage = (message, duration = 3000, callback) => {
     setAlertMessage(message);
     setShowAlert(true);
 
-    // if (duration > 0) {
-    //   setTimeout(() => {
-    //     setShowAlert(false);
-    //     setAlertMessage("");
-    //   }, duration);
-    // }
+    if (duration > 0) {
+      setTimeout(() => {
+        setShowAlert(false);
+        setAlertMessage("");
+        if (callback) callback(); // 콜백 함수 실행
+      }, duration);
+    }
   };
 
   // ✅ 닫기 함수

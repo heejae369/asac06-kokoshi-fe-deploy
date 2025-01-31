@@ -80,8 +80,8 @@ const ReservationHistory = () => {
   };
 
   return (
-    <div className="flex h-auto w-full justify-center bg-gray-100">
-      <div className="w-[360px] bg-white px-5 font-sans">
+    <div className=" flex h-full w-full justify-center bg-gray-100 ">
+      <div className=" w-[360px] bg-white px-5 font-sans ">
         {/* Header */}
         <div className="sticky top-0 z-10 -mx-5 h-24 w-[360px] bg-white">
           <div className="absolute w-full px-5">
@@ -116,7 +116,7 @@ const ReservationHistory = () => {
         </div>
 
         {/* Reservations List */}
-        <div className="space-y-4">
+        <div className="pd-[160px] space-y-4">
           {reservationList.length === 0 ? (
             <div>조회된 예약 내역이 없습니다.</div>
           ) : (
