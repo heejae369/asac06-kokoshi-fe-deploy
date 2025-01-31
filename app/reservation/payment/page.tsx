@@ -38,9 +38,8 @@ export default function ReservationPayment() {
 
     const paymentFetch = async () => {
       if (reservationNumber != null) {
-        console.log(reservationNumber);
         const response = await PaymentFetch({ reservationNumber });
-        console.log("response : ", response);
+
         setPaymentResponse(response);
       }
     };

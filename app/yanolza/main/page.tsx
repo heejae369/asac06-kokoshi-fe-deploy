@@ -22,7 +22,7 @@ export default function Home() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         {/* 흐린 배경 텍스트 */}
-        <div className={styles.backgroundText}>Kokoshi</div>
+        {/* <div className={styles.backgroundText}>Kokoshi</div> */}
 
         <header className={styles.header}>
           <h1 className={styles.logo}>Kokoshi</h1>
@@ -50,7 +50,7 @@ export default function Home() {
 
           <IconButtons />
 
-          <button className="mx-4 px-4" onClick={() => router.push("event")}>
+          <button className="mx-5" onClick={() => router.push("event")}>
             <img src="/images/img_home_banner.png" alt="" />
           </button>
         </main>

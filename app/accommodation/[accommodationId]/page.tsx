@@ -24,6 +24,7 @@ import { accommodationApi } from "@/feature/accommodation/api/api";
 import { SlideImage } from "@/feature/accommodation/type/accommodation.type";
 import { useRouter } from "next/navigation";
 import ReviewList from "@/app/accommodation/[accommodationId]/review/ReviewListComponent";
+import MainHeaders from "@/components/MainHeaders";
 // interface ImgComponent {
 //   imageUrl: string;
 // }
@@ -128,8 +129,7 @@ export default function AccommodationDetail({
         </div>
       ) : (
         <div className="flex w-[360px] flex-col gap-2 bg-white">
-          {/* 헤더 영역 (뒤로가기 | 타이틀 | 장바구니) */}
-          <div className="flex flex-row  justify-between px-5 pt-[57px]">
+          {/* <div className="flex flex-row  justify-between px-5 pt-[57px]">
             <button onClick={onClickBack}>
               <img src="/ic_back.png" alt="뒤로가기" />
             </button>
@@ -137,6 +137,10 @@ export default function AccommodationDetail({
             <button onClick={onClickCart}>
               <img src="/ic_productdetail_market.png" alt="장바구니" />
             </button>
+          </div> */}
+          {/* 헤더 영역 (뒤로가기 | 타이틀 | 장바구니) */}
+          <div className="px-5">
+            <MainHeaders title={"객실상세"} backIcon={true} cartIcon={true} />
           </div>
           {/* 숙소 이미지 영역 */}
           <div>
