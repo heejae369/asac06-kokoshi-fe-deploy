@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import blackBackIcon from "@/assets/blckBackIcon.png";
 import { useCart } from "@/feature/cart/CartCount";
+import { useEffect } from "react";
 
 interface HeadersProps {
   title: string;
@@ -31,6 +32,11 @@ export default function MainHeaders({
     router.push("/cart");
   };
 
+  useEffect(() => {
+    if (cartIcon) {
+      console.log("GET CartItemsCount");
+    }
+  }, []);
   return (
     <div className="relative mt-[15px] flex h-[80px] items-center justify-between">
       <div className="flex w-1/5 items-center">
