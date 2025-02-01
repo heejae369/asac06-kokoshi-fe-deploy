@@ -7,6 +7,7 @@ import DEFAULT_PROFILE_IMAGE from "@/assets/img/default-profile.png";
 import { useRouter } from "next/navigation";
 import { authFetch, useLoginGuard } from "@/lib/utils";
 import { ImageUploadModal } from "@/components/myPage/ImageUploadModal";
+import ProfileModal from "@/components/ProfileModal";
 
 interface UserData {
   userPoint: number | null;
@@ -20,6 +21,8 @@ const Mypage = () => {
   // useLoginGuard();
 
   const router = useRouter();
+  const [isKakaoModalOpen, setIsKakaoModalOpen] = useState(false);
+  const [isDisabledModalOpen, setIsDisabledModalOpen] = useState(false);
   const [isUserProfileImgModalOpen, setUserProfileImgModalOpen] =
     useState(false);
   const [userProfile, setUserProfile] = useState<string>("");
@@ -72,7 +75,7 @@ const Mypage = () => {
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
-              onClick={() => setUserProfileImgModalOpen(true)} // 모달 열기
+              onClick={() => setUserProfileImgModalOpen(true)}
             ></button>
             <div className={styles.greeting}>
               <p>안녕하세요!</p>
@@ -138,13 +141,24 @@ const Mypage = () => {
         {/* 리스트 메뉴 */}
         <ul className={styles.menuList}>
           <li>
-            <a href="#">위시리스트</a>
+            <button
+              className="text-sm text-[#333]"
+              onClick={() => setIsDisabledModalOpen(true)}
+              // onClick={() => router.push("mypage/wishlist")}
+            >
+              위시리스트
+            </button>
           </li>
           <li>
             <a href="reservationHistory">예약내역</a>
           </li>
           <li>
-            <a href="#">1:1 카카오 문의</a>
+            <button
+              className="text-sm text-[#333]"
+              onClick={() => setIsKakaoModalOpen(true)}
+            >
+              1:1 카카오 문의
+            </button>
           </li>
           <li>
             <a href="mypage/faq">자주 묻는 질문</a>
@@ -158,7 +172,24 @@ const Mypage = () => {
         <button onClick={() => router.push("/yanolza/event")}>
           <img src="images/img_mypage_banner.png" alt="" />
         </button>
-
+        {/* 카카오 문의 모달 */}
+        {isKakaoModalOpen && (
+          <ProfileModal
+            title={"코코시에서 카카오톡으로\n연결하시겠습니까?"}
+            content={""}
+            setState={setIsKakaoModalOpen}
+            onClickFunc={() => setIsDisabledModalOpen(true)}
+          />
+        )}
+        {/* 열 수 없는 페이지 모달 */}
+        {isDisabledModalOpen && (
+          <ProfileModal
+            title={"서비스 준비 중입니다."}
+            content={""}
+            setState={setIsDisabledModalOpen}
+            onClickFunc={() => console.log("미구현")}
+          />
+        )}
         <Footer />
       </div>
     </div>
