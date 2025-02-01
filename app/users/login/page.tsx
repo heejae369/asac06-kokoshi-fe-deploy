@@ -39,7 +39,8 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (isLogin) {
-      router.push("/yanolza/main");
+      // router.push("/yanolza/main");
+      router.replace("/yanolza/main");
     }
   }, [isLogin, router]);
 
