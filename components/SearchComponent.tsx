@@ -33,7 +33,7 @@ export default function SearchComponenet({
 
   return (
     <>
-      <MainHeaders title={"검색"} backIcon={true} />
+      <MainHeaders title={"내 위치"} backIcon={true} />
       <SearchInput
         handleSearch={handleSearch}
         setText={setText}

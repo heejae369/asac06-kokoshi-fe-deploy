@@ -5,6 +5,7 @@ import styles from "@/styles/ReviewWrite.module.css";
 import Footer from "@/components/Footer";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCustomAlert } from "@/feature/useCustomAlert";
+import MainHeaders from "@/components/MainHeaders";
 
 const ReviewClient = () => {
   const router = useRouter();
@@ -96,7 +97,13 @@ const ReviewClient = () => {
     <div className="flex h-screen w-full justify-center bg-gray-100">
       <div className={styles.container}>
         {/* 제목 */}
-        <h1 className={styles.headerTitle}>후기 작성하기</h1>
+        <div className="px-5">
+          <MainHeaders
+            title={"후기 작성하기"}
+            backIcon={true}
+            cartIcon={false}
+          />
+        </div>
 
         {/* 별점 */}
         <div className={styles.ratingSection}>
