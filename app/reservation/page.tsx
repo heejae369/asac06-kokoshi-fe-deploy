@@ -81,8 +81,6 @@ export default function Reservation() {
         updatedProductRadio[id] = { walkRadio: false, vehicleRadio: true };
       }
 
-      console.log("updatedProductRadio : ", updatedProductRadio);
-
       return updatedProductRadio;
     });
   };
