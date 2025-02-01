@@ -64,7 +64,7 @@ export default function Category() {
 
   return (
     <>
-      <div className="flex h-screen w-full justify-center bg-gray-100">
+      <div className="flex min-h-screen w-full justify-center bg-gray-100">
         <div className="h-full w-[360px] bg-white px-5">
           <div className="sticky top-0 z-10 -mx-5 flex w-[360px] items-center bg-white">
             <div className="w-full px-5">

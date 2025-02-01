@@ -122,7 +122,7 @@ export default function AccommodationDetail({
   }
 
   return (
-    <div className="flex h-screen w-full justify-center bg-gray-100">
+    <div className="flex min-h-screen w-full justify-center bg-gray-100">
       {onCalendar ? (
         <div className="relative flex h-full w-[360px] flex-col bg-white px-[20px]">
           <CalendarPage2 setOnCalendar={setOnCalendar} />
