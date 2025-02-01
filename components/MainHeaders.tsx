@@ -3,6 +3,9 @@ import { useRouter } from "next/navigation";
 import blackBackIcon from "@/assets/blckBackIcon.png";
 import { useCart } from "@/feature/cart/CartCount";
 import { useEffect } from "react";
+import { authFetch } from "@/lib/utils";
+import { useDispatch } from "react-redux";
+import { setCartCount } from "@/lib/slice/cartSlice";
 
 interface HeadersProps {
   title: string;
@@ -20,6 +23,7 @@ export default function MainHeaders({
 }: HeadersProps) {
   const router = useRouter();
   const { cartCount } = useCart();
+  const dispatch = useDispatch();
 
   // const homeUrl = `${process.env.NEXT_PUBLIC_CLIENT_BASE_URL}/yanolza/main`;
   // const cartUrl = `${process.env.NEXT_PUBLIC_CLIENT_BASE_URL}/yanolza/cart`;
@@ -33,10 +37,39 @@ export default function MainHeaders({
   };
 
   useEffect(() => {
-    if (cartIcon) {
-      console.log("GET CartItemsCount");
+    if (cartIcon && localStorage.getItem("accessToken")) {
+      getCartCount();
     }
   }, []);
+
+  // 카트 아이템 개수 가져오는 함수
+  const getCartCount = async () => {
+    try {
+      const response = await authFetch(
+        `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/cart/count`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("accessToken") || "",
+          },
+          credentials: "include",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      dispatch(setCartCount(data.data.cartItemsCount));
+      console.log("GET CartItemsCount : ", data);
+    } catch (err) {
+      console.error("CartCount ERROR : ", err);
+      return 0;
+    }
+  };
+
   return (
     <div className="relative mt-[15px] flex h-[80px] items-center justify-between">
       <div className="flex w-1/5 items-center">
