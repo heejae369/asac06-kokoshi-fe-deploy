@@ -3,9 +3,9 @@
 import React, { useState } from "react";
 import styles from "@/styles/Mypage.module.css";
 import Footer from "@/components/Footer";
-import DEFAULT_PROFILE_IMAGE from "@/assets/img/default-profile.png";
+// import DEFAULT_PROFILE_IMAGE from "@/assets/img/default-profile.png";
 import { useRouter } from "next/navigation";
-import { authFetch, useLoginGuard } from "@/lib/utils";
+import { authFetch } from "@/lib/utils";
 import { ImageUploadModal } from "@/components/myPage/ImageUploadModal";
 import ProfileModal from "@/components/ProfileModal";
 
@@ -15,7 +15,7 @@ interface UserData {
   userNickname: string | null;
   user_profile_path: string | null;
 }
-// const DEFAULT_PROFILE_IMAGE = "@/asse/default-profile.png";
+// const DEFAULT_PROFILE_IMAGE = "@/assets/default-profile.png";
 
 const Mypage = () => {
   // useLoginGuard();
@@ -59,7 +59,7 @@ const Mypage = () => {
   }, []);
 
   // 기본 이미지 설정
-  const profileImage = userProfile || DEFAULT_PROFILE_IMAGE;
+  // const profileImage = userProfile || DEFAULT_PROFILE_IMAGE.src;
 
   return (
     <div className="flex h-screen w-full justify-center bg-gray-100">
@@ -71,7 +71,7 @@ const Mypage = () => {
             <button
               className={styles.avatar}
               style={{
-                backgroundImage: `url(${profileImage})`,
+                backgroundImage: `url(${userProfile || "/default_profile.png"})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
@@ -164,7 +164,13 @@ const Mypage = () => {
             <a href="mypage/faq">자주 묻는 질문</a>
           </li>
           <li>
-            <a href="mypage/settings">설정</a>
+            <button
+              className="text-sm text-[#333]"
+              onClick={() => setIsDisabledModalOpen(true)}
+              // onClick={() => router.push("mypage/settings")}
+            >
+              설정
+            </button>
           </li>
         </ul>
 

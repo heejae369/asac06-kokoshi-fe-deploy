@@ -80,8 +80,8 @@ const ReservationHistory = () => {
   };
 
   return (
-    <div className=" flex h-full w-full justify-center bg-gray-100 ">
-      <div className="pb-[60px] w-[360px] bg-white px-5 font-sans ">
+    <div className="flex min-h-screen w-full justify-center bg-gray-100 ">
+      <div className="h-auto w-[360px] bg-white px-5 pb-[60px] font-sans ">
         {/* Header */}
         <div className="sticky top-0 z-10 -mx-5 w-[360px] bg-white">
           <div className="w-full px-5">
