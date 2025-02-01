@@ -131,7 +131,7 @@ const ReviewList = ({
           <div key={index} className="flex w-full border-b-2">
             <img
               className="my-4 mr-2 size-10 rounded-full"
-              src="https://via.placeholder.com/48"
+              src={reviewInfo.userProFile}
               alt="User profile"
             />
             <div className="relative flex w-[272px] flex-col gap-1 py-5 text-xs">
@@ -160,7 +160,7 @@ const ReviewList = ({
                           className={`basis-1/${reviewInfo.reviewPhoto?.length}`}
                         >
                           <Image
-                            src={photo}
+                            src={photo.imageUrl}
                             alt="productList"
                             width={128}
                             height={96}

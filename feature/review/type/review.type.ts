@@ -15,6 +15,7 @@ export interface UseAccommodationReviewQueryArg {
 export type UseAccommodationReviewRes = ApiResponse<Slice<Review>>;
 
 export interface Review {
+  userProFile: string;
   nickName: string;
   roomName: string;
   rate: number;
