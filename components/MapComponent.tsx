@@ -15,6 +15,7 @@ export default function MapComponent() {
     rating: number | any;
     reviewCount: number | any;
     img: string | null;
+    minPrice: number | any;
   };
 
   const [userLocation, setUserLocation] = useState<{
@@ -249,11 +250,11 @@ export default function MapComponent() {
                 </div>
               </div>
               <p className="text-lg font-bold text-gray-900">
-                {selectedAccommodation.price || "75,000"}원
+                {selectedAccommodation.minPrice || "75,000"}원~
               </p>
-              <p className="text-sm text-gray-500">
+              {/* <p className="text-sm text-gray-500">
                 {selectedAccommodation.distance || "김포 공항역 3분"}
-              </p>
+              </p> */}
             </div>
           </div>
         </div>
