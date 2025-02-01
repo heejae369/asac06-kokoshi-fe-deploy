@@ -12,6 +12,13 @@ import Image from "next/image";
 import { getDayOfWeekForString } from "@/feature/DateFormat";
 
 const ReservationHistory = () => {
+  const carcDate = (dateOption: number) => {
+    const tempDate = new Date();
+    tempDate.setMonth(tempDate.getMonth() - dateOption);
+
+    return tempDate.toISOString();
+  };
+
   // const cateGoryList = [
   //   "ALL",
   //   "HOTEL",
@@ -32,13 +39,14 @@ const ReservationHistory = () => {
     "게스트하우스",
     "리조트",
   ];
-  const today = new Date().toISOString().split("T")[0];
 
   const dateRanges = ["최근 1개월", "최근 3개월", "최근 6개월"];
   const dateRangeValues = [1, 3, 6];
 
   const [category, setCategory] = useState("전체");
-  const [startDate, setStartDate] = useState(today);
+  const [startDate, setStartDate] = useState(
+    carcDate(dateRangeValues[0]).split("T")[0]
+  );
   const [reservationList, setReservationList] = useState<reservationByDate[]>(
     []
   );
@@ -53,7 +61,7 @@ const ReservationHistory = () => {
   const handleChangeDate = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const dateOption = Number(e.target.value);
     const date = carcDate(dateOption);
-    const newDate = date.toISOString().split("T")[0];
+    const newDate = date.split("T")[0];
     setStartDate(newDate);
   };
 
@@ -71,13 +79,6 @@ const ReservationHistory = () => {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-
-  const carcDate = (dateOption: number) => {
-    const tempDate = new Date();
-    tempDate.setMonth(tempDate.getMonth() - dateOption);
-
-    return tempDate;
-  };
 
   return (
     <div className="flex min-h-screen w-full justify-center bg-gray-100 ">
