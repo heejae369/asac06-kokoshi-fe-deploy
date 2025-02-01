@@ -271,8 +271,8 @@ export default function CartPage() {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="flex w-full flex-col items-center bg-gray-100">
-      <div className="w-[360px] bg-white px-5">
+    <div className="flex min-h-screen w-full flex-col items-center bg-gray-100">
+      <div className="min-h-screen w-[360px] bg-white px-5">
         <MainHeaders title={title} backIcon={true} homeIcon={true} />
         <TopBar
           allChecked={isAllChecked}
