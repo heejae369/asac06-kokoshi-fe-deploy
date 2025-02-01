@@ -215,7 +215,7 @@ const SearchProductList = ({ dummy, handlePageRouter }) => {
           </div>
           <div className="mr-[5px] mt-[8px] flex items-center justify-end">
             <span className="text-[16px] font-bold">
-              {dummy.price.toLocaleString()}
+              {`${dummy.price.toLocaleString()}원`}
             </span>
           </div>
         </div>

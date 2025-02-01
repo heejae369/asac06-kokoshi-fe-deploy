@@ -28,11 +28,11 @@ export default function MainHeaders({
   };
 
   const onClickCart = () => {
-    router.push("/yanolza/cart");
+    router.push("/cart");
   };
 
   return (
-    <div className="relative mt-[20px] flex justify-between">
+    <div className="relative mt-[15px] flex h-[80px] items-center justify-between">
       <div className="flex w-1/5 items-center">
         {backIcon && (
           <button className="ml-[8px] h-[19px]" onClick={handleBackIcon}>

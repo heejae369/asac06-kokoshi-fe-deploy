@@ -122,7 +122,7 @@ export default function AccommodationDetail({
   }
 
   return (
-    <div className="flex h-screen w-full justify-center bg-gray-100">
+    <div className="flex min-h-screen w-full justify-center bg-gray-100">
       {onCalendar ? (
         <div className="relative flex h-full w-[360px] flex-col bg-white px-[20px]">
           <CalendarPage2 setOnCalendar={setOnCalendar} />
@@ -190,7 +190,7 @@ export default function AccommodationDetail({
                 </span>
                 <span className="ml-[6px] text-[12px] text-[#999999]">
                   {/* {`(${dummy.reviewCount.toLocaleString()})`} */}(
-                  {totalReview})
+                  {totalReview.toLocaleString()})
                 </span>
               </div>
               <div className="mt-[2px] flex items-center">

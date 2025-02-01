@@ -27,6 +27,15 @@ export async function authFetch(url, option) {
   return actualFetch(url, option);
 }
 
+export async function authMethodFetch(url, method, option) {
+  option.method = method;
+  option.headers = {
+    "Content-Type": "application/json",
+    Authorization: localStorage.getItem("accessToken"),
+  };
+  return actualFetch(url, option);
+}
+
 async function actualFetch(url, option) {
   // 기본 요청
   const response = await fetch(url, option);

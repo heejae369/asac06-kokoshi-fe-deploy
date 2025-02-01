@@ -70,11 +70,11 @@ export default function EditProfile() {
 
   useEffect(() => {
     if (isUpdateUserSuccess && isUpdateUserData) {
-      showAlertMessage(isUpdateUserData.message, 3000, () => {
+      showAlertMessage(isUpdateUserData.message, 2000, () => {
         router.push("/mypage"); // 알림이 닫힌 후 페이지 이동
       });
     }
-  }, [isUpdateUserData, isUpdateUserSuccess, router, showAlertMessage]);
+  }, [isUpdateUserData, isUpdateUserSuccess]);
 
   if (isUserError || isUpdateUserError) {
     return <div>Error</div>;

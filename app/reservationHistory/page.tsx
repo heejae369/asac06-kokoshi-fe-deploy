@@ -81,10 +81,10 @@ const ReservationHistory = () => {
 
   return (
     <div className=" flex h-full w-full justify-center bg-gray-100 ">
-      <div className=" w-[360px] bg-white px-5 font-sans ">
+      <div className="pb-[60px] w-[360px] bg-white px-5 font-sans ">
         {/* Header */}
-        <div className="sticky top-0 z-10 -mx-5 h-24 w-[360px] bg-white">
-          <div className="absolute w-full px-5">
+        <div className="sticky top-0 z-10 -mx-5 w-[360px] bg-white">
+          <div className="w-full px-5">
             <MainHeaders title={"예약내역"} backIcon={true} />
           </div>
         </div>
@@ -116,7 +116,7 @@ const ReservationHistory = () => {
         </div>
 
         {/* Reservations List */}
-        <div className="pd-[160px] space-y-4">
+        <div className="space-y-4">
           {reservationList.length === 0 ? (
             <div>조회된 예약 내역이 없습니다.</div>
           ) : (
@@ -216,14 +216,14 @@ const ReservationRoomList = ({
         </div>
         <div className="mt-[13px] flex items-center justify-between">
           <span className="pl-4 text-[12px] font-bold">결제 금액</span>
-          <span className="mr-[3px] font-bold">{`${reservationGroupList.price}원`}</span>
+          <span className="mr-[3px] font-bold">{`${reservationGroupList.price.toLocaleString()}원`}</span>
         </div>
         {new Date(reservationGroupList.endDate) < new Date() && (
           <button
             onClick={() =>
               handleReviewWrite(reservationGroupList.reservationRoomId)
             }
-            className="w-full py-2 text-center border rounded-md text-gray-600"
+            className="w-full rounded-md border py-2 text-center text-gray-600"
           >
             후기 작성하기 가기
           </button>

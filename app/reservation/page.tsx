@@ -160,8 +160,8 @@ export default function Reservation() {
   }
 
   return (
-    <div className="flex h-screen w-full justify-center bg-gray-100 font-sans">
-      <div className="relative flex h-full w-[360px] flex-col overflow-y-auto bg-white px-[20px]">
+    <div className="flex size-full justify-center bg-gray-100 font-sans">
+      <div className="relative flex h-full w-[360px] flex-col bg-white px-[20px]">
         {onReservationPerson ? (
           <>
             <OnReservationPersonTitle
@@ -186,7 +186,7 @@ export default function Reservation() {
           </>
         ) : (
           <>
-            <div className="mt-[15px] tracking-[-0.8px]">
+            <div className="tracking-[-0.8px]">
               {requestReservation?.length > 0 &&
                 requestReservation.map((item, index) => (
                   <div key={index}>
@@ -374,7 +374,9 @@ const ProductList = ({
         </div>
         <div className="flex items-end justify-between">
           <span className="text-[12px]">결제금액</span>
-          <span className="mr-[-20px] font-bold">{roomInfo?.price}원</span>
+          <span className="mr-[-20px] font-bold">
+            {roomInfo?.price.toLocaleString()}원
+          </span>
         </div>
       </div>
     </div>
@@ -452,7 +454,9 @@ const DiscountAndPaymentInfo = ({ totalPrice }) => {
       <div className="mt-[15px] flex flex-col">
         <div className="mb-[20px] flex justify-between tracking-[-0.8px]">
           <span className="text-[14px]">결제 금액</span>
-          <span className="text-[14px] font-bold">{totalPrice}원</span>
+          <span className="text-[14px] font-bold">
+            {totalPrice.toLocaleString()}원
+          </span>
         </div>
       </div>
       <div className="flex justify-between tracking-[-0.8px]">
@@ -464,7 +468,9 @@ const DiscountAndPaymentInfo = ({ totalPrice }) => {
       </div>
       <div className="flex justify-between tracking-[-0.8px]">
         <span className="text-[14px]">총 결제금액</span>
-        <span className="text-[14px] font-bold">{totalPrice}원</span>
+        <span className="text-[14px] font-bold">
+          {totalPrice.toLocaleString()}원
+        </span>
       </div>
     </div>
   );
@@ -668,7 +674,7 @@ const PaymentButton = ({ handlePayment, isPayment, totalPrice }) => {
         disabled={!isPayment}
       >
         <span className="font-bold tracking-[-0.5px] text-white">
-          {totalPrice}원 결제하기
+          {totalPrice.toLocaleString()}원 결제하기
         </span>
       </button>
     </div>

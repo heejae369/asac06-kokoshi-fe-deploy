@@ -54,7 +54,7 @@ const SearchInput = ({ handleSearch, setText, text, handleClear }) => {
 
   return (
     <>
-      <div className="mt-[12px]">
+      <div>
         <div className="flex h-[37px] w-[320px] items-center rounded-[18px] bg-[#F6F6F6] px-[15px]">
           <button
             className="h-[18px] w-[17px]"

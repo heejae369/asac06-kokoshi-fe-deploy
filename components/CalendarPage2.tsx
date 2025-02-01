@@ -48,8 +48,8 @@ export default function CalendarPage2({ setOnCalendar }) {
 
   return (
     <>
-      <div className="relative h-[82px] font-semibold">
-        <div className="mt-[59px] flex h-[24px] items-center">
+      <div className="relative font-semibold">
+        <div className="flex h-[50px] items-center">
           <button
             className="ml-[8px] size-[12px]"
             onClick={() => setOnCalendar(false)}

@@ -98,7 +98,7 @@ export default function SignUpPage() {
             onChange={(e) => {
               let emailValue = e.target.value;
               emailValue = emailValue.replace(/\n/g, "");
-              setEmail(emailValue.slice(0, 20));
+              setEmail(emailValue.slice(0, 30));
             }}
             className="h-12 rounded bg-[#F4F4F4] p-4"
             type="email"
