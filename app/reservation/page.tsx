@@ -192,13 +192,11 @@ export default function Reservation() {
                   <div key={index}>
                     <ProductList
                       data={item}
-                      walkRadio={productRadio[item.roomId]?.walkRadio}
-                      setWalkRadio={() =>
-                        handleRadioChange(item.roomId, "walkRadio")
-                      }
-                      vehicleRadio={productRadio[item.roomId]?.vehicleRadio}
+                      walkRadio={productRadio[index]?.walkRadio}
+                      setWalkRadio={() => handleRadioChange(index, "walkRadio")}
+                      vehicleRadio={productRadio[index]?.vehicleRadio}
                       setVehicleRadio={() =>
-                        handleRadioChange(item.roomId, "vehicleRadio")
+                        handleRadioChange(index, "vehicleRadio")
                       }
                       setTotalPrice={setTotalPrice}
                     />
