@@ -80,6 +80,9 @@ export default function Reservation() {
       } else {
         updatedProductRadio[id] = { walkRadio: false, vehicleRadio: true };
       }
+
+      console.log("updatedProductRadio : ", updatedProductRadio);
+
       return updatedProductRadio;
     });
   };
@@ -102,12 +105,14 @@ export default function Reservation() {
         const decodedParams = decodeURIComponent(queryString);
         const reservationData: requestReservation[] = JSON.parse(decodedParams);
         setRequestReservation(reservationData);
-        setProductRadio(
-          reservationData.reduce((acc, item) => {
-            acc[item.roomId] = { walkRadio: false, vehicleRadio: false };
-            return acc;
-          }, {})
-        );
+        if (requestReservation?.length > 0) {
+          setProductRadio(
+            reservationData.reduce((acc, item) => {
+              acc[item.roomId] = { walkRadio: false, vehicleRadio: false };
+              return acc;
+            }, {})
+          );
+        }
       } catch (error) {
         console.error("잘못된 접근입니다", error);
         alert("잘못된 접근입니다.");
