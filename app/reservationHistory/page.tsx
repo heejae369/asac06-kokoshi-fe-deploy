@@ -66,7 +66,9 @@ const ReservationHistory = () => {
   };
 
   const { isLoading, isSuccess, data } = reservationApi.useReservationListQuery(
-    { requestReservationHistory: { startDate, category } }
+    {
+      requestReservationHistory: { startDate, category },
+    }
   );
 
   // useState 로 category, startDate, endDate 세팅 시, 목록 조회
@@ -74,7 +76,7 @@ const ReservationHistory = () => {
     if (isSuccess && data) {
       setReservationList(data.data);
     }
-  }, [category, data, isSuccess, startDate]);
+  }, [data, isSuccess]);
 
   if (isLoading) {
     return <div>Loading...</div>;
