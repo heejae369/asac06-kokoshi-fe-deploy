@@ -27,10 +27,8 @@ export async function authFetch(url, option) {
   return actualFetch(url, option);
 }
 
-export async function authMethodFetch(url, method, option) {
-  option.method = method;
+export async function authFormFetch(url, option) {
   option.headers = {
-    "Content-Type": "application/json",
     Authorization: localStorage.getItem("accessToken"),
   };
   return actualFetch(url, option);
