@@ -8,7 +8,7 @@ import Header from "@/components/BackAndTitleAndButton";
 import Modal from "@/components/ui/public/modal";
 import { useRouter } from "next/navigation";
 import MainHeaders from "@/components/MainHeaders";
-import { authFetch, authMethodFetch } from "@/lib/utils";
+import { authFetch } from "@/lib/utils";
 
 interface CartItemData {
   roomId: number;
@@ -63,7 +63,6 @@ export default function CartPage() {
             "Content-Type": "application/json",
             Authorization: localStorage.getItem("accessToken"),
           },
-          credentials: "include",
         };
         // const requestData = {
         //   userId: userId, // 요청 바디의 userId (필요하다면 제거 가능)
@@ -181,12 +180,12 @@ export default function CartPage() {
 
   const confirmDelete = async () => {
     const option = {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: localStorage.getItem("accessToken"),
       },
-      credentials: "include",
-      body: { selectedItemIds }, //cartId: cartId, cartItemId: id /*userId 삭제*/ },
+      body: JSON.stringify({ cartId: cartId, cartItems: selectedItemIds }), //cartId: cartId, cartItemId: id /*userId 삭제*/ },
     };
     // 카트아이디 없으면 패스
     if (!cartId) {
@@ -194,9 +193,8 @@ export default function CartPage() {
       return;
     }
     try {
-      authMethodFetch(
+      authFetch(
         `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/cart/deleteCartItem`,
-        "DELETE",
         option
       );
       // 삭제 후 로컬 상태 업데이트

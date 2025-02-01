@@ -1,4 +1,4 @@
-import { authFetch } from "@/lib/utils";
+import { authFormFetch } from "@/lib/utils";
 import styles from "@/styles/Mypage.module.css";
 import { useState } from "react";
 
@@ -19,7 +19,7 @@ export const ImageUploadModal = ({
     formData.append("file", selectedImage);
 
     try {
-      const response = await authFetch(
+      const response = await authFormFetch(
         `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/users/api/uploadProfile`,
         {
           method: "POST",

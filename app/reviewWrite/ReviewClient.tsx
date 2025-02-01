@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCustomAlert } from "@/feature/useCustomAlert";
 import MainHeaders from "@/components/MainHeaders";
+import { authFormFetch } from "@/lib/utils";
 
 const ReviewClient = () => {
   const router = useRouter();
@@ -66,7 +67,7 @@ const ReviewClient = () => {
         formData.append("image", image);
       });
       // API 요청
-      const response = await fetch(
+      const response = await authFormFetch(
         `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/review`,
         {
           method: "POST",
