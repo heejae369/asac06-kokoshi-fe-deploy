@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { authFetch } from "@/lib/utils";
 import { ImageUploadModal } from "@/components/myPage/ImageUploadModal";
 import ProfileModal from "@/components/ProfileModal";
+import Link from "next/link";
 
 interface UserData {
   userPoint: number | null;
@@ -84,9 +85,9 @@ const Mypage = () => {
               </p>
             </div>
           </div>
-          <a href="/mypage/editProfile" className={styles.editProfile}>
+          <Link href="/mypage/editProfile" className={styles.editProfile}>
             내 정보 수정 &gt;
-          </a>
+          </Link>
         </header>
 
         {/* 포인트 및 쿠폰 */}
@@ -150,7 +151,7 @@ const Mypage = () => {
             </button>
           </li>
           <li>
-            <a href="reservationHistory">예약내역</a>
+            <Link href="reservationHistory">예약내역</Link>
           </li>
           <li>
             <button
@@ -161,7 +162,7 @@ const Mypage = () => {
             </button>
           </li>
           <li>
-            <a href="mypage/faq">자주 묻는 질문</a>
+            <Link href="mypage/faq">자주 묻는 질문</Link>
           </li>
           <li>
             <button
