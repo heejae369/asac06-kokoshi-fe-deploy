@@ -21,16 +21,6 @@ export default function MapComponent() {
     lat: number;
     lng: number;
   } | null>(null);
-  const [accommodations, setAccommodations] = useState<
-    {
-      id: any;
-      name: string;
-      address: string;
-      rating: any;
-      reviewCount: any;
-      img: string | null;
-    }[]
-  >([]);
 
   const [selectedAccommodation, setSelectedAccommodation] =
     useState<Accommodation | null>(null);
@@ -88,7 +78,7 @@ export default function MapComponent() {
           alert("이 브라우저는 GPS 위치 정보를 지원하지 않습니다.");
         }
         // 숙소 데이터 가져오기
-        fetchAccommodations(map);
+        // fetchAccommodations(map);
       });
     };
 
@@ -101,7 +91,7 @@ export default function MapComponent() {
 
   useEffect(() => {
     if (mapInstance) {
-      console.log("지도 로딩 완료. 마커 표시 시작");
+      console.log("🗺️ 현재 mapInstance 상태:", mapInstance);
       fetchAccommodations(mapInstance); // 🔹 지도 객체가 설정된 후에만 실행
     }
   }, [mapInstance]);
@@ -115,9 +105,8 @@ export default function MapComponent() {
       if (!response.ok) {
         throw new Error("숙소 데이터를 가져오는데 실패했습니다.");
       }
-
       const data = await response.json();
-      setAccommodations(data); // 상태로 저장
+      // setAccommodations(data); // 상태로 저장
       displayMarkers(data, map); // 지도에 마커 표시
     } catch (error) {
       console.error(error);
@@ -160,8 +149,8 @@ export default function MapComponent() {
                 openInfowindowRef.current = null;
                 setSelectedAccommodation(null);
               } else {
-                if (openInfowindow) {
-                  openInfowindow.close(); // 기존 인포윈도우 닫기
+                if (openInfowindowRef.current) {
+                  openInfowindowRef.current.close(); // 기존 인포윈도우 닫기
                 }
                 infowindow.open(map, marker);
                 openInfowindowRef.current = infowindow;
@@ -195,14 +184,13 @@ export default function MapComponent() {
 
   return (
     <>
-      {/* 검색 및 필터 */}
-
-      {/* 지도 */}
-
       {/* 내 위치로 이동 버튼 */}
       <button
         className="absolute bottom-16 left-4 p-3 bg-white rounded-full shadow-md z-50"
-        onClick={moveToMyLocation}
+        onClick={(e) => {
+          e.stopPropagation(); // ✅ 다른 이벤트와 충돌 방지
+          moveToMyLocation();
+        }}
       >
         <span role="img" aria-label="location">
           📍
