@@ -1,39 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Footer from "@/components/Footer";
-import { useCalendar } from "@/feature/CalendarContext";
 import { useRouter } from "next/navigation";
 
 export default function MapComponent() {
-  const [searchText, setSearchText] = useState("지역, 숙소 검색");
-  const [onCalendar, setOnCalendar] = useState(false);
-  const { checkInDate, checkOutDate, adultNumber } = useCalendar();
-  const [text, setText] = useState(searchText || "");
+  const [openInfowindow, setOpenInfowindow] = useState<any>(null);
   const router = useRouter();
   // 숙소 정보 타입 정의
   type Accommodation = {
     id: number;
     name: string;
     address: string;
-    rating: number;
-    reviewCount: number;
+    rating: number | any;
+    reviewCount: number | any;
     img: string | null;
   };
+
   const [userLocation, setUserLocation] = useState<{
     lat: number;
     lng: number;
   } | null>(null);
-  const [accommodations, setAccommodations] = useState<
-    {
-      id: any;
-      name: string;
-      address: string;
-      rating: any;
-      reviewCount: any;
-      img: string | null;
-    }[]
-  >([]);
 
   const [selectedAccommodation, setSelectedAccommodation] =
     useState<Accommodation | null>(null);
@@ -41,10 +28,8 @@ export default function MapComponent() {
 
   useEffect(() => {
     const mapScript = document.createElement("script");
-
     mapScript.async = true;
     mapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY}&autoload=false&libraries=services`;
-
     document.head.appendChild(mapScript);
 
     const onLoadKakaoMap = () => {
@@ -77,7 +62,6 @@ export default function MapComponent() {
                 image: markerImage,
               });
               marker.setMap(map);
-
               map.setCenter(markerPosition); // 지도의 중심을 현재 위치로 설정
             },
             (error) => {
@@ -93,9 +77,8 @@ export default function MapComponent() {
         } else {
           alert("이 브라우저는 GPS 위치 정보를 지원하지 않습니다.");
         }
-
         // 숙소 데이터 가져오기
-        fetchAccommodations(map);
+        // fetchAccommodations(map);
       });
     };
 
@@ -106,18 +89,12 @@ export default function MapComponent() {
     };
   }, []);
 
-  // // [추가] onCalendar 상태 변경 시 지도 재조정
-  // useEffect(() => {
-  //   if (!onCalendar && mapInstance) {
-  //     // 지도 크기와 중심 좌표를 재조정
-  //     mapInstance.relayout(); // 지도 크기 재조정
-  //     if (userLocation) {
-  //       const { lat, lng } = userLocation;
-  //       const moveLatLng = new window.kakao.maps.LatLng(lat, lng);
-  //       mapInstance.setCenter(moveLatLng); // 지도 중심 좌표를 현재 위치로 설정
-  //     }
-  //   }
-  // }, [onCalendar, mapInstance]); // onCalendar 상태가 변경될 때 실행
+  useEffect(() => {
+    if (mapInstance) {
+      console.log("🗺️ 현재 mapInstance 상태:", mapInstance);
+      fetchAccommodations(mapInstance); // 🔹 지도 객체가 설정된 후에만 실행
+    }
+  }, [mapInstance]);
 
   // 숙소 데이터 가져오기
   const fetchAccommodations = async (map: any) => {
@@ -128,30 +105,19 @@ export default function MapComponent() {
       if (!response.ok) {
         throw new Error("숙소 데이터를 가져오는데 실패했습니다.");
       }
-
       const data = await response.json();
-      setAccommodations(data); // 상태로 저장
+      // setAccommodations(data); // 상태로 저장
       displayMarkers(data, map); // 지도에 마커 표시
     } catch (error) {
       console.error(error);
     }
   };
-
+  const openInfowindowRef = useRef<any>(null);
   // 지도에 마커 표시
-  const displayMarkers = (
-    data: {
-      id: number;
-      name: string;
-      address: string;
-      rating: any;
-      reviewCount: any;
-      img: string | null;
-    }[],
-    map: any
-  ) => {
+  const displayMarkers = (accommodations: Accommodation[], map: any) => {
     const geocoder = new window.kakao.maps.services.Geocoder();
 
-    data.forEach((accommodation) => {
+    accommodations.forEach((accommodation) => {
       geocoder.addressSearch(
         accommodation.address,
         (result: any[], status: any) => {
@@ -178,17 +144,17 @@ export default function MapComponent() {
 
             // 마커 클릭 이벤트
             window.kakao.maps.event.addListener(marker, "click", () => {
-              setSelectedAccommodation((prev) =>
-                prev && prev.id === accommodation.id ? null : accommodation
-              );
-              infowindow.open(map, marker); // 인포윈도우 열기
-              console.log(accommodation);
-              // 클릭해도 지도 중심과 확대 수준 유지
-              if (userLocation) {
-                const { lat, lng } = userLocation;
-                const moveLatLng = new window.kakao.maps.LatLng(lat, lng);
-                map.setLevel(3); // 지도의 확대 수준 고정
-                map.setCenter(moveLatLng); // 현재 위치 중심 유지
+              if (openInfowindowRef.current === infowindow) {
+                infowindow.close();
+                openInfowindowRef.current = null;
+                setSelectedAccommodation(null);
+              } else {
+                if (openInfowindowRef.current) {
+                  openInfowindowRef.current.close(); // 기존 인포윈도우 닫기
+                }
+                infowindow.open(map, marker);
+                openInfowindowRef.current = infowindow;
+                setSelectedAccommodation(accommodation);
               }
             });
           } else {
@@ -198,9 +164,9 @@ export default function MapComponent() {
       );
     });
   };
-  useEffect(() => {
-    setSelectedAccommodation(null); // 상태 초기화
-  }, []);
+  // useEffect(() => {
+  //   setSelectedAccommodation(null); // 상태 초기화
+  // }, []);
 
   // 내 위치로 이동 버튼 클릭 시 실행
   const moveToMyLocation = () => {
@@ -218,14 +184,13 @@ export default function MapComponent() {
 
   return (
     <>
-      {/* 검색 및 필터 */}
-
-      {/* 지도 */}
-
       {/* 내 위치로 이동 버튼 */}
       <button
         className="absolute bottom-16 left-4 p-3 bg-white rounded-full shadow-md z-50"
-        onClick={moveToMyLocation}
+        onClick={(e) => {
+          e.stopPropagation(); // ✅ 다른 이벤트와 충돌 방지
+          moveToMyLocation();
+        }}
       >
         <span role="img" aria-label="location">
           📍
