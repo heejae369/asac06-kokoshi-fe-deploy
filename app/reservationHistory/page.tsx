@@ -221,16 +221,16 @@ const ReservationRoomList = ({
           <span className="pl-4 text-[12px] font-bold">결제 금액</span>
           <span className="mr-[3px] font-bold">{`${reservationGroupList.price.toLocaleString()}원`}</span>
         </div>
-        {/* {new Date(reservationGroupList.endDate) < new Date() && ( */}
-        <button
-          onClick={() =>
-            handleReviewWrite(reservationGroupList.reservationRoomId)
-          }
-          className="w-full rounded-md border py-2 text-center text-gray-600"
-        >
-          후기 작성하기 가기
-        </button>
-        {/* )} */}
+        {new Date(reservationGroupList.endDate) < new Date() && (
+          <button
+            onClick={() =>
+              handleReviewWrite(reservationGroupList.reservationRoomId)
+            }
+            className="w-full rounded-md border py-2 text-center text-gray-600"
+          >
+            후기 작성하기 가기
+          </button>
+        )}
       </div>
     </>
   );
