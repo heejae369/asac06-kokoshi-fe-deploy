@@ -4,9 +4,9 @@ import {
   UseAccommodationReviewStatisticsQueryArg,
   UseAccommodationReviewStatisticsRes,
 } from "@/feature/review/type/review.type";
-import { authApi } from "@/lib/api";
+import { api } from "@/lib/api";
 
-export const reviewApi = authApi.injectEndpoints({
+export const reviewApi = api.injectEndpoints({
   endpoints: (builder) => ({
     accommodationReview: builder.query<
       UseAccommodationReviewRes,
