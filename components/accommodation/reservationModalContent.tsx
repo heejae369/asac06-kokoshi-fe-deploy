@@ -84,11 +84,17 @@ export const ReservationType = ({
 
   const onClickCart = () => {
     selectTimeCheck("cart");
+    let endDate = "";
+    if (reservationType === "DAY_USE") {
+      endDate = formattedRequestDate(checkInDate);
+    } else {
+      endDate = formattedRequestDate(checkOutDate);
+    }
     addCart({
       requestAddToCart: {
         roomId: roomDetail.roomId,
         startDate: formattedRequestDate(checkInDate),
-        endDate: formattedRequestDate(checkOutDate),
+        endDate: endDate,
         startTime: roomDetail.checkIn,
         endTime: roomDetail.checkOut,
         reservationType: reservationType,
