@@ -31,7 +31,12 @@ export default function Home() {
 
         <main className={styles.main}>
           <div className={styles.searchBar}>
-            <img src={search.src} alt="검색" className={styles.searchIcon} />
+            <img
+              src={search.src}
+              alt="검색"
+              className={styles.searchIcon}
+              onClick={() => router.push(`/search`)}
+            />
             <input
               type="text"
               className={styles.input}
