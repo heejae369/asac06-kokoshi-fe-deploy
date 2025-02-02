@@ -102,14 +102,23 @@ export default function EditProfile() {
       <div className="w-[360px] bg-white px-5 font-sans">
         <MainHeaders title="내 정보 수정" backIcon />
         <div className="relative inline-block">
-          <Image
-            className="mt-10 w-17 h-17 rounded-full object-cover"
+          {/* <Image
+            className="mt-10 rounded-full object-cover"
             src={userProfile || "/default_profile.png"}
             alt=""
             width={68}
             height={68}
             onClick={() => setUserProfileImgModalOpen(true)}
             style={{ cursor: "pointer" }}
+          /> */}
+          <button
+            className="size-20 rounded-full object-cover"
+            style={{
+              backgroundImage: `url(${userProfile || "/default_profile.png"})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+            onClick={() => setUserProfileImgModalOpen(true)}
           />
           <button
             className="absolute bottom-0 right-0 size-5 rounded-full"

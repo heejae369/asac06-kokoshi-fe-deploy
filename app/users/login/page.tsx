@@ -16,6 +16,7 @@ import {
   IsLoginContext,
   useIsLoginState,
 } from "@/feature/context/IsLoginContext";
+import CustomButtonP from "@/components/CustomButtonP";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -122,13 +123,9 @@ export default function LoginPage() {
           )}
         </div>
         {/* 로그인 버튼 */}
-        <button
-          className={`h-12 w-80 rounded ${
-            isButtonValid
-              ? "bg-[#8728ff] text-white"
-              : "bg-[#E9D8FF] text-[#8728ff]"
-          }`}
-          disabled={!isButtonValid}
+        <CustomButtonP
+          text={"로그인"}
+          isButtonValid={!isButtonValid}
           onClick={() =>
             LoginAxios({
               setShowValidation,
@@ -141,9 +138,7 @@ export default function LoginPage() {
               dispatch,
             })
           }
-        >
-          로그인
-        </button>
+        />
         {/* 아이디 찾기 | 비밀번호 찾기 | 회원가입 */}
         <div className="flex justify-center gap-[10px] py-3 text-sm font-normal text-[#8728FF]">
           <Link href={"/users/findId"}>아이디 찾기</Link>

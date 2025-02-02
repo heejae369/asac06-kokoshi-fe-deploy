@@ -52,7 +52,7 @@ export default async function LoginPostApi({
           setIsLogin(true);
           // dispatch(login(response.data));
 
-          router.push("/yanolza/main");
+          router.replace("/yanolza/main");
         } else {
           setShowValidation(true);
           setSignUp(false);

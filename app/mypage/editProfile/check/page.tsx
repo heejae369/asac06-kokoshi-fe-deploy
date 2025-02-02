@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import EditProfilePostApi from "@/feature/EditProfilePostAPi";
+import CustomButton from "@/components/CustomButton";
 
 export default function EditNameAndPhoneNumber() {
   const router = useRouter();
@@ -66,7 +67,7 @@ export default function EditNameAndPhoneNumber() {
           </div>
         )}
         <div className="grow" />
-        <Button
+        {/* <Button
           className="mb-20 h-12 w-full rounded text-[1rem] disabled:bg-gray-400"
           variant={"point"}
           disabled={name == "" || phone == ""}
@@ -79,7 +80,20 @@ export default function EditNameAndPhoneNumber() {
           }}
         >
           확인
-        </Button>
+        </Button> */}
+        <CustomButton
+          className="mb-20"
+          isActive={name != "" && phone.length == 13}
+          onClick={async () => {
+            setShowValidation(true);
+            if (await EditProfilePostApi({ name, phone })) {
+              setValidation(true);
+              router.push("edit");
+            } else setValidation(false);
+          }}
+        >
+          확인
+        </CustomButton>
         <Footer />
       </div>
     </div>

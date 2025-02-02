@@ -77,7 +77,7 @@ const Mypage = () => {
                 backgroundPosition: "center",
               }}
               onClick={() => setUserProfileImgModalOpen(true)}
-            ></button>
+            />
             <div className={styles.greeting}>
               <p>안녕하세요!</p>
               <p className={styles.email}>
