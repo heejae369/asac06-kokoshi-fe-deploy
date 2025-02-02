@@ -26,7 +26,9 @@ export default function Reservation() {
 
   const [paymentType, setPaymentType] = useState("");
   const [totaltTerms, setTotalTerms] = useState(false);
-  const [totalPrice, setTotalPrice] = useState(0);
+  // const [totalPrice, setTotalPrice] = useState(0);
+  const [totalPrices, setTotalPrices] = useState<number[]>([]);
+
   const [isPayment, setIsPayment] = useState(false);
 
   const [productRadio, setProductRadio] = useState({});
@@ -37,6 +39,15 @@ export default function Reservation() {
     requestReservation[]
   >([]);
   const router = useRouter();
+
+  const handleSetPrice = (index: number, price: number) => {
+    setTotalPrices((prev) => {
+      const newPrices = [...prev];
+      newPrices[index] = price;
+      return newPrices;
+    });
+  };
+  const totalPrice = totalPrices.reduce((acc, cur) => acc + (cur || 0), 0);
 
   //프리랜더링 문제
   // const searchParams = useSearchParams();
@@ -164,7 +175,7 @@ export default function Reservation() {
 
   return (
     <div className="flex size-full justify-center bg-gray-100 font-sans">
-      <div className="relative flex h-full w-[360px] flex-col bg-white px-[20px]">
+      <div className="relative flex min-h-screen w-[360px] flex-col bg-white px-[20px]">
         {onReservationPerson ? (
           <>
             <OnReservationPersonTitle
@@ -201,7 +212,9 @@ export default function Reservation() {
                       setVehicleRadio={() =>
                         handleRadioChange(index, "vehicleRadio")
                       }
-                      setTotalPrice={setTotalPrice}
+                      // setTotalPrice={setTotalPrice}
+                      index={index}
+                      setPrice={handleSetPrice}
                     />
                     {index < requestReservation.length - 1 && (
                       <hr className="my-[20px] w-[320px]" />
@@ -244,7 +257,9 @@ const ProductList = ({
   setWalkRadio,
   vehicleRadio,
   setVehicleRadio,
-  setTotalPrice,
+  // setTotalPrice,
+  index,
+  setPrice,
 }) => {
   const [roomInfo, setRoomInfo] = useState<roomInfoForReserve>();
 
@@ -256,6 +271,7 @@ const ProductList = ({
     setVehicleRadio((prev) => !prev);
   };
 
+  // 추후 수정(한번에 조회해 올것)
   const {
     data: roomData,
     isLoading: isRoomLoading,
@@ -269,12 +285,19 @@ const ProductList = ({
     },
   });
 
+  // useEffect(() => {
+  //   if (roomData) {
+  //     setRoomInfo(roomData.data);
+  //     // setTotalPrice((prev) => prev + roomData.data.price);
+  //   }
+  // }, [roomData, setTotalPrice]);
+
   useEffect(() => {
     if (roomData) {
       setRoomInfo(roomData.data);
-      setTotalPrice((prev) => prev + roomData.data.price);
+      setPrice(index, roomData.data.price); // 부모의 상태 업데이트
     }
-  }, [roomData, setTotalPrice]);
+  }, [roomData]);
 
   const { hours } = calculateTimeDifference(data.startTime, data.endTime);
 
@@ -408,7 +431,7 @@ const ReservationPerson = ({ name, phoneNumber, handleReservationPerson }) => {
 
 const CouponAndPoint = ({}) => {
   // 쿠폰 장수
-  const couponCount = 1;
+  const couponCount = 0;
 
   return (
     <div>

@@ -21,13 +21,17 @@ import { formattedMonthToDay } from "@/feature/DateFormat";
 import { useCalendar } from "@/feature/CalendarContext";
 import { AccommodationRoomList } from "@/components/accommodation/accommodationRoomList";
 import { accommodationApi } from "@/feature/accommodation/api/api";
-import { SlideImage } from "@/feature/accommodation/type/accommodation.type";
+import {
+  Room,
+  SlideImage,
+} from "@/feature/accommodation/type/accommodation.type";
 import { useRouter } from "next/navigation";
 import ReviewList from "@/app/accommodation/[accommodationId]/review/ReviewListComponent";
 import MainHeaders from "@/components/MainHeaders";
-// interface ImgComponent {
-//   imageUrl: string;
-// }
+import { Modal } from "@/components/Modal";
+import { ReservationType } from "@/components/accommodation/reservationModalContent";
+import { openModal } from "@/lib/slice/modalSlice";
+import { useDispatch } from "react-redux";
 
 export default function AccommodationDetail({
   params,
@@ -46,19 +50,11 @@ export default function AccommodationDetail({
 
   const [api, setApi] = useState<CarouselApi>();
   const [currentPage, setCurrentPage] = useState(0);
-  // const [canScrollNext, setCanScrollNext] = useState(true);
 
-  // const [imageIndex, setImageIndex] = useState<number>(0);
-  // const [slideIndex, setSlideIndex] = useState<number>(0);
+  const [room, setRoom] = useState<Room>();
+
   const router = useRouter();
-
-  const onClickBack = () => {
-    console.log("history back");
-  };
-
-  const onClickCart = () => {
-    console.log("cart click");
-  };
+  const dispatch = useDispatch();
 
   const {
     data: accommodationData,
@@ -79,6 +75,12 @@ export default function AccommodationDetail({
       size: 3,
     },
   });
+
+  useEffect(() => {
+    if (room) {
+      dispatch(openModal());
+    }
+  }, [room]);
 
   useEffect(() => {
     if (accommodationData) {
@@ -129,18 +131,8 @@ export default function AccommodationDetail({
         </div>
       ) : (
         <div className="flex w-[360px] flex-col gap-2 bg-white">
-          {/* <div className="flex flex-row  justify-between px-5 pt-[57px]">
-            <button onClick={onClickBack}>
-              <img src="/ic_back.png" alt="뒤로가기" />
-            </button>
-            <span className="text-base font-bold">{name}</span>
-            <button onClick={onClickCart}>
-              <img src="/ic_productdetail_market.png" alt="장바구니" />
-            </button>
-          </div> */}
-          {/* 헤더 영역 (뒤로가기 | 타이틀 | 장바구니) */}
           <div className="px-5">
-            <MainHeaders title={"객실상세"} backIcon={true} cartIcon={true} />
+            <MainHeaders title={name} backIcon={true} cartIcon={true} />
           </div>
           {/* 숙소 이미지 영역 */}
           <div>
@@ -237,6 +229,7 @@ export default function AccommodationDetail({
                 {/* 객실 리스트 */}
                 <AccommodationRoomList
                   accommodationId={params.accommodationId}
+                  setRoom={setRoom}
                 />
               </TabsContent>
               <TabsContent value="review">
@@ -250,6 +243,9 @@ export default function AccommodationDetail({
           </div>
         </div>
       )}
+      <Modal>
+        <ReservationType roomDetail={room} reservationType="STAY" />
+      </Modal>
     </div>
   );
 }
