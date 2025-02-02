@@ -1,7 +1,6 @@
 "use client";
 
 import MainHeaders from "@/components/MainHeaders";
-import Image from "next/image";
 import { useState } from "react";
 import { userAuthApi } from "@/feature/users/api/api";
 import { useRouter } from "next/navigation";
@@ -11,10 +10,9 @@ import {
   UserEditInfo,
 } from "@/feature/users/types/users.type";
 import { ImageUploadModal } from "@/components/myPage/ImageUploadModal";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useCustomAlert } from "@/feature/useCustomAlert";
+import CustomButtonP from "@/components/CustomButtonP";
 
 export default function EditProfile() {
   const {
@@ -109,14 +107,14 @@ export default function EditProfile() {
       <div className="w-[360px] bg-white px-5 font-sans">
         <MainHeaders title="내 정보 수정" backIcon />
         <div className="relative inline-block">
-          <Image
-            className="mt-10 w-17 h-17 rounded-full object-cover"
-            src={userProfile || "/default_profile.png"}
-            alt=""
-            width={68}
-            height={68}
+          <button
+            className="size-20 rounded-full object-cover"
+            style={{
+              backgroundImage: `url(${userProfile || "/default_profile.png"})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
             onClick={() => setUserProfileImgModalOpen(true)}
-            style={{ cursor: "pointer" }}
           />
           <button
             className="absolute bottom-0 right-0 size-5 rounded-full"
@@ -133,8 +131,8 @@ export default function EditProfile() {
             <p className="mt-5 text-xl font-bold">회원 정보</p>
           </div>
           <div className="my-4 flex">
-            <p className="w-28 self-center text-sm text-gray-500">이름</p>
-            <Input
+            <p className="w-24 self-center text-sm text-gray-500">이름</p>
+            <input
               id="userName"
               className="text-sm font-semibold"
               {...register("userName", {
@@ -145,7 +143,7 @@ export default function EditProfile() {
                 },
               })}
               placeholder="이름을 입력해주세요."
-            ></Input>
+            />
           </div>
           {errors.userName && (
             <span className="text-sm text-[#FF0045]">
@@ -154,16 +152,16 @@ export default function EditProfile() {
           )}
           <div className="h-0.5 w-full bg-gray-100" />
           <div className="my-4 flex">
-            <p className="w-28 self-center text-sm text-gray-500">
+            <p className="w-24 self-center text-sm text-gray-500">
               휴대폰 번호
             </p>
-            <Input
+            <input
               id="phone"
               className="text-sm font-semibold"
               {...register("phone", { required: "전화번호를 입력해주세요." })}
               onChange={handlePhoneChange}
               placeholder="전화번호를 입력해주세요."
-            ></Input>
+            />
           </div>
           {errors.phone && (
             <span className="text-sm text-[#FF0045]">
@@ -172,8 +170,8 @@ export default function EditProfile() {
           )}
           <div className="h-0.5 w-full bg-gray-100" />
           <div className="my-4 flex">
-            <p className="w-28 self-center text-sm text-gray-500">생년월일</p>
-            <Input
+            <p className="w-24 self-center text-sm text-gray-500">생년월일</p>
+            <input
               id="userBirth"
               className="text-sm font-semibold"
               {...register("userBirth", {
@@ -181,7 +179,7 @@ export default function EditProfile() {
               })}
               onChange={handleUserBirthChange}
               placeholder="YYYY/MM/DD"
-            ></Input>
+            />
           </div>
           {errors.userBirth && (
             <span className="text-sm text-[#FF0045]">
@@ -190,20 +188,20 @@ export default function EditProfile() {
           )}
           <div className="h-0.5 w-full bg-gray-100" />
           <div className="my-4 flex">
-            <p className="w-28 self-center text-sm text-gray-500">닉네임</p>
-            <Input
+            <p className="w-24 self-center text-sm text-gray-500">닉네임</p>
+            <input
               id="nickName"
               className="text-sm font-semibold"
               {...register("nickName", { required: "닉네임을 입력해주세요." })}
               placeholder="닉네임을 입력해주세요."
-            ></Input>
+            />
           </div>
           {errors.nickName && (
             <span className="text-sm text-[#FF0045]">
               {errors.nickName.message}
             </span>
           )}
-          <Button
+          {/* <Button
             className="my-4 h-12 w-full rounded text-[1rem]"
             variant={"point"}
             type="submit"
@@ -212,7 +210,14 @@ export default function EditProfile() {
             }
           >
             수정완료
-          </Button>
+          </Button> */}
+          <div className="h-4" />
+          <CustomButtonP
+            text={"수정완료"}
+            isButtonValid={
+              isSubmitting || !userName || !phone || !userBirth || !nickName
+            }
+          />
         </form>
         {/* 모달 */}
         {isUserProfileImgModalOpen && (
