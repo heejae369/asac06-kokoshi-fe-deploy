@@ -47,8 +47,8 @@ export default function SignupPage() {
               {...register("year", {
                 required: "연도를 입력해주세요.",
                 validate: (value) =>
-                  (Number(value) >= 1990 && Number(value) <= 2024) ||
-                  "연도는 1990년 ~ 2024년 이여야 합니다.",
+                  (Number(value) >= 1900 && Number(value) <= 2024) ||
+                  "연도는 1900년 ~ 2024년 이여야 합니다.",
               })}
               onChange={(e) => {
                 const numericValue = e.target.value.replace(/[^0-9]/g, "");
