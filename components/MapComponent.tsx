@@ -50,7 +50,7 @@ export default function MapComponent() {
         };
 
         const map = new window.kakao.maps.Map(mapContainer, mapOption);
-        setMapInstance(map); // ✅ 지도 객체 저장
+        setMapInstance(map); //  지도 객체 저장
 
         console.log("🗺️ 카카오 맵 로드 완료, 지도 객체 설정됨");
       });
@@ -65,16 +65,15 @@ export default function MapComponent() {
 
   useEffect(() => {
     if (mapInstance && navigator.geolocation) {
-      console.log("📍 현재 위치 가져오기 시작...");
+      console.log(" 현재 위치 가져오기 시작...");
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;
-          setUserLocation({ lat, lng }); // ✅ 현재 위치 상태 저장
+          setUserLocation({ lat, lng }); //  현재 위치 상태 저장
 
-          console.log("✅ 현재 위치 가져오기 성공:", { lat, lng });
-
-          // ✅ 지도 객체가 있을 때만 setCenter 실행
+          console.log(" 현재 위치 가져오기 성공:", { lat, lng });
+          //  지도 객체가 있을 때만 setCenter 실행
           if (mapInstance) {
             const markerPosition = new window.kakao.maps.LatLng(lat, lng);
             const markerImage = new window.kakao.maps.MarkerImage(
@@ -93,18 +92,18 @@ export default function MapComponent() {
           }
         },
         (error) => {
-          console.error("❌ 현재 위치 가져오기 실패:", error);
+          console.error(" 현재 위치 가져오기 실패:", error);
           alert("현재 위치를 가져올 수 없습니다. 위치 권한을 확인하세요.");
         }
       );
     }
-  }, [mapInstance]); // ✅ mapInstance가 설정된 후에만 실행
+  }, [mapInstance]); //  mapInstance가 설정된 후에만 실행
 
   useEffect(() => {
     if (mapInstance) {
       console.log("🗺️ 현재 mapInstance 상태:", mapInstance);
 
-      // ✅ 지도 객체가 설정된 후 숙소 데이터 가져오기
+      //  지도 객체가 설정된 후 숙소 데이터 가져오기
       fetchAccommodations(mapInstance);
     }
   }, [mapInstance]);
