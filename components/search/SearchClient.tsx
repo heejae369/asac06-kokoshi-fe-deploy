@@ -33,8 +33,12 @@ export default function SearchClient() {
   const router = useRouter();
   const searchParams = useSearchParams(); // useSearchParams는 클라이언트 측에서 안전하게 호출 가능
 
+  const category = searchParams.get("category");
+  const search = searchParams.get("search");
+
   // 기존 서치 코드
   useEffect(() => {
+    console.log("useEffect category 변경");
     if (searchParams && !filterApply.accommodationCategory.includes("전체")) {
       const search = searchParams.get("search");
       if (search) {
@@ -44,7 +48,7 @@ export default function SearchClient() {
         setSearchText(search);
       }
     }
-  }, [searchParams]);
+  }, [category]);
 
   const fetchData = async (text) => {
     console.log("숙소리스트 가져오기");
@@ -70,12 +74,9 @@ export default function SearchClient() {
   };
   // 성환님 카테고리 추가 부분  --  추후 적요
   useEffect(() => {
-    const category = searchParams.get("category");
-    const search = searchParams.get("search");
-
     if (search) {
       setSearchText(search);
-    }
+    } else return;
 
     if (category) {
       console.log("keyword 변경");
@@ -89,7 +90,7 @@ export default function SearchClient() {
       fetchData(search);
       addRecentSearches(search);
     }
-  }, []);
+  }, [search, category]);
   // 프리랜더링 문제
 
   // 기존 코드
