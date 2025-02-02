@@ -24,13 +24,13 @@ export default function SearchBasic({ setSearchText, handleSearch }) {
   }, []);
 
   const recommendedSearches = [
-    "양양 숙소",
-    "고성 숙소",
-    "강원도",
+    "경주",
+    "양양",
+    "강원",
     "속초",
-    "양양 숙소",
-    "고성 숙소",
-    "강원도",
+    "호텔",
+    "안양",
+    "을왕리",
     "서울",
     "인천",
   ];
