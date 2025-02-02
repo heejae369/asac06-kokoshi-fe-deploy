@@ -64,25 +64,10 @@ export default function CartPage() {
             Authorization: localStorage.getItem("accessToken"),
           },
         };
-        // const requestData = {
-        //   userId: userId, // 요청 바디의 userId (필요하다면 제거 가능)
-        //   userEmail: userEmail,
-        // };
         const response = await authFetch(
           `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/cart/getCart`,
           option
-        ); // 1 옵션까지 같이 명시해서 사용
-
-        // const response = await axios.post(
-        //   `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/cart/getCart`,
-        //   requestData,
-        //   {
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //       userId: userId.toString(), // 헤더에 userId 추가, 추후 JWT 활용
-        //     },
-        //   }
-        // );
+        );
 
         if (isFlag) {
           const cartData = await response.json();
@@ -162,22 +147,6 @@ export default function CartPage() {
     setIsModalOpen(true); // 모달 열기
   };
 
-  // const test = async () => {
-  //   const option = {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Authorization: localStorage.getItem('accessToken'),
-  //     },
-  //     credentials: 'include',
-  //   }
-  //   // 아래 둘 선택하여 사용
-  //   const response = await authFetch('http://localhost:8080/api/test', option) // 1 옵션까지 같이 명시해서 사용
-
-  //   const response = await defaultAuthGetFetch('http://localhost:8080/api/test') // 2 기본 get 요청시에 사용
-  //   console.log('test response : ', response)
-  // }
-
   const confirmDelete = async () => {
     const option = {
       method: "POST",
@@ -211,41 +180,55 @@ export default function CartPage() {
     setIsModalOpen(false); // 모달 닫기
   };
 
-  // 예약하기 페이지로 선택된 카트 아이템 넘기는 함수
+  // YYYY-MM-DD 형식의 문자열을 로컬 Date 객체로 변환하는 함수
+  const parseDate = (dateString: string): Date => {
+    const [year, month, day] = dateString.split("-").map(Number);
+    return new Date(year, month - 1, day); // month는 0부터 시작하므로 month - 1
+  };
   const handleNavigateToReservation = () => {
     console.log("[예약하기 버튼 클릭] - handleNavigateToReservation 실행");
+
     // 선택된 아이템 필터링
     const selectedItems = cartItems.filter((item) => item.isChecked);
-
-    // 선택된 아이템 ID를 상태로 업데이트
-    const selectedIds = selectedItems.map((item) => item.id);
-    setSelectedItemIds(selectedIds);
-    console.log("선택된 아이템:", selectedItems);
-    console.log("선택된 아이템 IDs:", selectedItemIds);
 
     if (selectedItems.length === 0) {
       alert("선택된 아이템이 없습니다.");
       return;
     }
 
-    // 선택된 아이템 데이터 가공
+    // 오늘 날짜를 00:00:00으로 설정 (시간 무시)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // 시간 정보를 00:00:00으로 맞춤
+
+    const invalidItems = selectedItems.filter((item) => {
+      const startDate = parseDate(item.reservationStart);
+      console.log("예약 시작일:", item.reservationStart, "->", startDate);
+      return startDate < today;
+    });
+
+    if (invalidItems.length > 0) {
+      alert("오늘 이전 날짜의 항목은 예약할 수 없습니다.");
+      return;
+    }
+
+    // 선택된 아이템 데이터 가공 및 예약 페이지 이동
+    const selectedIds = selectedItems.map((item) => item.id);
+    setSelectedItemIds(selectedIds);
+    console.log("선택된 아이템:", selectedItems);
+    console.log("선택된 아이템 IDs:", selectedIds);
+
     const formattedData = selectedItems.map((item) => ({
-      // 여기서 삭제안하면 카트 아이템도 넘겨야함
-      // 논의
-      roomId: item.roomId, // 방 id  // 백엔드에서 구현후 수정요함
-      cartItems: item.id /*|| undefined // */, // 카트 아이템 아이디로 바꿔야한다
+      roomId: item.roomId,
+      cartItems: item.id,
       startDate: item.reservationStart,
       endDate: item.reservationEnd,
       capacity: item.capacity,
       startTime: item.checkIn.substring(0, 5),
       endTime: item.checkOut.substring(0, 5),
-      reservationType: item.reservationType, // 예약 타입 예시
+      reservationType: item.reservationType,
     }));
 
-    // 데이터를 쿼리스트링으로 변환
     const params = encodeURIComponent(JSON.stringify(formattedData));
-    // cartId?2 params~
-    // reservation 페이지로 이동
     router.push(`/reservation?data=${params}`);
   };
 
