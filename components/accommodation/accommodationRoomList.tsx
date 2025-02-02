@@ -108,7 +108,7 @@ export const AccommodationRoomList = ({
               {roomInfo.roomType === RoomType.STAY ? (
                 <div className="ml-[10px] flex grow flex-col tracking-[-0.5px]">
                   <span className="mt-[3px] flex items-center text-sm font-bold">
-                    TEST
+                    {roomInfo.name}
                   </span>
                   <div className="flex flex-col items-start gap-2 rounded-md bg-gray-100 p-3 text-[10px] text-gray-800">
                     <div className="flex">
