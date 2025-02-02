@@ -124,6 +124,7 @@ export default function SearchClient() {
 
   useEffect(() => {
     if (array !== "코코시 추천순" && searchResultData) {
+      console.log(searchResultData);
       setSearchResultData(dataArray(searchResultData, array));
     }
   }, [array]);
