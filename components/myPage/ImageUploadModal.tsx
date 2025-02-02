@@ -1,12 +1,13 @@
 import { authFormFetch } from "@/lib/utils";
 import styles from "@/styles/Mypage.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const ImageUploadModal = ({
   setUserProfile,
   setUserProfileImgModalOpen,
 }) => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null); // 선택한 이미지
+  const [profile, setProfile] = useState<string | null>(null);
 
   // 프로필 이미지 변경 핸들러
   const handleImageUpload = async () => {
@@ -46,13 +47,21 @@ export const ImageUploadModal = ({
 
       // 업데이트된 사용자 데이터 반영
       setUserProfile(updatedData.user_profile_path);
-      alert("프로필 이미지가 변경되었습니다.");
-      setUserProfileImgModalOpen(false); // 모달 닫기
+      setProfile(updatedData.user_profile_path);
+      // alert("프로필 이미지가 변경되었습니다.");
+      // setUserProfileImgModalOpen(false); // 모달 닫기
     } catch (error) {
       console.error(error);
       alert("프로필 이미지 변경에 실패했습니다.");
     }
   };
+
+  useEffect(() => {
+    if (profile) {
+      alert("프로필 이미지가 변경되었습니다.");
+      setUserProfileImgModalOpen(false); // 모달 닫기
+    }
+  }, [profile]);
 
   return (
     <>

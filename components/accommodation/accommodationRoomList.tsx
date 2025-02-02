@@ -15,8 +15,10 @@ import { useEffect, useState } from "react";
 
 export const AccommodationRoomList = ({
   accommodationId,
+  setRoom,
 }: {
   accommodationId: string;
+  setRoom;
 }) => {
   const router = useRouter();
   const { checkInDate, checkOutDate, adultNumber } = useCalendar();
@@ -74,8 +76,17 @@ export const AccommodationRoomList = ({
     return <div>Error loading accommodation details</div>;
   }
 
-  const onClickReservation = ({ roomId }: { roomId: number }) => {
-    router.push(`${accommodationId}/${roomId}`);
+  // const onClickReservation = ({ roomId }: { roomId: number }) => {
+  const onClickReservation = ({ room }: { room: Room }) => {
+    // 클릭한 버튼에 해당하는 객실의 room 을 받고, reservation 타입에 따라서
+    // push or modalopen
+    if (room.roomType === RoomType.STAY) {
+      setRoom(room);
+    } else {
+      router.push(`${accommodationId}/${room.roomId}`);
+    }
+
+    // router.push(`${accommodationId}/${roomId}`);
   };
 
   // router.push(url, as, options)
@@ -132,7 +143,7 @@ export const AccommodationRoomList = ({
               ) : (
                 <div className="ml-[10px] flex grow flex-col tracking-[-0.5px]">
                   <span className="mt-[3px] flex items-center text-sm font-bold">
-                    TEST
+                    {roomInfo.name}
                   </span>
                   <div className="flex flex-col items-start gap-2 rounded-md bg-gray-100 p-3 text-[10px] text-gray-800">
                     <div className="flex">
@@ -177,7 +188,8 @@ export const AccommodationRoomList = ({
             </div>
             <div className="py-3 text-right">
               <Button
-                onClick={() => onClickReservation({ roomId: roomInfo.roomId })}
+                // onClick={() => onClickReservation({ roomId: roomInfo.roomId })}
+                onClick={() => onClickReservation({ room: roomInfo })}
                 variant={"point"}
               >
                 객실 예약하기
