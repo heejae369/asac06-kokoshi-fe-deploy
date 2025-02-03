@@ -93,6 +93,7 @@ export default function FindId() {
   };
 
   const handleMessage = () => {
+    handleCodeRequest();
     setMessage("인증번호가 재전송되었습니다.");
     setErrorMessage("");
     setIsTimerActive(true);
@@ -142,6 +143,7 @@ export default function FindId() {
             placeholder="이름"
             value={name}
             onChange={handleNameChange}
+            // disabled={}
           />
           {certification ? (
             <>
