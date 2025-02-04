@@ -41,14 +41,14 @@ export default function SignupPage() {
           <div className="flex items-center justify-center gap-6 text-lg font-medium text-[#8728FF]">
             <input
               type="text"
-              placeholder="1990"
+              placeholder="1900"
               maxLength={4}
               value={year}
               {...register("year", {
                 required: "연도를 입력해주세요.",
                 validate: (value) =>
-                  (Number(value) >= 1900 && Number(value) <= 2024) ||
-                  "연도는 1900년 ~ 2024년 이여야 합니다.",
+                  (Number(value) >= 1900 && Number(value) <= 2006) ||
+                  "연도는 1900년 ~ 2006년 이여야 합니다.",
               })}
               onChange={(e) => {
                 const numericValue = e.target.value.replace(/[^0-9]/g, "");
